@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("identification_label")]
 script = ExtResource("1_jy7t4")
+identification_label = NodePath("CanvasLayer/Identification")
 
 [node name="Label" type="Label" parent="."]
 offset_left = 755.0
@@ -11,3 +12,13 @@ offset_top = 256.0
 offset_right = 900.0
 offset_bottom = 279.0
 text = "ICI SE PASSE LE JEU"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Identification" type="Label" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 97.0
+grow_vertical = 0

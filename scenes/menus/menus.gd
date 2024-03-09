@@ -16,7 +16,7 @@ func _ready():
 
 func on_game_room_join(game_room_code: String, client_id: int):
     var game = game_scene.instantiate()
-    get_tree().root.add_child(game)
+    get_parent().add_child(game)
     queue_free()
 
 func create_game_room():

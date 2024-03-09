@@ -73,7 +73,7 @@ class Client:
     func on_game_room_info_received(_result, _response_code, _headers, response):
         var peer = WebSocketMultiplayerPeer.new()
         game_room_code = response['code']
-        peer.peer_connected.connect(on_game_joined)
+        multiplayer.peer_connected.connect(on_game_joined)
         peer.create_client(game_instances_host + ':' + str(response['port']))
         multiplayer.multiplayer_peer = peer
 
@@ -114,8 +114,8 @@ class Client:
         var peer = WebSocketMultiplayerPeer.new()
     
         if peer.create_server(port, '*', server_tls_options) == OK:
-            peer.peer_connected.connect(on_peer_player_joined)
-            peer.peer_disconnected.connect(on_peer_player_left)
+            multiplayer.peer_connected.connect(on_peer_player_joined)
+            multiplayer.peer_disconnected.connect(on_peer_player_left)
             multiplayer.multiplayer_peer = peer
             request('/game-instances/%s/' % game_room_code, HTTPClient.METHOD_PUT, {'status': 'ready'})
             hosted.emit()
