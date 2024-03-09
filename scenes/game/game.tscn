@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=4 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
+[ext_resource type="PackedScene" uid="uid://hwojffny7pqa" path="res://scenes/tilemap/tilemap.tscn" id="2_mqajk"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_uq4ac"]
 properties/0/path = NodePath("HUD/Status/VBoxContainer/Player0Status:text")
@@ -10,10 +11,11 @@ properties/1/path = NodePath("HUD/Status/VBoxContainer/Player1Status:text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("identification_label", "player_status_labels")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("identification_label", "player_status_labels", "player_characters")]
 script = ExtResource("1_jy7t4")
 identification_label = NodePath("HUD/Identification")
 player_status_labels = [NodePath("HUD/Status/VBoxContainer/Player0Status"), NodePath("HUD/Status/VBoxContainer/Player1Status")]
+player_characters = [NodePath("Tilemap/Player"), NodePath("Tilemap/Player2")]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -55,3 +57,8 @@ horizontal_alignment = 2
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_uq4ac")
+
+[node name="Tilemap" parent="." instance=ExtResource("2_mqajk")]
+position = Vector2(176, 112)
+
+[editable path="Tilemap"]

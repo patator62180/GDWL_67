@@ -2,7 +2,7 @@ extends Node2D
 
 @export var identification_label: Label
 @export var player_status_labels: Array[Label]
-
+@export var player_characters: Array[Player]
 
 var players = []
 var player_index: int
@@ -34,6 +34,11 @@ func choose_action(player_index: int, action: String):
                 is_choice_step = false
                 player_status_labels[0].text = 'Running actions...'
                 player_status_labels[1].text = ''
+                
+                for index in range(2):
+                    move_player(index, player_choices[index])
+                
+                start_choosing_step()
 
 func on_peer_player_joined(id: int):
     var player_index = len(players)
@@ -54,5 +59,16 @@ func start_choosing_step():
     player_status_labels[1].text = 'Player 1 is choosing action'
 
 func _process(delta):
-    if multiplayer and not multiplayer.is_server() and Input.is_action_just_pressed("left"):
-        choose_action.rpc(player_index, 'left')
+    if multiplayer and not multiplayer.is_server():
+        if Input.is_action_just_pressed("left"):
+            choose_action.rpc(player_index, 'left')
+        if Input.is_action_just_pressed("right"):
+            choose_action.rpc(player_index, 'right')
+        if Input.is_action_just_pressed("up"):
+            choose_action.rpc(player_index, 'up')
+        if Input.is_action_just_pressed("down"):
+            choose_action.rpc(player_index, 'down')
+            
+func move_player(player_index: int, action: String):
+    if multiplayer and multiplayer.is_server():
+        player_characters[player_index].move_player(action)
