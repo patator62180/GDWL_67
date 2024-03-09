@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://27xb7kekk1ck"]
+
+[ext_resource type="Script" path="res://scenes/menus/menus.gd" id="1_w7o1w"]
+[ext_resource type="PackedScene" uid="uid://dswfe7yyh4daq" path="res://scenes/game/game.tscn" id="2_h078q"]
+
+[node name="Menus" type="Node2D" node_paths=PackedStringArray("create_button", "join_button", "join_room_code")]
+script = ExtResource("1_w7o1w")
+create_button = NodePath("CanvasLayer/Viewport/VBoxContainer/CreateButton")
+join_button = NodePath("CanvasLayer/Viewport/VBoxContainer/JoinButton")
+join_room_code = NodePath("CanvasLayer/Viewport/VBoxContainer/JoinRoomCode")
+game_scene = ExtResource("2_h078q")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Viewport" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Viewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CreateButton" type="Button" parent="CanvasLayer/Viewport/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "CREATE ROOM"
+
+[node name="JoinRoomCode" type="TextEdit" parent="CanvasLayer/Viewport/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+
+[node name="JoinButton" type="Button" parent="CanvasLayer/Viewport/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "JOIN ROOM"

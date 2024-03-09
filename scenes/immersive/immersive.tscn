@@ -1,0 +1,81 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7c40bidrm85h"]
+
+[ext_resource type="Script" path="res://scenes/immersive/immersive.gd" id="1_qcrh8"]
+
+[node name="Immersive" type="Node2D" node_paths=PackedStringArray("http_request", "boot_menu", "start_as_fake_local_player_button", "start_as_fake_server_button", "start_as_immersive_local_player_button", "start_as_remote_player_button", "infos_box", "instance_label", "extra_info_label")]
+script = ExtResource("1_qcrh8")
+http_request = NodePath("HTTPRequest")
+boot_menu = NodePath("CanvasLayer/DebugHUD/BootMenu")
+start_as_fake_local_player_button = NodePath("CanvasLayer/DebugHUD/BootMenu/VBoxContainer/StartAsFakeLocalPlayerButton")
+start_as_fake_server_button = NodePath("CanvasLayer/DebugHUD/BootMenu/VBoxContainer/StartAsFakeServerButton")
+start_as_immersive_local_player_button = NodePath("CanvasLayer/DebugHUD/BootMenu/VBoxContainer/StartAsImmersiveLocalPlayerButton")
+start_as_remote_player_button = NodePath("CanvasLayer/DebugHUD/BootMenu/VBoxContainer/StartAsRemotePlayerButton")
+infos_box = NodePath("CanvasLayer/DebugHUD/InfosBox")
+instance_label = NodePath("CanvasLayer/DebugHUD/InfosBox/VBoxContainer/InstanceLabel")
+extra_info_label = NodePath("CanvasLayer/DebugHUD/InfosBox/VBoxContainer/ExtraInfoLabel")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="DebugHUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1152.0
+offset_bottom = -648.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BootMenu" type="Control" parent="CanvasLayer/DebugHUD"]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DebugHUD/BootMenu"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StartAsFakeServerButton" type="Button" parent="CanvasLayer/DebugHUD/BootMenu/VBoxContainer"]
+layout_mode = 2
+text = "[FAKE] Start as server"
+alignment = 0
+
+[node name="StartAsFakeLocalPlayerButton" type="Button" parent="CanvasLayer/DebugHUD/BootMenu/VBoxContainer"]
+layout_mode = 2
+text = "[FAKE] Start as player (local)"
+alignment = 0
+
+[node name="StartAsImmersiveLocalPlayerButton" type="Button" parent="CanvasLayer/DebugHUD/BootMenu/VBoxContainer"]
+layout_mode = 2
+text = "[IMMERSIVE] Start as player (local)"
+alignment = 0
+
+[node name="StartAsRemotePlayerButton" type="Button" parent="CanvasLayer/DebugHUD/BootMenu/VBoxContainer"]
+layout_mode = 2
+text = "Start as player (remote)"
+alignment = 0
+
+[node name="InfosBox" type="Control" parent="CanvasLayer/DebugHUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DebugHUD/InfosBox"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="InstanceLabel" type="Label" parent="CanvasLayer/DebugHUD/InfosBox/VBoxContainer"]
+layout_mode = 2
+text = "Instance"
+
+[node name="ExtraInfoLabel" type="Label" parent="CanvasLayer/DebugHUD/InfosBox/VBoxContainer"]
+layout_mode = 2
+text = "Extra Info"
