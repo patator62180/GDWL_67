@@ -19,6 +19,9 @@ func set_start_game_button_enabled(enabled: bool):
     start_game_button.disabled = not enabled
     start_game_button.visible = enabled
 
+func set_playing(playing: bool):
+    status_label.text = 'Playing' if playing else ''
+
 func set_connected():
     status_label.text = 'Connected'
 

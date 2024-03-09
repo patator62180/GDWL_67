@@ -2,6 +2,8 @@ extends Node2D
 
 class_name Player
 
+signal played
+
 var tile_size = 32
 
 var current_position = Vector2.ZERO
@@ -14,9 +16,12 @@ func move(direction):
     
     if !raycast.is_colliding():
         position += direction * tile_size
-        
+
+@rpc("any_peer")
 func move_to(position):
-    self.position = position
+    if multiplayer and multiplayer.is_server():
+        self.position = position
+        played.emit()
         
 func process_action(action: String):
     match action:

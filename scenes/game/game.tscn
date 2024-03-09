@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=9 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="2_7n88y"]
@@ -6,14 +6,6 @@
 [ext_resource type="Script" path="res://scenes/game/hazard_mananger.gd" id="3_vmlt8"]
 [ext_resource type="Script" path="res://scenes/grid/grid.gd" id="5_0p7w5"]
 [ext_resource type="Texture2D" uid="uid://dfi348pkyrqp6" path="res://sprites/styleshit.png" id="5_f43sy"]
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_uq4ac"]
-properties/0/path = NodePath("HUD/Status/VBoxContainer/Player0Status:text")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath("HUD/Status/VBoxContainer/Player1Status:text")
-properties/1/spawn = true
-properties/1/replication_mode = 1
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nhmba"]
 texture = ExtResource("5_f43sy")
@@ -111,9 +103,6 @@ grow_vertical = 0
 [node name="PlayerCard3" parent="HUD/PlayerCards/PlayerCard3Anchor" instance=ExtResource("2_7n88y")]
 layout_mode = 1
 player_index = 3
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_uq4ac")
 
 [node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("tile_map")]
 script = ExtResource("3_vmlt8")

@@ -4,9 +4,12 @@ class_name PlayerManager
 
 @export var player_characters: Array[Player]
 
+signal played
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    pass # Replace with function body.
+    for player_character in player_characters:
+        player_character.played.connect(func(): played.emit())
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
