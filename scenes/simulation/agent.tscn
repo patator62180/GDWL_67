@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c33qa5m5ry0mt"]
+
+[ext_resource type="Script" path="res://scenes/simulation/agent.gd" id="1_x6nhv"]
+
+[sub_resource type="Gradient" id="Gradient_mo0wb"]
+offsets = PackedFloat32Array(0, 0.353333, 0.72, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0)
+
+[node name="Agent" type="Sprite2D"]
+scale = Vector2(10, 10)
+script = ExtResource("1_x6nhv")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 100
+gravity = Vector2(0, 0)
+scale_amount_min = 10.0
+scale_amount_max = 10.0
+color_ramp = SubResource("Gradient_mo0wb")
