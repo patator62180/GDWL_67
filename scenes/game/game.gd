@@ -13,11 +13,13 @@ var is_choice_step: bool
 func _ready():
     if multiplayer and multiplayer.is_server():
         Immersive.client.peer_player_joined.connect(on_peer_player_joined)
-        
+
 @rpc('any_peer')
 func start_game():
     if multiplayer and multiplayer.is_server():
+        propagate_start_game.rpc()
         is_game_started = true
+        
         for player_index in range(MAX_PLAYERS_COUNT):
             if player_index > len(players) - 1:
                 player_cards[player_index].visible = false
@@ -31,6 +33,10 @@ func assign_player(player_index: int):
 func give_start_game_permission():
     player_cards[player_index].set_start_game_button_enabled(true)
     player_cards[player_index].start_game_pressed.connect(request_start_game)
+
+@rpc('authority')
+func propagate_start_game():
+    player_cards[player_index].set_start_game_button_enabled(false)
 
 func request_start_game():
     start_game.rpc_id(1)
