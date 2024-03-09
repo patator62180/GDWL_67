@@ -4,3 +4,10 @@
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_jy7t4")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 755.0
+offset_top = 256.0
+offset_right = 900.0
+offset_bottom = 279.0
+text = "ICI SE PASSE LE JEU"
