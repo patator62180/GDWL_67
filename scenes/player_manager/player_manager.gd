@@ -11,10 +11,13 @@ func _ready():
     for player_character in player_characters:
         player_character.played.connect(func(): played.emit())
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     pass
+    
+func setup_players(grid: Grid):
+    for player in player_characters:
+        player.grid_pos = grid.get_grid_pos(player.position)
 
 func process_action(action: String):
     for player in player_characters:

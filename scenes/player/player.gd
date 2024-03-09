@@ -6,7 +6,7 @@ signal played
 
 var tile_size = 100
 
-var current_position = Vector2.ZERO
+var grid_pos = Vector2.ZERO
 
 @export var raycast: RayCast2D
 
@@ -18,10 +18,13 @@ func move(direction):
         position += direction * tile_size
 
 @rpc("any_peer")
-func move_to(position):
+func move_to(position: Vector2):
     if multiplayer and multiplayer.is_server():
         self.position = position
         played.emit()
+        
+func can_move_to(grid_pos: Vector2):
+    return self.grid_pos.distance_to(grid_pos) <= 1
         
 func process_action(action: String):
     match action:

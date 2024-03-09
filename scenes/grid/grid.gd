@@ -38,13 +38,15 @@ func get_screen_pos(grid_pos: Vector2):
     return Vector2(grid_pos.x, grid_pos.y) * grid_size
     
 func show_possible_selection(grid_pos: Vector2):
+    clear_possible_selections()
+    
     for direction in cardinal:
         var pos = Vector2(grid_pos + direction)
         if is_possible_tile(pos):
-            selection_tile_map.set_cell(0, pos, 0, Vector2(0,0))
+            selection_tile_map.set_cell(0, pos, 1, Vector2(0,0))
 
 func clear_possible_selections():
     selection_tile_map.clear()
     
 func is_possible_tile(grid_pos: Vector2):
-    return true
+    return tile_map.get_cell_tile_data(0, grid_pos) != null
