@@ -4,15 +4,20 @@ const MAX_PLAYERS_COUNT = 4
 
 @export var player_characters: Array[PlayerManager]
 @export var player_cards: Array[PlayerCard]
+@export var grid: Grid
 
 var players = []
 var player_index: int
 var is_game_started: bool
 var is_choice_step: bool
 
+var selected_player: Player
+
 func _ready():
     if multiplayer and multiplayer.is_server():
         Immersive.client.peer_player_joined.connect(on_peer_player_joined)
+    
+    grid.cell_click.connect(on_cell_click)
 
 @rpc('any_peer')
 func start_game():
@@ -54,3 +59,18 @@ func on_peer_player_joined(id: int):
 func move_player(player_index: int, action: String):
     if multiplayer and multiplayer.is_server():
         player_characters[player_index].process_action(action)
+        
+func on_cell_click(grid_pos: Vector2):
+    for player_manager in player_characters:
+        var found_player = player_manager.get_character_at_position(grid_pos, grid)
+
+        if found_player != null:
+            selected_player = found_player
+            return
+        elif selected_player != null:
+            selected_player.move_to(grid.get_screen_pos(grid_pos))
+            selected_player = null
+            return
+        else:
+            selected_player = null
+            

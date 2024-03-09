@@ -19,16 +19,21 @@ script = ExtResource("1_lo7lj")
 raycast = NodePath("RayCast2D")
 
 [node name="Area2D" type="Area2D" parent="."]
+position = Vector2(16, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_oet1n")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(16, 16)
 target_position = Vector2(0, 32)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(16, 16)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_girxi")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_8giup")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

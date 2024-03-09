@@ -15,6 +15,9 @@ func move(direction):
     if !raycast.is_colliding():
         position += direction * tile_size
         
+func move_to(position):
+    self.position = position
+        
 func process_action(action: String):
     match action:
         "left":

@@ -16,3 +16,8 @@ func _process(delta):
 func process_action(action: String):
     for player in player_characters:
         player.process_action(action)
+
+func get_character_at_position(grid_position: Vector2, grid: Grid):
+    for player in player_characters:
+        if grid_position == grid.get_grid_pos(player.position):
+            return player
