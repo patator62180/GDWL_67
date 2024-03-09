@@ -22,6 +22,9 @@ func _ready():
             player_character.played.connect(on_player_played)
 
     grid.cell_click.connect(on_cell_click)
+    
+    for player in player_characters:
+        player.setup_players(grid)
 
 func on_player_played():
     player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
@@ -92,18 +95,16 @@ func on_cell_click(grid_pos: Vector2):
 
         if found_player != null:
             selected_player = found_player
+            grid.show_possible_selection(grid_pos)
             return
         elif selected_player != null:
-            selected_player.move_to.rpc_id(1, grid.get_screen_pos(grid_pos))
+            if selected_player.can_move_to(grid_pos):
+                selected_player.move_to.rpc_id(1, grid.get_screen_pos(grid_pos))
+                selected_player.grid_pos = grid_pos
+                
             selected_player = null
+            grid.clear_possible_selections()
             return
         else:
             selected_player = null
-    elif is_player_active_turn():
-        var player_manager = player_characters[player_index]
-        var found_player = player_manager.get_character_at_position(grid_pos, grid)
-        
-        if found_player != null:
-            grid.show_possible_selection(grid_pos)
-        else:
             grid.clear_possible_selections()
