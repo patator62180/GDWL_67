@@ -1,24 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://co6n2pvtayag2"]
+[gd_scene load_steps=2 format=3 uid="uid://co6n2pvtayag2"]
 
-[ext_resource type="Shader" path="res://scenes/simulation/simulation.gdshader" id="1_bj5kd"]
 [ext_resource type="Script" path="res://scenes/simulation/simulation.gd" id="1_i66by"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jbb51"]
-shader = ExtResource("1_bj5kd")
-shader_parameter/positions = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)
-shader_parameter/rotations = PackedFloat32Array(0, 0, 0, 0)
-shader_parameter/delta_time = null
-shader_parameter/height = 648.0
-shader_parameter/width = 1152.0
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vho3s"]
 
 [node name="Simulation" type="Node2D"]
 script = ExtResource("1_i66by")
 agent_file = "res://scenes/simulation/agent.tscn"
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_jbb51")
-position = Vector2(576, 324)
-scale = Vector2(1152.5, 648.5)
-texture = SubResource("PlaceholderTexture2D_vho3s")

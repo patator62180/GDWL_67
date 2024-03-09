@@ -16,3 +16,15 @@ gravity = Vector2(0, 0)
 scale_amount_min = 10.0
 scale_amount_max = 10.0
 color_ramp = SubResource("Gradient_mo0wb")
+
+[node name="RayCast2D_Froward" type="RayCast2D" parent="."]
+target_position = Vector2(10, 0)
+collide_with_areas = true
+
+[node name="RayCast2D_Left" type="RayCast2D" parent="."]
+target_position = Vector2(10, -20)
+collide_with_areas = true
+
+[node name="RayCast2D_Right" type="RayCast2D" parent="."]
+target_position = Vector2(10, 20)
+collide_with_areas = true

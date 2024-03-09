@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bon6gx0so6g0p"]
+
+[ext_resource type="Texture2D" uid="uid://y463nr8883gu" path="res://sprites/baldur_mais_qui_va_bien.png" id="1_6k356"]
+[ext_resource type="Script" path="res://scenes/simulation/pheromone.gd" id="2_wr0bc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_66vau"]
+radius = 40.0
+
+[node name="Pheromone" type="Sprite2D"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_6k356")
+script = ExtResource("2_wr0bc")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(1, 1)
+shape = SubResource("CircleShape2D_66vau")
