@@ -14,6 +14,11 @@ config/name="GDWJ_67"
 run/main_scene="res://scenes/main/main.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 
+[display]
+
+window/size/window_width_override=1152
+window/size/window_height_override=648
+
 [input]
 
 left={
