@@ -4,7 +4,7 @@ class_name Player
 
 signal played
 
-var tile_size = 32
+var tile_size = 100
 
 var current_position = Vector2.ZERO
 

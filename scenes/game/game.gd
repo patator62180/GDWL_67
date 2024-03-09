@@ -20,7 +20,7 @@ func _ready():
         
         for player_character in player_characters:
             player_character.played.connect(on_player_played)
-    
+
     grid.cell_click.connect(on_cell_click)
 
 func on_player_played():
@@ -99,4 +99,11 @@ func on_cell_click(grid_pos: Vector2):
             return
         else:
             selected_player = null
+    elif is_player_active_turn():
+        var player_manager = player_characters[player_index]
+        var found_player = player_manager.get_character_at_position(grid_pos, grid)
         
+        if found_player != null:
+            grid.show_possible_selection(grid_pos)
+        else:
+            grid.clear_possible_selections()
