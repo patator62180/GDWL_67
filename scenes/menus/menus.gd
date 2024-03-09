@@ -15,6 +15,7 @@ func _ready():
     join_button.pressed.connect(join_game_room)
 
 func on_game_room_join(game_room_code: String, client_id: int):
+    Immersive.client.joined.disconnect(on_game_room_join)
     var game = game_scene.instantiate()
     get_parent().add_child(game)
     queue_free()
