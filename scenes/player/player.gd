@@ -7,7 +7,7 @@ var tile_size = 32
 var current_position = Vector2.ZERO
 
 @export var raycast: RayCast2D
-        
+
 func move(direction):
     raycast.rotation = atan2(-direction.x, direction.y)
     raycast.force_raycast_update()

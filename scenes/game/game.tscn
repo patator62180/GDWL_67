@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=6 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
+[ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="2_7n88y"]
 [ext_resource type="PackedScene" uid="uid://hwojffny7pqa" path="res://scenes/tilemap/tilemap.tscn" id="2_mqajk"]
 [ext_resource type="PackedScene" uid="uid://fceu5xy8mw51" path="res://scenes/player_manager/player_manager.tscn" id="3_6h5xp"]
 
@@ -12,56 +13,88 @@ properties/1/path = NodePath("HUD/Status/VBoxContainer/Player1Status:text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("identification_label", "player_status_labels", "player_characters")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("player_characters", "player_cards")]
 script = ExtResource("1_jy7t4")
-identification_label = NodePath("HUD/Identification")
-player_status_labels = [NodePath("HUD/Status/VBoxContainer/Player0Status"), NodePath("HUD/Status/VBoxContainer/Player1Status")]
 player_characters = [NodePath("Player0Manager"), NodePath("Player1Manager")]
+player_cards = [NodePath("HUD/PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("HUD/PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("HUD/PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("HUD/PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="Identification" type="Label" parent="HUD"]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -23.0
-offset_right = 97.0
-grow_vertical = 0
-
-[node name="Status" type="Control" parent="HUD"]
-custom_minimum_size = Vector2(200, 50)
+[node name="PlayerCards" type="Control" parent="HUD"]
 layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerCard0Anchor" type="Control" parent="HUD/PlayerCards"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 150.0
+offset_top = 75.0
+offset_right = 150.0
+offset_bottom = 75.0
+
+[node name="PlayerCard0" parent="HUD/PlayerCards/PlayerCard0Anchor" instance=ExtResource("2_7n88y")]
+layout_mode = 1
+
+[node name="PlayerCard1Anchor" type="Control" parent="HUD/PlayerCards"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -150.0
+offset_top = 75.0
+offset_right = -150.0
+offset_bottom = 75.0
+grow_horizontal = 0
+
+[node name="PlayerCard1" parent="HUD/PlayerCards/PlayerCard1Anchor" instance=ExtResource("2_7n88y")]
+layout_mode = 1
+player_index = 1
+
+[node name="PlayerCard2Anchor" type="Control" parent="HUD/PlayerCards"]
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
+offset_left = -150.0
+offset_top = -75.0
+offset_right = -150.0
+offset_bottom = -75.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Status"]
-layout_mode = 0
-offset_right = 107.0
-offset_bottom = 50.0
+[node name="PlayerCard2" parent="HUD/PlayerCards/PlayerCard2Anchor" instance=ExtResource("2_7n88y")]
+layout_mode = 1
+player_index = 2
 
-[node name="Player0Status" type="Label" parent="HUD/Status/VBoxContainer"]
-layout_mode = 2
-text = "PLAYER 0 IS ..."
-horizontal_alignment = 2
+[node name="PlayerCard3Anchor" type="Control" parent="HUD/PlayerCards"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 150.0
+offset_top = -75.0
+offset_right = 150.0
+offset_bottom = -75.0
+grow_vertical = 0
 
-[node name="Player1Status" type="Label" parent="HUD/Status/VBoxContainer"]
-layout_mode = 2
-text = "PLAYER 1 IS ..."
-horizontal_alignment = 2
+[node name="PlayerCard3" parent="HUD/PlayerCards/PlayerCard3Anchor" instance=ExtResource("2_7n88y")]
+layout_mode = 1
+player_index = 3
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_uq4ac")
 
 [node name="Tilemap" parent="." instance=ExtResource("2_mqajk")]
+position = Vector2(-317, -178)
 
 [node name="Player0Manager" parent="." instance=ExtResource("3_6h5xp")]
+position = Vector2(-317, -178)
 
 [node name="Player" parent="Player0Manager" index="0"]
 modulate = Color(0, 0.568627, 0.988235, 1)
@@ -76,6 +109,7 @@ modulate = Color(0, 0.568627, 0.988235, 1)
 position = Vector2(112, 240)
 
 [node name="Player1Manager" parent="." instance=ExtResource("3_6h5xp")]
+position = Vector2(-317, -178)
 
 [node name="Player" parent="Player1Manager" index="0"]
 modulate = Color(0.85098, 0.368627, 0.74902, 1)
@@ -88,6 +122,8 @@ position = Vector2(528, 176)
 [node name="Player3" parent="Player1Manager" index="2"]
 modulate = Color(0.85098, 0.368627, 0.74902, 1)
 position = Vector2(528, 208)
+
+[node name="Camera2D" type="Camera2D" parent="."]
 
 [editable path="Player0Manager"]
 [editable path="Player1Manager"]
