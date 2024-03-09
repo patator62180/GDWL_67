@@ -2,7 +2,7 @@ extends Node2D
 
 @export var identification_label: Label
 @export var player_status_labels: Array[Label]
-@export var player_characters: Array[Player]
+@export var player_characters: Array[PlayerManager]
 
 var players = []
 var player_index: int
@@ -71,4 +71,4 @@ func _process(delta):
             
 func move_player(player_index: int, action: String):
     if multiplayer and multiplayer.is_server():
-        player_characters[player_index].move_player(action)
+        player_characters[player_index].process_action(action)
