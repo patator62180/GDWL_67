@@ -1,24 +1,93 @@
-[gd_scene load_steps=2 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=5 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
+[ext_resource type="PackedScene" uid="uid://hwojffny7pqa" path="res://scenes/tilemap/tilemap.tscn" id="2_mqajk"]
+[ext_resource type="PackedScene" uid="uid://fceu5xy8mw51" path="res://scenes/player_manager/player_manager.tscn" id="3_6h5xp"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("identification_label")]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_uq4ac"]
+properties/0/path = NodePath("HUD/Status/VBoxContainer/Player0Status:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("HUD/Status/VBoxContainer/Player1Status:text")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("identification_label", "player_status_labels", "player_characters")]
 script = ExtResource("1_jy7t4")
-identification_label = NodePath("CanvasLayer/Identification")
+identification_label = NodePath("HUD/Identification")
+player_status_labels = [NodePath("HUD/Status/VBoxContainer/Player0Status"), NodePath("HUD/Status/VBoxContainer/Player1Status")]
+player_characters = [NodePath("Player0Manager"), NodePath("Player1Manager")]
 
-[node name="Label" type="Label" parent="."]
-offset_left = 755.0
-offset_top = 256.0
-offset_right = 900.0
-offset_bottom = 279.0
-text = "ICI SE PASSE LE JEU"
+[node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Identification" type="Label" parent="CanvasLayer"]
+[node name="Identification" type="Label" parent="HUD"]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -23.0
 offset_right = 97.0
 grow_vertical = 0
+
+[node name="Status" type="Control" parent="HUD"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Status"]
+layout_mode = 0
+offset_right = 107.0
+offset_bottom = 50.0
+
+[node name="Player0Status" type="Label" parent="HUD/Status/VBoxContainer"]
+layout_mode = 2
+text = "PLAYER 0 IS ..."
+horizontal_alignment = 2
+
+[node name="Player1Status" type="Label" parent="HUD/Status/VBoxContainer"]
+layout_mode = 2
+text = "PLAYER 1 IS ..."
+horizontal_alignment = 2
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_uq4ac")
+
+[node name="Tilemap" parent="." instance=ExtResource("2_mqajk")]
+
+[node name="Player0Manager" parent="." instance=ExtResource("3_6h5xp")]
+
+[node name="Player" parent="Player0Manager" index="0"]
+modulate = Color(0, 0.568627, 0.988235, 1)
+position = Vector2(112, 112)
+
+[node name="Player2" parent="Player0Manager" index="1"]
+modulate = Color(0, 0.568627, 0.988235, 1)
+position = Vector2(112, 176)
+
+[node name="Player3" parent="Player0Manager" index="2"]
+modulate = Color(0, 0.568627, 0.988235, 1)
+position = Vector2(112, 240)
+
+[node name="Player1Manager" parent="." instance=ExtResource("3_6h5xp")]
+
+[node name="Player" parent="Player1Manager" index="0"]
+modulate = Color(0.85098, 0.368627, 0.74902, 1)
+position = Vector2(528, 144)
+
+[node name="Player2" parent="Player1Manager" index="1"]
+modulate = Color(0.85098, 0.368627, 0.74902, 1)
+position = Vector2(528, 176)
+
+[node name="Player3" parent="Player1Manager" index="2"]
+modulate = Color(0.85098, 0.368627, 0.74902, 1)
+position = Vector2(528, 208)
+
+[editable path="Player0Manager"]
+[editable path="Player1Manager"]
