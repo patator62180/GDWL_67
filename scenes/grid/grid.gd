@@ -97,7 +97,7 @@ func is_possible_movement(grid_pos: Vector2, direction: Vector2):
         Vector2.DOWN:
             return bottom_right_wall != 0 and bottom_right_wall != 2 and bottom_left_wall != 0 and bottom_left_wall != 2
         Vector2.RIGHT:
-            return top_right_wall != 1 and top_right_wall != 2 and bottom_right_wall != 1 and top_left_wall != 2
+            return top_right_wall != 1 and top_right_wall != 2 and bottom_right_wall != 1 and bottom_right_wall != 2
         Vector2.LEFT:
             return top_left_wall != 1 and top_left_wall != 2 and bottom_left_wall != 1 and bottom_left_wall != 2
     
