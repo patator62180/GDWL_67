@@ -3,9 +3,9 @@ extends Node2D
 class_name Player
 
 signal played
+signal parasited
 
 var tile_size = 100
-
 
 @export var is_moving = false
 
@@ -17,6 +17,7 @@ var timer = 0.0
 var timer_max = 0.5
 
 @export var raycast: RayCast2D
+@export var parasite_scene: PackedScene
 
 func _ready():
     if !(self is Host):
@@ -48,6 +49,7 @@ func _process(delta):
         if timer >= timer_max:
             self.position = target_pos
             is_moving = false
+            
             played.emit()
         
     elif is_moving and %AnimationPlayer.get_current_animation() != "player_moving":
@@ -73,3 +75,20 @@ func process_action(action: String):
             move(Vector2.UP)
         "down":
             move(Vector2.DOWN)
+       
+@rpc("authority")     
+func shoot_your_shot(position: Vector2):
+    var parasite = parasite_scene.instantiate() as Parasite
+    parasite.parasited.connect(on_parasited)
+    get_parent().add_child(parasite)
+    
+    var offset = Vector2.ONE * tile_size / 2
+    
+    parasite.position = self.position + offset
+    position = position + offset
+    parasite.fly_to(position)
+
+func on_parasited():
+    parasited.emit()
+
+    
