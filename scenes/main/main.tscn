@@ -16,5 +16,6 @@ remote_immersive_api = "https://immersive.dawee.org"
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Hand" parent="CanvasLayer" instance=ExtResource("4_fdwri")]
+visible = false
 offset_top = -248.0
 offset_bottom = -248.0

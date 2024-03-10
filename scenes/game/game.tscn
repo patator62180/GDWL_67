@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=10 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="2_7n88y"]
@@ -7,13 +7,14 @@
 [ext_resource type="Script" path="res://scenes/grid/grid.gd" id="5_0p7w5"]
 [ext_resource type="TileSet" uid="uid://dpgv8vcohuucb" path="res://tile_sets/level1.tres" id="5_quoa4"]
 [ext_resource type="TileSet" uid="uid://baqdshuahgp71" path="res://tile_sets/selection.tres" id="6_owf1v"]
+[ext_resource type="TileSet" uid="uid://wxknivquryt0" path="res://tile_sets/walls.tres" id="8_nwjlw"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
-player_characters = [NodePath("PlayerManager0"), NodePath("PlayerManager1"), NodePath("PlayerManager2"), NodePath("PlayerManager3")]
+player_characters = [NodePath("Player0Manager"), NodePath("Player1Manager")]
 player_cards = [NodePath("HUD/PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("HUD/PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("HUD/PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("HUD/PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 grid = NodePath("Grid")
 
@@ -91,10 +92,12 @@ script = ExtResource("3_vmlt8")
 tile_map = NodePath("../Grid/TileMap")
 bounds = Vector4(0, 0, 10, 10)
 
-[node name="Grid" type="Node2D" parent="." node_paths=PackedStringArray("tile_map", "selection_tile_map")]
+[node name="Grid" type="Node2D" parent="." node_paths=PackedStringArray("tile_map", "selection_tile_map", "wall_tile_map", "selection_wall_tile_map")]
 script = ExtResource("5_0p7w5")
 tile_map = NodePath("TileMap")
 selection_tile_map = NodePath("TileSelection")
+wall_tile_map = NodePath("TileWalls")
+selection_wall_tile_map = NodePath("TileWallsSelection")
 
 [node name="TileMap" type="TileMap" parent="Grid"]
 tile_set = ExtResource("5_quoa4")
@@ -105,6 +108,24 @@ layer_0/tile_data = PackedInt32Array(-65541, 1, 0, -5, 0, 0, -65540, 0, 0, -4, 1
 tile_set = ExtResource("6_owf1v")
 format = 2
 
+[node name="TileWalls" type="TileMap" parent="Grid"]
+position = Vector2(50, 50)
+tile_set = ExtResource("8_nwjlw")
+format = 2
+
+[node name="TileWallsSelection" type="TileMap" parent="Grid"]
+position = Vector2(50, 50)
+tile_set = ExtResource("8_nwjlw")
+format = 2
+
+[node name="Player0Manager" parent="." instance=ExtResource("3_6h5xp")]
+modulate = Color(0, 0, 1, 1)
+initial_grid_pos = Vector2i(-3, 0)
+
+[node name="Player1Manager" parent="." instance=ExtResource("3_6h5xp")]
+modulate = Color(1, 0, 1, 1)
+initial_grid_pos = Vector2i(3, 0)
+
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.8, 0.8)
 
@@ -114,14 +135,5 @@ spawn_path = NodePath("../Hosts")
 
 [node name="Hosts" type="Node2D" parent="."]
 
-[node name="PlayerManager0" parent="." instance=ExtResource("3_6h5xp")]
-initial_grid_pos = Vector2i(-2, -2)
-
-[node name="PlayerManager1" parent="." instance=ExtResource("3_6h5xp")]
-initial_grid_pos = Vector2i(2, -2)
-
-[node name="PlayerManager2" parent="." instance=ExtResource("3_6h5xp")]
-initial_grid_pos = Vector2i(-2, 2)
-
-[node name="PlayerManager3" parent="." instance=ExtResource("3_6h5xp")]
-initial_grid_pos = Vector2i(2, 2)
+[editable path="Player0Manager"]
+[editable path="Player1Manager"]
