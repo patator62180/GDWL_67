@@ -13,7 +13,7 @@
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
-player_characters = [NodePath("Player0Manager"), NodePath("Player1Manager")]
+player_characters = [NodePath("PlayerManager0"), NodePath("PlayerManager1"), NodePath("PlayerManager2"), NodePath("PlayerManager3")]
 player_cards = [NodePath("HUD/PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("HUD/PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("HUD/PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("HUD/PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 grid = NodePath("Grid")
 
@@ -105,14 +105,6 @@ layer_0/tile_data = PackedInt32Array(-65541, 1, 0, -5, 0, 0, -65540, 0, 0, -4, 1
 tile_set = ExtResource("6_owf1v")
 format = 2
 
-[node name="Player0Manager" parent="." instance=ExtResource("3_6h5xp")]
-modulate = Color(0, 0, 1, 1)
-initial_grid_pos = Vector2i(-3, 0)
-
-[node name="Player1Manager" parent="." instance=ExtResource("3_6h5xp")]
-modulate = Color(1, 0, 1, 1)
-initial_grid_pos = Vector2i(3, 0)
-
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.8, 0.8)
 
@@ -122,5 +114,14 @@ spawn_path = NodePath("../Hosts")
 
 [node name="Hosts" type="Node2D" parent="."]
 
-[editable path="Player0Manager"]
-[editable path="Player1Manager"]
+[node name="PlayerManager0" parent="." instance=ExtResource("3_6h5xp")]
+initial_grid_pos = Vector2i(-2, -2)
+
+[node name="PlayerManager1" parent="." instance=ExtResource("3_6h5xp")]
+initial_grid_pos = Vector2i(2, -2)
+
+[node name="PlayerManager2" parent="." instance=ExtResource("3_6h5xp")]
+initial_grid_pos = Vector2i(-2, 2)
+
+[node name="PlayerManager3" parent="." instance=ExtResource("3_6h5xp")]
+initial_grid_pos = Vector2i(2, 2)
