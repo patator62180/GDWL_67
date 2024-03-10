@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=13 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="2_7n88y"]
@@ -6,77 +6,38 @@
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
 [ext_resource type="Script" path="res://scenes/game/hazard_mananger.gd" id="3_vmlt8"]
 [ext_resource type="Script" path="res://scenes/grid/grid.gd" id="5_0p7w5"]
-[ext_resource type="Shader" path="res://scenes/game/scoreHueJ1.gdshader" id="5_paa84"]
 [ext_resource type="TileSet" uid="uid://dpgv8vcohuucb" path="res://tile_sets/level1.tres" id="5_quoa4"]
-[ext_resource type="Script" path="res://scenes/game/ScoreControl.gd" id="5_v4ywu"]
 [ext_resource type="TileSet" uid="uid://baqdshuahgp71" path="res://tile_sets/selection.tres" id="6_owf1v"]
 [ext_resource type="TileSet" uid="uid://wxknivquryt0" path="res://tile_sets/walls.tres" id="8_5prta"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 
-[sub_resource type="Shader" id="Shader_ojgdv"]
-code = "shader_type canvas_item;
-render_mode unshaded;
+[sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
+font_size = 50
+font_color = Color(0.329412, 1, 0.356863, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
-uniform float Shift_Hue;
+[sub_resource type="LabelSettings" id="LabelSettings_2m1vi"]
+font_size = 50
+font_color = Color(1, 0, 0, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
-void fragment() {
-// Input:3
-	vec3 input_color = vec3(1,0.71,0.306);
-	vec4 texture_color = texture(TEXTURE, UV);
-	//input_color = (1,0.71,0.306);
-
-// VectorFunc:2
-	vec3 color_hsv;
-	{
-		vec3 c = input_color;
-		vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-		vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-		vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-		float d = q.x - min(q.w, q.y);
-		float e = 1.0e-10;
-		color_hsv=vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-	}
-
-	color_hsv.x = mod((color_hsv.x + Shift_Hue), 1.0f);
-
-// VectorFunc:5
-	vec3 color_rgb;
-	{
-		vec3 c = color_hsv;
-		vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-		vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-		color_rgb=c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-	}
-
-// Output:0
-	texture_color = vec4(color_rgb.rgb,texture_color.a);
-	COLOR.rgba = texture_color;
-
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_x7x0s"]
-shader = SubResource("Shader_ojgdv")
-shader_parameter/Shift_Hue = 0.84
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_idffq"]
-shader = ExtResource("5_paa84")
-shader_parameter/Shift_Hue = 0.32
-
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid", "you_won_label", "you_lost_label")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
 player_characters = [NodePath("PlayerManager0"), NodePath("PlayerManager1"), NodePath("PlayerManager2"), NodePath("PlayerManager3")]
 player_cards = [NodePath("HUD/PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("HUD/PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("HUD/PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("HUD/PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 grid = NodePath("Grid")
+you_won_label = NodePath("HUD/YouWinLabel")
+you_lost_label = NodePath("HUD/YouLostLabel")
 
 [node name="Background" parent="." instance=ExtResource("3_qtcvc")]
-visible = false
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="PlayerCards" type="Control" parent="HUD"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -143,38 +104,41 @@ grow_vertical = 0
 layout_mode = 1
 player_index = 3
 
-[node name="Control" type="Control" parent="HUD" node_paths=PackedStringArray("PlayerManager0", "PlayerManager1")]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("5_v4ywu")
-PlayerManager0 = NodePath("../../PlayerManager0")
-PlayerManager1 = NodePath("../../PlayerManager1")
+[node name="YouWinLabel" type="Label" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -11.5
+offset_right = 118.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "YOOU WONNN (TROTP FRORT)"
+label_settings = SubResource("LabelSettings_hyrud")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Score J1" type="Label" parent="HUD/Control"]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_x7x0s")
-layout_mode = 0
-offset_left = 934.0
-offset_top = -4.0
-offset_right = 1396.0
-offset_bottom = 196.0
-theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
-theme_override_font_sizes/font_size = 46
-text = "SCORE J1"
-
-[node name="Score J2" type="Label" parent="HUD/Control"]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_idffq")
-layout_mode = 0
-offset_left = 934.0
-offset_top = 57.0
-offset_right = 1396.0
-offset_bottom = 257.0
-theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
-theme_override_font_sizes/font_size = 46
-text = "SCORE J2"
+[node name="YouLostLabel" type="Label" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -11.5
+offset_right = 118.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "YOU LOSE TORP BAD WEESH"
+label_settings = SubResource("LabelSettings_2m1vi")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("tile_map")]
 script = ExtResource("3_vmlt8")
