@@ -10,4 +10,3 @@ func move_after_players_turns():
     for direction in directions:
         if move(direction):
             break
-

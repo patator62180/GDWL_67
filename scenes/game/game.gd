@@ -28,11 +28,24 @@ func _ready():
     grid.wall_click.connect(on_wall_click)
 
 func on_player_played():
-    player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
-    if player_index_playing == 0:
-        for host in hosts:
-            host.move_after_players_turns()
+    #check if a player is next to a host
+    for player in player_characters[player_index_playing].player_characters:
+        var host = check_octo_around_player(player)
+        
+        if host != null:
+            var host_grid_pos = grid.get_grid_pos(host.position)
+            var player_grid_pos = grid.get_grid_pos(player.position)
+            
+            player_characters[player_index_playing].spawn_player(grid, host_grid_pos)
+            player_characters[player_index_playing].kill_player(grid, player_grid_pos)
+            #spawn_host()
     
+    player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
+    #if player_index_playing == 0:
+    for host in hosts:
+        host.move_after_players_turns()
+    
+    #todo make the AI movement take time
     set_turn(player_index_playing)
 
 func set_turn(player_index: int):
@@ -72,7 +85,7 @@ func spawn_host():
     host_root.add_child(host)
     host.position = grid.get_screen_pos(grid_pos)
     hosts.append(host)
-
+    
 @rpc('authority')
 func assign_player(player_index: int):
     self.player_index = player_index
@@ -137,3 +150,38 @@ func add_wall(grid_pos: Vector2, tile_index: int):
 @rpc('authority')
 func propagate_add_wall(grid_pos: Vector2, tile_index: int):
     grid.add_wall(grid_pos, tile_index)
+    
+func check_for_player(grid_pos:Vector2, playerIndex: int):
+    for player in player_characters[playerIndex].player_characters:
+        var player_grid_pos = grid.get_grid_pos(player.position)
+            
+        if (player_grid_pos == grid_pos):
+            return player
+    
+    return null
+    
+func check_tile(grid_pos:Vector2):
+    for i in range(0, players.size()):
+        var player_is_present = check_for_player(grid_pos, i)
+        if player_is_present != null:
+            return player_is_present
+    
+    for host in hosts:
+        var host_grid_pos = grid.get_grid_pos(host.position)
+        if (host_grid_pos == grid_pos):
+            return host
+            
+    return null
+
+func check_octo_around_player(player: Player):
+    var player_grid_pos = grid.get_grid_pos(player.position)
+    
+    for direction in grid.octo:
+        var found_entity = check_tile(player_grid_pos + direction)
+        
+        if found_entity is Host:
+            return found_entity as Host
+        elif found_entity is Player:
+            return null
+            
+    return null
