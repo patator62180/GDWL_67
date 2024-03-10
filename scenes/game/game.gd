@@ -5,10 +5,7 @@ const MAX_PLAYERS_COUNT = 4
 @export var host_scene: PackedScene
 @export var host_root: Node2D
 @export var player_characters: Array[PlayerManager]
-@export var player_cards: Array[PlayerCard]
 @export var grid: Grid
-@export var you_won_label: Label
-@export var you_lost_label: Label
 
 var players = []
 var hosts: Array[Host] = []
@@ -28,7 +25,6 @@ func _ready():
 
     grid.cell_click.connect(on_cell_click)
     grid.wall_click.connect(on_wall_click)
-    you_won_label.visible = false
 
 func on_player_played():
     check_if_player_won()
@@ -43,14 +39,14 @@ func check_if_player_won():
         var current_player_manager = player_characters[player_index_playing]
         for player in current_player_manager.player_characters:
             if(host.position == player.position):
-                winning_player.rpc(player_index_playing)
+                finish_game.rpc()
                 
 
 func set_turn(player_index: int):
     propagate_turn.rpc(player_index)
     
     for index in range(MAX_PLAYERS_COUNT):
-        player_cards[index].set_playing(player_index == index)
+        $HUD.player_cards[index].set_playing(player_index == index)
     
     player_index_playing = player_index
 
@@ -62,9 +58,8 @@ func propagate_turn(player_index: int):
     player_index_playing = player_index
 
 @rpc('authority')
-func winning_player(player_index: int):
-    you_won_label.visible = is_player_active_turn()                
-    you_lost_label.visible = !is_player_active_turn()
+func finish_game():
+    $HUD.set_winning_label(is_player_active_turn())
 
 @rpc('any_peer')
 func start_game():
@@ -74,7 +69,7 @@ func start_game():
         
         for player_index in range(MAX_PLAYERS_COUNT):
             if player_index > len(players) - 1:
-                player_cards[player_index].visible = false
+                $HUD.player_cards[player_index].visible = false
             else:
                 player_characters[player_index].spawn_initial_player(grid)
         
@@ -92,16 +87,16 @@ func spawn_host():
 @rpc('authority')
 func assign_player(player_index: int):
     self.player_index = player_index
-    player_cards[player_index].assign()
+    $HUD.player_cards[player_index].assign()
 
 @rpc('authority')
 func give_start_game_permission():
-    player_cards[player_index].set_start_game_button_enabled(true)
-    player_cards[player_index].start_game_pressed.connect(request_start_game)
+    $HUD.player_cards[player_index].set_start_game_button_enabled(true)
+    $HUD.player_cards[player_index].start_game_pressed.connect(request_start_game)
 
 @rpc('authority')
 func propagate_start_game():
-    player_cards[player_index].set_start_game_button_enabled(false)
+    $HUD.player_cards[player_index].set_start_game_button_enabled(false)
 
 func request_start_game():
     start_game.rpc_id(1)
@@ -111,7 +106,7 @@ func on_peer_player_joined(id: int):
     
     players.append(id)
     assign_player.rpc_id(id, player_index)
-    player_cards[player_index].set_connected()
+    $HUD.player_cards[player_index].set_connected()
     
     if player_index == 1:
         give_start_game_permission.rpc_id(players[0])
