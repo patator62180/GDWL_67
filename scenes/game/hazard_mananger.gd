@@ -2,7 +2,7 @@ extends Node2D
 
 class_name HazardManager
 
-@export var tile_map: TileMap
+@export var grid: Grid
 @export var bounds: Vector4
 
 var turnNumber = 0
@@ -22,5 +22,5 @@ func pass_turn():
     var randomX = rng.randi_range(bounds.x, bounds.z)
     var randomY = rng.randi_range(bounds.y, bounds.w)
     
-    tile_map.set_cell(0, Vector2(randomX, randomY), 0, Vector2(1,1))
+    grid.tile_map.set_cell(0, Vector2(randomX, randomY), 0, Vector2(1,1))
     

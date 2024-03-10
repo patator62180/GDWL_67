@@ -22,9 +22,9 @@ hud = NodePath("HUD")
 [node name="HUD" parent="." node_paths=PackedStringArray("PlayerManagers") instance=ExtResource("4_df5lj")]
 PlayerManagers = NodePath("../PlayerManagers")
 
-[node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("tile_map")]
+[node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("grid")]
 script = ExtResource("3_vmlt8")
-tile_map = NodePath("")
+grid = NodePath("../Grid")
 bounds = Vector4(0, 0, 10, 10)
 
 [node name="Camera2D" type="Camera2D" parent="."]
