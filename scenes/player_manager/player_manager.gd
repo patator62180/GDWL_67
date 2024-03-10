@@ -6,11 +6,11 @@ class_name PlayerManager
 @export var player_scene: PackedScene
 @export var initial_grid_pos: Vector2i
 @export var modulateFaceColor = 0.25
+@export var player_spawner: MultiplayerSpawner
 
 var player_characters: Array[Player]:
     get:
         var _player_characters: Array[Player] = []
-        
         for child in players_root.get_children():
             if child is Player:
                 _player_characters.append(child)
@@ -19,15 +19,27 @@ var player_characters: Array[Player]:
 
 signal played
 
+func _ready():
+    player_spawner.spawn_function = spawn_player_client        
+
 func spawn_initial_player(grid: Grid):
     spawn_player(grid, initial_grid_pos)
 
-func spawn_player(grid: Grid, grid_pos: Vector2):
-    var player_character = player_scene.instantiate() as Player
-    player_character.get_node("NodeSprite/Face").material.set_shader_parameter("Shift_Hue", modulateFaceColor)
-    players_root.add_child(player_character)
-    player_character.position = grid.get_screen_pos(grid_pos)
+func spawn_player(grid: Grid, grid_pos: Vector2):   
+    player_spawner.spawn(grid.get_screen_pos(grid_pos))
+
+func spawn_player_client(position):
+    var player_character = player_scene.instantiate() 
+    player_character.position = position
     player_character.played.connect(func(): played.emit())
+    
+    return player_character
+    
+func kill_player(grid: Grid, grid_pos: Vector2):
+    var player = get_character_at_position(grid_pos, grid)
+    
+    if player != null:
+        player.queue_free()
     
 func process_action(action: String):
     for player in player_characters:
