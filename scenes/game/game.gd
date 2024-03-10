@@ -4,8 +4,9 @@ const MAX_PLAYERS_COUNT = 4
 
 @export var host_scene: PackedScene
 @export var host_root: Node2D
-@export var player_characters: Array[PlayerManager]
 @export var grid: Grid
+@export var player_managers : PlayerManagers
+@export var hud : HUD
 
 var players = []
 var hosts: Array[Host] = []
@@ -16,27 +17,28 @@ var selected_player: Player
 var player_index_playing: int = -1
 
 
+
 func _ready():
     if multiplayer and multiplayer.is_server():
         Immersive.client.peer_player_joined.connect(on_peer_player_joined)
         
-        for player_character in player_characters:
-            player_character.played.connect(on_player_played)
+        for player_manager in player_managers.array:
+            player_manager.played.connect(on_player_played)
 
     grid.cell_click.connect(on_cell_click)
     grid.wall_click.connect(on_wall_click)
 
 func on_player_played():
     #check if a player is next to a host
-    for player in player_characters[player_index_playing].player_characters:
+    for player in player_managers.array[player_index_playing].player_characters:
         var host = check_octo_around_player(player)
         
         if host != null:
             var host_grid_pos = grid.get_grid_pos(host.position)
             var player_grid_pos = grid.get_grid_pos(player.position)
             
-            player_characters[player_index_playing].spawn_player(grid, host_grid_pos)
-            player_characters[player_index_playing].kill_player(grid, player_grid_pos)
+            player_managers.array[player_index_playing].spawn_player(grid, host_grid_pos)
+            player_managers.array[player_index_playing].kill_player(grid, player_grid_pos)
             #spawn_host()
     
     player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
@@ -51,7 +53,7 @@ func on_player_played():
 
 func check_if_player_won():
     for host in hosts:
-        var current_player_manager = player_characters[player_index_playing]
+        var current_player_manager = player_managers.array[player_index_playing]
         for player in current_player_manager.player_characters:
             if(host.position == player.position):
                 finish_game.rpc()
@@ -86,7 +88,7 @@ func start_game():
             if player_index > len(players) - 1:
                 $HUD.player_cards[player_index].visible = false
             else:
-                player_characters[player_index].spawn_initial_player(grid)
+                player_managers.array[player_index].spawn_initial_player(grid)
         
         spawn_host()
         set_turn(0)
@@ -128,11 +130,11 @@ func on_peer_player_joined(id: int):
 
 func move_player(player_index: int, action: String):
     if multiplayer and multiplayer.is_server():
-        player_characters[player_index].process_action(action)
+        player_managers.array[player_index].process_action(action)
         
 func on_cell_click(grid_pos: Vector2):
     if multiplayer and not multiplayer.is_server() and is_player_active_turn():
-        var player_manager = player_characters[player_index]
+        var player_manager = player_managers.array[player_index]
         var found_player = player_manager.get_character_at_position(grid_pos, grid)
 
         if found_player != null:
@@ -166,7 +168,7 @@ func propagate_add_wall(grid_pos: Vector2, tile_index: int):
     grid.add_wall(grid_pos, tile_index)
     
 func check_for_player(grid_pos:Vector2, playerIndex: int):
-    for player in player_characters[playerIndex].player_characters:
+    for player in player_managers.array[playerIndex].player_characters:
         var player_grid_pos = grid.get_grid_pos(player.position)
             
         if (player_grid_pos == grid_pos):
