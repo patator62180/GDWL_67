@@ -7,6 +7,8 @@ const MAX_PLAYERS_COUNT = 4
 @export var player_characters: Array[PlayerManager]
 @export var player_cards: Array[PlayerCard]
 @export var grid: Grid
+@export var you_won_label: Label
+@export var you_lost_label: Label
 
 var players = []
 var hosts: Array[Host] = []
@@ -26,6 +28,7 @@ func _ready():
 
     grid.cell_click.connect(on_cell_click)
     grid.wall_click.connect(on_wall_click)
+    you_won_label.visible = false
 
 func on_player_played():
     #check if a player is next to a host
@@ -48,6 +51,16 @@ func on_player_played():
     #todo make the AI movement take time
     set_turn(player_index_playing)
 
+    check_if_player_won()
+
+func check_if_player_won():
+    for host in hosts:
+        var current_player_manager = player_characters[player_index_playing]
+        for player in current_player_manager.player_characters:
+            if(host.position == player.position):
+                winning_player.rpc(player_index_playing)
+                
+
 func set_turn(player_index: int):
     propagate_turn.rpc(player_index)
     
@@ -62,6 +75,11 @@ func is_player_active_turn():
 @rpc('authority')
 func propagate_turn(player_index: int):
     player_index_playing = player_index
+
+@rpc('authority')
+func winning_player(player_index: int):
+    you_won_label.visible = is_player_active_turn()                
+    you_lost_label.visible = !is_player_active_turn()
 
 @rpc('any_peer')
 func start_game():

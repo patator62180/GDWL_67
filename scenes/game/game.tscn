@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=17 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="2_7n88y"]
@@ -6,18 +6,42 @@
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
 [ext_resource type="Script" path="res://scenes/game/hazard_mananger.gd" id="3_vmlt8"]
 [ext_resource type="Script" path="res://scenes/grid/grid.gd" id="5_0p7w5"]
+[ext_resource type="Shader" path="res://scenes/game/scoreHueJ1.gdshader" id="5_2150g"]
 [ext_resource type="TileSet" uid="uid://dpgv8vcohuucb" path="res://tile_sets/level1.tres" id="5_quoa4"]
+[ext_resource type="Script" path="res://scenes/game/ScoreControl.gd" id="5_xb61y"]
 [ext_resource type="TileSet" uid="uid://baqdshuahgp71" path="res://tile_sets/selection.tres" id="6_owf1v"]
 [ext_resource type="TileSet" uid="uid://wxknivquryt0" path="res://tile_sets/walls.tres" id="8_5prta"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid")]
+[sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
+font_size = 50
+font_color = Color(0.329412, 1, 0.356863, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_2m1vi"]
+font_size = 50
+font_color = Color(1, 0, 0, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p7vvi"]
+shader = ExtResource("5_2150g")
+shader_parameter/Shift_Hue = 0.225
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0fcvg"]
+shader = ExtResource("5_2150g")
+shader_parameter/Shift_Hue = null
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid", "you_won_label", "you_lost_label")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
 player_characters = [NodePath("PlayerManager0"), NodePath("PlayerManager1"), NodePath("PlayerManager2"), NodePath("PlayerManager3")]
 player_cards = [NodePath("HUD/PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("HUD/PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("HUD/PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("HUD/PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 grid = NodePath("Grid")
+you_won_label = NodePath("HUD/YouWinLabel")
+you_lost_label = NodePath("HUD/YouLostLabel")
 
 [node name="Background" parent="." instance=ExtResource("3_qtcvc")]
 
@@ -89,6 +113,72 @@ grow_vertical = 0
 [node name="PlayerCard3" parent="HUD/PlayerCards/PlayerCard3Anchor" instance=ExtResource("2_7n88y")]
 layout_mode = 1
 player_index = 3
+
+[node name="YouWinLabel" type="Label" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -11.5
+offset_right = 118.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "YOOU WONNN (TROTP FRORT)"
+label_settings = SubResource("LabelSettings_hyrud")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="YouLostLabel" type="Label" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -11.5
+offset_right = 118.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "YOU LOSE TORP BAD WEESH"
+label_settings = SubResource("LabelSettings_2m1vi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="HUD" node_paths=PackedStringArray("PlayerManager0", "PlayerManager1")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("5_xb61y")
+PlayerManager0 = NodePath("../../PlayerManager0")
+PlayerManager1 = NodePath("../../PlayerManager1")
+
+[node name="Score J1" type="Label" parent="HUD/Control"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_p7vvi")
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
+theme_override_font_sizes/font_size = 60
+text = "Score j1"
+
+[node name="Score J2" type="Label" parent="HUD/Control"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_0fcvg")
+layout_mode = 0
+offset_top = 72.0
+offset_right = 228.0
+offset_bottom = 155.0
+theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
+theme_override_font_sizes/font_size = 60
+text = "Score j2"
 
 [node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("tile_map")]
 script = ExtResource("3_vmlt8")
