@@ -6,8 +6,6 @@ const MAX_PLAYERS_COUNT = 4
 @export var host_root: Node2D
 @export var player_characters: Array[PlayerManager]
 @export var grid: Grid
-@export var you_won_label: Label
-@export var you_lost_label: Label
 @export var host_spawner: MultiplayerSpawner
 
 
@@ -37,7 +35,6 @@ func _ready():
 
     grid.cell_click.connect(on_cell_click)
     grid.wall_click.connect(on_wall_click)
-    you_won_label.visible = false
    
 func _process(delta):
     if respawn_timer < respawn_timer_max:
@@ -131,15 +128,6 @@ func start_game():
         
         spawn_host(Vector2(0, -1))
         set_turn(0)
-
-#func spawn_host(grid_pos: Vector2):
-    #var host = host_scene.instantiate() as Host
-#
-    #host_root.add_child(host)
-    #host.position = grid.get_screen_pos(grid_pos)
-    #hosts.append(host)
-    #
-    #host.played.connect(on_host_played)
     
 func spawn_host(grid_pos: Vector2):
     host_spawner.spawn(grid.get_screen_pos(grid_pos))

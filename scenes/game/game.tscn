@@ -11,12 +11,13 @@
 [ext_resource type="TileSet" uid="uid://wxknivquryt0" path="res://tile_sets/walls.tres" id="8_5prta"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "grid")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "grid", "host_spawner")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
 player_characters = [NodePath("PlayerManager0"), NodePath("PlayerManager1"), NodePath("PlayerManager2"), NodePath("PlayerManager3")]
 grid = NodePath("Grid")
+host_spawner = NodePath("HostSpawner")
 
 [node name="Background" parent="." instance=ExtResource("3_qtcvc")]
 
