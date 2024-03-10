@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://b81kmauxqg4ws"]
+
+[ext_resource type="Shader" path="res://scenes/background/infinite_background.gdshader" id="1_i8cim"]
+[ext_resource type="Texture2D" uid="uid://dfi348pkyrqp6" path="res://sprites/styleshit.png" id="1_ynv4w"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hx8cl"]
+shader = ExtResource("1_i8cim")
+shader_parameter/speed = Vector2(1, -0.5)
+shader_parameter/zoom = 0.02
+shader_parameter/input_texture = ExtResource("1_ynv4w")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0munu"]
+
+[node name="Background" type="Sprite2D"]
+material = SubResource("ShaderMaterial_hx8cl")
+scale = Vector2(2000, 2000)
+texture = SubResource("PlaceholderTexture2D_0munu")

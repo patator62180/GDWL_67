@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=11 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="2_7n88y"]
 [ext_resource type="PackedScene" uid="uid://fceu5xy8mw51" path="res://scenes/player_manager/player_manager.tscn" id="3_6h5xp"]
+[ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
 [ext_resource type="Script" path="res://scenes/game/hazard_mananger.gd" id="3_vmlt8"]
 [ext_resource type="Script" path="res://scenes/grid/grid.gd" id="5_0p7w5"]
 [ext_resource type="TileSet" uid="uid://dpgv8vcohuucb" path="res://tile_sets/level1.tres" id="5_quoa4"]
@@ -17,6 +18,8 @@ host_root = NodePath("Hosts")
 player_characters = [NodePath("PlayerManager0"), NodePath("PlayerManager1"), NodePath("PlayerManager2"), NodePath("PlayerManager3")]
 player_cards = [NodePath("HUD/PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("HUD/PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("HUD/PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("HUD/PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 grid = NodePath("Grid")
+
+[node name="Background" parent="." instance=ExtResource("3_qtcvc")]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
