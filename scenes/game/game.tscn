@@ -33,7 +33,7 @@ shader_parameter/Shift_Hue = 0.225
 shader = ExtResource("5_2150g")
 shader_parameter/Shift_Hue = null
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid", "you_won_label", "you_lost_label")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid", "you_won_label", "you_lost_label", "host_spawner")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
@@ -42,6 +42,7 @@ player_cards = [NodePath("HUD/PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodeP
 grid = NodePath("Grid")
 you_won_label = NodePath("HUD/YouWinLabel")
 you_lost_label = NodePath("HUD/YouLostLabel")
+host_spawner = NodePath("HostSpawner")
 
 [node name="Background" parent="." instance=ExtResource("3_qtcvc")]
 
@@ -215,7 +216,6 @@ format = 2
 zoom = Vector2(0.8, 0.8)
 
 [node name="HostSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://scenes/host/host.tscn")
 spawn_path = NodePath("../Hosts")
 
 [node name="Hosts" type="Node2D" parent="."]

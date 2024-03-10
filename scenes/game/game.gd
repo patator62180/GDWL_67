@@ -9,6 +9,7 @@ const MAX_PLAYERS_COUNT = 4
 @export var grid: Grid
 @export var you_won_label: Label
 @export var you_lost_label: Label
+@export var host_spawner: MultiplayerSpawner
 
 var players = []
 var hosts: Array[Host] = []
@@ -18,6 +19,12 @@ var is_choice_step: bool
 var selected_player: Player
 var player_index_playing: int = -1
 
+var saved_host_pos
+var saved_player_pos
+var saved_host
+
+var respawn_timer = 1
+var respawn_timer_max = 1
 
 func _ready():
     if multiplayer and multiplayer.is_server():
@@ -25,10 +32,19 @@ func _ready():
         
         for player_character in player_characters:
             player_character.played.connect(on_player_played)
+            
+    host_spawner.spawn_function = spawn_host_client
 
     grid.cell_click.connect(on_cell_click)
     grid.wall_click.connect(on_wall_click)
     you_won_label.visible = false
+   
+func _process(delta):
+    if respawn_timer < respawn_timer_max:
+        respawn_timer = respawn_timer + delta
+        
+        if respawn_timer >= respawn_timer_max:
+            respawn_host()
 
 func on_player_played():
     #check if a player is next to a host
@@ -36,22 +52,43 @@ func on_player_played():
         var host = check_octo_around_player(player)
         
         if host != null:
-            var host_grid_pos = grid.get_grid_pos(host.position)
-            var player_grid_pos = grid.get_grid_pos(player.position)
+            saved_host_pos = grid.get_grid_pos(host.position)
+            saved_player_pos = grid.get_grid_pos(player.position)
+            saved_host = host
             
-            player_characters[player_index_playing].spawn_player(grid, host_grid_pos)
-            player_characters[player_index_playing].kill_player(grid, player_grid_pos)
-            #spawn_host()
-    
-    player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
-    #if player_index_playing == 0:
-    for host in hosts:
-        host.move_after_players_turns()
-    
-    #todo make the AI movement take time
-    set_turn(player_index_playing)
+            player.parasited.connect(on_parasiting_done)
+            
+            player.shoot_your_shot(host.position)
+            player.shoot_your_shot.rpc(host.position)
+        else:
+            on_turn_done()
 
+func on_parasiting_done():
+    player_characters[player_index_playing].spawn_player(grid, saved_host_pos)
+    player_characters[player_index_playing].kill_player(grid, saved_player_pos)
+    
+    hosts.erase(saved_host)
+    saved_host.queue_free()
+    
+    respawn_timer = 0
+    
+func respawn_host():
+    spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
+    on_turn_done()
+
+func on_turn_done():
+    player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
+    
+    for host in hosts:
+        host.move_host(grid)
+    
+    if hosts.is_empty():
+        on_host_played()
+        
     check_if_player_won()
+    
+func on_host_played():
+    set_turn(player_index_playing)
 
 func check_if_player_won():
     for host in hosts:
@@ -93,16 +130,30 @@ func start_game():
             else:
                 player_characters[player_index].spawn_initial_player(grid)
         
-        spawn_host()
+        spawn_host(Vector2(0, -1))
         set_turn(0)
 
-func spawn_host():
-    var host = host_scene.instantiate()
-    var grid_pos = Vector2(0, -1)
+#func spawn_host(grid_pos: Vector2):
+    #var host = host_scene.instantiate() as Host
+#
+    #host_root.add_child(host)
+    #host.position = grid.get_screen_pos(grid_pos)
+    #hosts.append(host)
+    #
+    #host.played.connect(on_host_played)
     
-    host_root.add_child(host)
-    host.position = grid.get_screen_pos(grid_pos)
+func spawn_host(grid_pos: Vector2):
+    host_spawner.spawn(grid.get_screen_pos(grid_pos))
+    
+func spawn_host_client(position):
+    var host = host_scene.instantiate() 
+    host.position = position
+    host.played.connect(on_host_played)
+    
     hosts.append(host)
+    
+    return host
+    
     
 @rpc('authority')
 func assign_player(player_index: int):
@@ -178,11 +229,12 @@ func check_for_player(grid_pos:Vector2, playerIndex: int):
     
     return null
     
-func check_tile(grid_pos:Vector2):
-    for i in range(0, players.size()):
-        var player_is_present = check_for_player(grid_pos, i)
-        if player_is_present != null:
-            return player_is_present
+func check_tile(grid_pos:Vector2, check_players: bool):
+    if check_players:
+        for i in range(0, players.size()):
+            var player_is_present = check_for_player(grid_pos, i)
+            if player_is_present != null:
+                return player_is_present
     
     for host in hosts:
         var host_grid_pos = grid.get_grid_pos(host.position)
@@ -195,8 +247,8 @@ func check_octo_around_player(player: Player):
     var player_grid_pos = grid.get_grid_pos(player.position)
     
     for direction in grid.octo:
-        var found_entity = check_tile(player_grid_pos + direction)
-        
+        var found_entity = check_tile(player_grid_pos + direction, false)
+
         if found_entity is Host:
             return found_entity as Host
         elif found_entity is Player:

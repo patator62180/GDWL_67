@@ -30,7 +30,7 @@ var octo = [
     Vector2.UP + Vector2.RIGHT,
     Vector2.UP + Vector2.LEFT,
     Vector2.DOWN + Vector2.RIGHT,
-    Vector2.DOWN + Vector2.LEFT,
+    Vector2.DOWN + Vector2.LEFT
 ]
 
 # Called when the node enters the scene tree for the first time.

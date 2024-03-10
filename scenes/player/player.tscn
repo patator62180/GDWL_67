@@ -1,8 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://bef6pckymx8bi"]
+[gd_scene load_steps=24 format=3 uid="uid://bef6pckymx8bi"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_lo7lj"]
 [ext_resource type="Texture2D" uid="uid://cf2qw5tyjmoje" path="res://sprites/infected_face.png" id="2_7u7pn"]
 [ext_resource type="Shader" path="res://scenes/player/player.gdshader" id="2_a6fnp"]
+[ext_resource type="PackedScene" uid="uid://b0oj6fete70q4" path="res://scenes/player/parasite.tscn" id="2_t1yrk"]
 [ext_resource type="Texture2D" uid="uid://ouswkym2pv57" path="res://sprites/infected_rougeur.png" id="3_dawvx"]
 [ext_resource type="Texture2D" uid="uid://b6c5w2egcg5ru" path="res://sprites/Sprite_Sheet_Bave-1.png" id="3_sfdgm"]
 [ext_resource type="Texture2D" uid="uid://dttxqbgv07pc3" path="res://sprites/Sprite_Sheet_Bave-2.png" id="4_8fx1q"]
@@ -213,6 +214,7 @@ _data = {
 [node name="Player" type="Node2D" node_paths=PackedStringArray("raycast")]
 script = ExtResource("1_lo7lj")
 raycast = NodePath("RayCast2D")
+parasite_scene = ExtResource("2_t1yrk")
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(50, 50)
