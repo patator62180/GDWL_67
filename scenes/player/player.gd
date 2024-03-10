@@ -45,7 +45,7 @@ func _process(delta):
             self.position = target_pos
             is_moving = false
             played.emit()
-	elif is_moving and %AnimationPlayer.get_current_animation() != "player_moving":
+    elif is_moving and %AnimationPlayer.get_current_animation() != "player_moving":
         %AnimationPlayer.play("player_moving")
         %AnimationPlayer.queue("idle")
         
