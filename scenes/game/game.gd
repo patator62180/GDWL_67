@@ -159,7 +159,7 @@ func add_wall(grid_pos: Vector2, tile_index: int):
     if multiplayer and multiplayer.is_server():
         grid.add_wall(grid_pos, tile_index)
         propagate_add_wall.rpc(grid_pos, tile_index)
-    on_player_played()
+        on_player_played()
         
 @rpc('authority')
 func propagate_add_wall(grid_pos: Vector2, tile_index: int):
