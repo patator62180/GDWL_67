@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=12 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="2_7n88y"]
@@ -11,13 +11,20 @@
 [ext_resource type="TileSet" uid="uid://wxknivquryt0" path="res://tile_sets/walls.tres" id="8_5prta"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid")]
+[sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
+font_size = 50
+font_color = Color(0.329412, 1, 0.356863, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid", "you_won_label")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
 player_characters = [NodePath("PlayerManager0"), NodePath("PlayerManager1"), NodePath("PlayerManager2"), NodePath("PlayerManager3")]
 player_cards = [NodePath("HUD/PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("HUD/PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("HUD/PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("HUD/PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 grid = NodePath("Grid")
+you_won_label = NodePath("HUD/Label")
 
 [node name="Background" parent="." instance=ExtResource("3_qtcvc")]
 
@@ -89,6 +96,24 @@ grow_vertical = 0
 [node name="PlayerCard3" parent="HUD/PlayerCards/PlayerCard3Anchor" instance=ExtResource("2_7n88y")]
 layout_mode = 1
 player_index = 3
+
+[node name="Label" type="Label" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -11.5
+offset_right = 118.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "YOOU WONNN (TROTP FRORT)"
+label_settings = SubResource("LabelSettings_hyrud")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("tile_map")]
 script = ExtResource("3_vmlt8")

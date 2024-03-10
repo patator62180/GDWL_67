@@ -7,6 +7,7 @@ const MAX_PLAYERS_COUNT = 4
 @export var player_characters: Array[PlayerManager]
 @export var player_cards: Array[PlayerCard]
 @export var grid: Grid
+@export var you_won_label: Label
 
 var players = []
 var hosts: Array[Host] = []
@@ -40,7 +41,7 @@ func check_if_player_won():
         var current_player_manager = player_characters[player_index_playing]
         for player in current_player_manager.player_characters:
             if(host.position == player.position):
-                print("win")
+                you_won_label.visible = true
 
 func set_turn(player_index: int):
     propagate_turn.rpc(player_index)
