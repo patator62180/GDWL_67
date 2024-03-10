@@ -4,7 +4,7 @@
 
 [sub_resource type="Gradient" id="Gradient_mo0wb"]
 offsets = PackedFloat32Array(0, 0.353333, 0.72, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0)
+colors = PackedColorArray(0.93, 0.67332, 0.0744, 1, 0.88722, 0.93, 0.0744, 1, 0.85, 0.722217, 0.153, 1, 0.929412, 0.862745, 0.243137, 0)
 
 [node name="Agent" type="Sprite2D"]
 scale = Vector2(10, 10)
@@ -12,19 +12,22 @@ script = ExtResource("1_x6nhv")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 amount = 100
+lifetime = 2.0
 gravity = Vector2(0, 0)
 scale_amount_min = 10.0
 scale_amount_max = 10.0
 color_ramp = SubResource("Gradient_mo0wb")
 
 [node name="RayCast2D_Froward" type="RayCast2D" parent="."]
-target_position = Vector2(10, 0)
+target_position = Vector2(15, 0)
 collide_with_areas = true
 
 [node name="RayCast2D_Left" type="RayCast2D" parent="."]
-target_position = Vector2(10, -20)
+position = Vector2(0, -2)
+target_position = Vector2(0, -10)
 collide_with_areas = true
 
 [node name="RayCast2D_Right" type="RayCast2D" parent="."]
-target_position = Vector2(10, 20)
+position = Vector2(0, 2)
+target_position = Vector2(0, 10)
 collide_with_areas = true
