@@ -23,6 +23,9 @@ func move(direction):
     
     if !raycast.is_colliding():
         position += direction * tile_size
+        return true
+    
+    return false
 
 @rpc("any_peer")
 func move_to(position: Vector2):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=9 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="2_7n88y"]
@@ -7,9 +7,12 @@
 [ext_resource type="Script" path="res://scenes/grid/grid.gd" id="5_0p7w5"]
 [ext_resource type="TileSet" uid="uid://dpgv8vcohuucb" path="res://tile_sets/level1.tres" id="5_quoa4"]
 [ext_resource type="TileSet" uid="uid://baqdshuahgp71" path="res://tile_sets/selection.tres" id="6_owf1v"]
+[ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("player_characters", "player_cards", "grid")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "player_cards", "grid")]
 script = ExtResource("1_jy7t4")
+host_scene = ExtResource("8_va0h3")
+host_root = NodePath("Hosts")
 player_characters = [NodePath("Player0Manager"), NodePath("Player1Manager")]
 player_cards = [NodePath("HUD/PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("HUD/PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("HUD/PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("HUD/PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 grid = NodePath("Grid")
@@ -129,6 +132,12 @@ position = Vector2(300, 0)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.8, 0.8)
+
+[node name="HostSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/host/host.tscn")
+spawn_path = NodePath("../Hosts")
+
+[node name="Hosts" type="Node2D" parent="."]
 
 [editable path="Player0Manager"]
 [editable path="Player1Manager"]

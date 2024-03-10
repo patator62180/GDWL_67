@@ -2,11 +2,14 @@ extends Node2D
 
 const MAX_PLAYERS_COUNT = 4
 
+@export var host_scene: PackedScene
+@export var host_root: Node2D
 @export var player_characters: Array[PlayerManager]
 @export var player_cards: Array[PlayerCard]
 @export var grid: Grid
 
 var players = []
+var hosts: Array[Host] = []
 var player_index: int
 var is_game_started: bool
 var is_choice_step: bool
@@ -28,6 +31,10 @@ func _ready():
 
 func on_player_played():
     player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
+    if player_index_playing == 0:
+        for host in hosts:
+            host.move_after_players_turns()
+    
     set_turn(player_index_playing)
 
 func set_turn(player_index: int):
@@ -55,7 +62,16 @@ func start_game():
             if player_index > len(players) - 1:
                 player_cards[player_index].visible = false
         
+        spawn_host()
         set_turn(0)
+
+func spawn_host():
+    var host = host_scene.instantiate()
+    var grid_pos = Vector2(0, -1)
+    
+    host_root.add_child(host)
+    host.position = grid.get_screen_pos(grid_pos)
+    hosts.append(host)
 
 @rpc('authority')
 func assign_player(player_index: int):
