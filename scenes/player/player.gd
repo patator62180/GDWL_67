@@ -8,12 +8,12 @@ var tile_size = 100
 
 var grid_pos = Vector2.ZERO
 
-var is_moving = false
+@export var is_moving = false
 var start_pos = Vector2.ZERO
 var target_pos = Vector2.ZERO
 
 var timer = 0.0
-var timer_max = 0.25
+var timer_max = 0.5
 
 @export var raycast: RayCast2D
 
@@ -41,6 +41,10 @@ func _process(delta):
             self.position = target_pos
             is_moving = false
             played.emit()
+        
+    elif is_moving and %AnimationPlayer.get_current_animation() != "player_moving":
+        %AnimationPlayer.play("player_moving")
+        %AnimationPlayer.queue("idle")
         
 func can_move_to(grid_pos: Vector2):
     return self.grid_pos.distance_to(grid_pos) <= 1
