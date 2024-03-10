@@ -28,12 +28,19 @@ func _ready():
     grid.wall_click.connect(on_wall_click)
 
 func on_player_played():
+    check_if_player_won()
     player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
     if player_index_playing == 0:
         for host in hosts:
             host.move_after_players_turns()
-    
     set_turn(player_index_playing)
+
+func check_if_player_won():
+    for host in hosts:
+        var current_player_manager = player_characters[player_index_playing]
+        for player in current_player_manager.player_characters:
+            if(host.position == player.position):
+                print("win")
 
 func set_turn(player_index: int):
     propagate_turn.rpc(player_index)
