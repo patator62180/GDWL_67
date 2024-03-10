@@ -6,8 +6,6 @@ signal played
 
 var tile_size = 100
 
-var grid_pos = Vector2.ZERO
-
 var is_moving = false
 var start_pos = Vector2.ZERO
 var target_pos = Vector2.ZERO
@@ -45,9 +43,10 @@ func _process(delta):
             is_moving = false
             played.emit()
         
-func can_move_to(grid_pos: Vector2):
-    return self.grid_pos.distance_to(grid_pos) <= 1
-        
+func can_move_to(grid_pos: Vector2, grid: Grid):
+    var current_grid_pos = grid.get_grid_pos(position)
+    return current_grid_pos.distance_to(grid_pos) <= 1
+
 func process_action(action: String):
     match action:
         "left":
