@@ -128,7 +128,7 @@ position = Vector2(200, -100)
 position = Vector2(300, 0)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.8, 0.8)
 
 [editable path="Player0Manager"]
 [editable path="Player1Manager"]
