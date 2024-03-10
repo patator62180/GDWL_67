@@ -40,9 +40,11 @@ func _process(delta):
             
         var mouse_pos = get_local_mouse_position()
         var grid_pos = get_grid_pos(mouse_pos)
+        
+        is_possible_movement(grid_pos, Vector2.ZERO)
                 
-        var cell_tile_data = tile_map.get_cell_tile_data(0, grid_pos)
-        if cell_tile_data != null:
+        var cell_tile_data = tile_map.get_cell_source_id(0, grid_pos)
+        if cell_tile_data != -1:
             cell_click.emit(grid_pos)
     
     if Input.is_action_pressed("ui_accept"):
@@ -74,7 +76,7 @@ func show_possible_selection(grid_pos: Vector2):
     
     for direction in cardinal:
         var pos = Vector2(grid_pos + direction)
-        if is_possible_tile(pos):
+        if is_possible_tile(pos) and is_possible_movement(grid_pos, direction):
             selection_tile_map.set_cell(0, pos, 1, Vector2(0,0))
 
 func clear_possible_selections():
@@ -82,6 +84,23 @@ func clear_possible_selections():
     
 func is_possible_tile(grid_pos: Vector2):
     return tile_map.get_cell_tile_data(0, grid_pos) != null
+
+func is_possible_movement(grid_pos: Vector2, direction: Vector2):
+    var top_right_wall = wall_tile_map.get_cell_source_id(0, grid_pos + Vector2(0,-1))
+    var top_left_wall = wall_tile_map.get_cell_source_id(0, grid_pos + + Vector2(-1,-1))
+    var bottom_right_wall = wall_tile_map.get_cell_source_id(0, grid_pos)
+    var bottom_left_wall = wall_tile_map.get_cell_source_id(0, grid_pos + Vector2(-1, 0))
+    
+    match direction:
+        Vector2.UP:
+            return top_right_wall != 0 and top_right_wall != 2 and top_left_wall != 0 and top_left_wall != 2
+        Vector2.DOWN:
+            return bottom_right_wall != 0 and bottom_right_wall != 2 and bottom_left_wall != 0 and bottom_left_wall != 2
+        Vector2.RIGHT:
+            return top_right_wall != 1 and top_right_wall != 2 and bottom_right_wall != 1 and top_left_wall != 2
+        Vector2.LEFT:
+            return top_left_wall != 1 and top_left_wall != 2 and bottom_left_wall != 1 and bottom_left_wall != 2
+    
     
 func add_wall(grid_pos: Vector2, tile_index: int):
     wall_tile_map.set_cell(0, grid_pos, tile_index, Vector2.ZERO)
