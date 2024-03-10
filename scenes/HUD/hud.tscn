@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://biqj0t60x1dv0"]
+[gd_scene load_steps=9 format=3 uid="uid://biqj0t60x1dv0"]
 
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_0lgt1"]
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
+[ext_resource type="Script" path="res://scenes/game/ScoreControl.gd" id="3_og24l"]
+[ext_resource type="Shader" path="res://scenes/game/scoreHueJ1.gdshader" id="4_wnq48"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
 font_size = 50
@@ -14,6 +16,14 @@ font_size = 50
 font_color = Color(1, 0, 0, 1)
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p7vvi"]
+shader = ExtResource("4_wnq48")
+shader_parameter/Shift_Hue = 0.225
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0fcvg"]
+shader = ExtResource("4_wnq48")
+shader_parameter/Shift_Hue = null
 
 [node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards")]
 script = ExtResource("1_wj8wa")
@@ -121,3 +131,34 @@ text = "YOU LOSE TORP BAD WEESH"
 label_settings = SubResource("LabelSettings_2m1vi")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_og24l")
+
+[node name="Score J1" type="Label" parent="Control"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_p7vvi")
+layout_mode = 0
+offset_left = 69.0
+offset_top = 67.0
+offset_right = 297.0
+offset_bottom = 150.0
+theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
+theme_override_font_sizes/font_size = 60
+text = "Score j1"
+
+[node name="Score J2" type="Label" parent="Control"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_0fcvg")
+layout_mode = 0
+offset_left = 850.0
+offset_top = 69.0
+offset_right = 1078.0
+offset_bottom = 152.0
+theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
+theme_override_font_sizes/font_size = 60
+text = "Score j2"
