@@ -3,12 +3,13 @@
 [ext_resource type="Script" path="res://scenes/player_manager/player_manager.gd" id="1_xbxu0"]
 [ext_resource type="PackedScene" uid="uid://bef6pckymx8bi" path="res://scenes/player/player.tscn" id="2_6as7a"]
 
-[node name="PlayerManager" type="Node2D" node_paths=PackedStringArray("player_characters")]
+[node name="PlayerManager" type="Node2D" node_paths=PackedStringArray("players_root")]
 script = ExtResource("1_xbxu0")
-player_characters = [NodePath("Player"), NodePath("Player2"), NodePath("Player3")]
+players_root = NodePath("Players")
+player_scene = ExtResource("2_6as7a")
 
-[node name="Player" parent="." instance=ExtResource("2_6as7a")]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/player/player.tscn")
+spawn_path = NodePath("../Players")
 
-[node name="Player2" parent="." instance=ExtResource("2_6as7a")]
-
-[node name="Player3" parent="." instance=ExtResource("2_6as7a")]
+[node name="Players" type="Node2D" parent="."]

@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://ddsgdn7jinj07"]
+
+[ext_resource type="Texture2D" uid="uid://y463nr8883gu" path="res://sprites/baldur_mais_qui_va_bien.png" id="1_n0cyn"]
+[ext_resource type="Script" path="res://scenes/host/host.gd" id="1_xj1si"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jq7ml"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Host" type="Node2D" node_paths=PackedStringArray("raycast")]
+script = ExtResource("1_xj1si")
+raycast = NodePath("RayCast2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_n0cyn")
+offset = Vector2(50, 50)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_jq7ml")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(50, 50)
+target_position = Vector2(0, 75)
