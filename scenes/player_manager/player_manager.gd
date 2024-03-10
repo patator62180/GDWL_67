@@ -5,6 +5,7 @@ class_name PlayerManager
 @export var players_root: Node2D
 @export var player_scene: PackedScene
 @export var initial_grid_pos: Vector2i
+@export var modulateFaceColor = 0.25
 
 var player_characters: Array[Player]:
     get:
@@ -23,6 +24,7 @@ func spawn_initial_player(grid: Grid):
 
 func spawn_player(grid: Grid, grid_pos: Vector2):
     var player_character = player_scene.instantiate() as Player
+    player_character.get_node("NodeSprite/Face").material.set_shader_parameter("Shift_Hue", modulateFaceColor)
     players_root.add_child(player_character)
     player_character.position = grid.get_screen_pos(grid_pos)
     player_character.played.connect(func(): played.emit())

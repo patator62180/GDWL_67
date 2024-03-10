@@ -18,6 +18,10 @@ var timer_max = 0.5
 
 @export var raycast: RayCast2D
 
+func _ready():
+    if !(self is Host):
+        $NodeSprite/Face.material.set_shader_parameter("Shift_Hue", get_parent().get_parent().modulateFaceColor)
+
 func move(direction):
     raycast.rotation = atan2(-direction.x, direction.y)
     raycast.force_raycast_update()

@@ -129,12 +129,15 @@ spawn_path = NodePath("../Hosts")
 
 [node name="PlayerManager0" parent="." instance=ExtResource("3_6h5xp")]
 initial_grid_pos = Vector2i(-2, -2)
+modulateFaceColor = 0.71
 
 [node name="PlayerManager1" parent="." instance=ExtResource("3_6h5xp")]
 initial_grid_pos = Vector2i(2, -2)
+modulateFaceColor = 0.28
 
 [node name="PlayerManager2" parent="." instance=ExtResource("3_6h5xp")]
 initial_grid_pos = Vector2i(-2, 2)
+modulateFaceColor = 0.775
 
 [node name="PlayerManager3" parent="." instance=ExtResource("3_6h5xp")]
 initial_grid_pos = Vector2i(2, 2)
