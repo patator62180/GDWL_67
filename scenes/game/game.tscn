@@ -106,29 +106,12 @@ tile_set = ExtResource("6_owf1v")
 format = 2
 
 [node name="Player0Manager" parent="." instance=ExtResource("3_6h5xp")]
-
-[node name="Player" parent="Player0Manager" index="0"]
-modulate = Color(0, 0.568627, 0.988235, 1)
-position = Vector2(-200, -200)
-
-[node name="Player2" parent="Player0Manager" index="1"]
-modulate = Color(0, 0.568627, 0.988235, 1)
-position = Vector2(-300, -100)
-
-[node name="Player3" parent="Player0Manager" index="2"]
-modulate = Color(0, 0.568627, 0.988235, 1)
-position = Vector2(-200, 0)
+modulate = Color(0, 0, 1, 1)
+initial_grid_pos = Vector2i(-3, 0)
 
 [node name="Player1Manager" parent="." instance=ExtResource("3_6h5xp")]
-
-[node name="Player" parent="Player1Manager" index="0"]
-position = Vector2(300, -200)
-
-[node name="Player2" parent="Player1Manager" index="1"]
-position = Vector2(200, -100)
-
-[node name="Player3" parent="Player1Manager" index="2"]
-position = Vector2(300, 0)
+modulate = Color(1, 0, 1, 1)
+initial_grid_pos = Vector2i(3, 0)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.8, 0.8)

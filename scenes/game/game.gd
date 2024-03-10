@@ -25,9 +25,6 @@ func _ready():
             player_character.played.connect(on_player_played)
 
     grid.cell_click.connect(on_cell_click)
-    
-    for player in player_characters:
-        player.setup_players(grid)
 
 func on_player_played():
     player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
@@ -61,6 +58,8 @@ func start_game():
         for player_index in range(MAX_PLAYERS_COUNT):
             if player_index > len(players) - 1:
                 player_cards[player_index].visible = false
+            else:
+                player_characters[player_index].spawn_initial_player(grid)
         
         spawn_host()
         set_turn(0)
@@ -114,9 +113,8 @@ func on_cell_click(grid_pos: Vector2):
             grid.show_possible_selection(grid_pos)
             return
         elif selected_player != null:
-            if selected_player.can_move_to(grid_pos):
+            if selected_player.can_move_to(grid_pos, grid):
                 selected_player.move_to.rpc_id(1, grid.get_screen_pos(grid_pos))
-                selected_player.grid_pos = grid_pos
                 
             selected_player = null
             grid.clear_possible_selections()
