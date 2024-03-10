@@ -25,6 +25,7 @@ func _ready():
             player_character.played.connect(on_player_played)
 
     grid.cell_click.connect(on_cell_click)
+    grid.wall_click.connect(on_wall_click)
 
 func on_player_played():
     player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
@@ -122,3 +123,17 @@ func on_cell_click(grid_pos: Vector2):
         else:
             selected_player = null
             grid.clear_possible_selections()
+
+func on_wall_click(grid_pos: Vector2, tile_index: int):
+    if multiplayer and not multiplayer.is_server():
+        add_wall.rpc_id(1, grid_pos, tile_index)
+
+@rpc('any_peer')
+func add_wall(grid_pos: Vector2, tile_index: int):
+    if multiplayer and multiplayer.is_server():
+        grid.add_wall(grid_pos, tile_index)
+        propagate_add_wall.rpc(grid_pos, tile_index)
+        
+@rpc('authority')
+func propagate_add_wall(grid_pos: Vector2, tile_index: int):
+    grid.add_wall(grid_pos, tile_index)

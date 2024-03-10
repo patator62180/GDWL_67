@@ -4,10 +4,16 @@ class_name Grid
 
 @export var tile_map: TileMap
 @export var selection_tile_map: TileMap
+@export var wall_tile_map: TileMap
+@export var selection_wall_tile_map: TileMap
 
 signal cell_click
+signal wall_click
 
 var grid_size
+
+var selected_wall_tile = null
+var current_wall_index = 0
 
 var cardinal = [
     Vector2.UP,
@@ -23,14 +29,40 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-    if (Input.is_action_just_pressed("mouse_select")):
+    if Input.is_action_just_pressed("mouse_select"):
+        if selected_wall_tile != null:
+            var wall_id = wall_tile_map.get_cell_source_id(0, selected_wall_tile)
+            var next_index = current_wall_index if wall_id == -1 or wall_id == current_wall_index else 2
+            
+            #add_wall(selected_wall_tile, next_index)
+            wall_click.emit(selected_wall_tile, next_index)
+            return
+            
         var mouse_pos = get_local_mouse_position()
         var grid_pos = get_grid_pos(mouse_pos)
                 
         var cell_tile_data = tile_map.get_cell_tile_data(0, grid_pos)
         if cell_tile_data != null:
             cell_click.emit(grid_pos)
-
+    
+    if Input.is_action_pressed("ui_accept"):
+        var mouse_pos = get_local_mouse_position()
+        var grid_pos_offset = get_grid_pos(mouse_pos - Vector2.ONE * grid_size / 2)
+        
+        if selected_wall_tile != grid_pos_offset:
+            selected_wall_tile = grid_pos_offset
+            selection_wall_tile_map.clear()
+            selection_wall_tile_map.set_cell(0, selected_wall_tile, current_wall_index, Vector2.ZERO)
+            
+        if Input.is_action_just_pressed("mouse_right"):
+            current_wall_index = 1 if current_wall_index == 0 else 0
+            selection_wall_tile_map.clear()
+            selection_wall_tile_map.set_cell(0, selected_wall_tile, current_wall_index, Vector2.ZERO)
+        
+    if Input.is_action_just_released("ui_accept"):
+        selection_wall_tile_map.clear()
+        selected_wall_tile = null
+        
 func get_grid_pos(position: Vector2):
     return Vector2(floor(position.x / grid_size), floor(position.y / grid_size))
 
@@ -50,3 +82,6 @@ func clear_possible_selections():
     
 func is_possible_tile(grid_pos: Vector2):
     return tile_map.get_cell_tile_data(0, grid_pos) != null
+    
+func add_wall(grid_pos: Vector2, tile_index: int):
+    wall_tile_map.set_cell(0, grid_pos, tile_index, Vector2.ZERO)
