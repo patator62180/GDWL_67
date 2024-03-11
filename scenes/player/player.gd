@@ -20,7 +20,7 @@ var timer_max = 0.5
 @export var parasite_scene: PackedScene
 
 func _ready():
-    if !(self is Host):
+    if !(self is Host) and not OS.has_feature('dedicated_server'):
         $NodeSprite/Face.material.set_shader_parameter("Shift_Hue", get_parent().get_parent().modulateFaceColor)
 
 func move(direction):
