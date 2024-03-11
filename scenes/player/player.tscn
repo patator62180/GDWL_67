@@ -230,6 +230,7 @@ target_position = Vector2(0, 75)
 position = Vector2(50, 50)
 
 [node name="Face" type="Sprite2D" parent="NodeSprite"]
+texture_filter = 1
 material = SubResource("ShaderMaterial_wkkd2")
 texture = ExtResource("2_7u7pn")
 
