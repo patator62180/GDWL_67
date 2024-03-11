@@ -21,13 +21,33 @@ shader_parameter/speed = Vector2(0.002, 0.001)
 shader_parameter/pixel_scale = 10.0
 shader_parameter/color_floor = 10.0
 shader_parameter/input_texture = SubResource("NoiseTexture2D_a61c7")
-shader_parameter/input_texture_dot = ExtResource("2_yoxxc")
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_kj0u0"]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Background" type="Sprite2D" parent="."]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -559.5
+offset_top = -308.0
+offset_right = -559.5
+offset_bottom = -308.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Background" type="Sprite2D" parent="Control"]
 material = SubResource("ShaderMaterial_s5s6m")
+position = Vector2(436.5, -43)
 scale = Vector2(12000, 12000)
 texture = SubResource("PlaceholderTexture2D_kj0u0")
+
+[node name="Dots" type="Sprite2D" parent="Control"]
+visible = false
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(-20, -20)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_yoxxc")
+region_enabled = true
+region_rect = Rect2(0, 0, 20000, 20000)

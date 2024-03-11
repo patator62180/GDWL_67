@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://biqj0t60x1dv0"]
+[gd_scene load_steps=10 format=3 uid="uid://biqj0t60x1dv0"]
 
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_0lgt1"]
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
@@ -16,6 +16,13 @@ font_size = 50
 font_color = Color(1, 0, 0, 1)
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbym6"]
+bg_color = Color(0.294118, 0.294118, 0.294118, 0.486275)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p7vvi"]
 shader = ExtResource("4_wnq48")
@@ -64,6 +71,7 @@ layout_mode = 1
 player_index = 1
 
 [node name="PlayerCard2Anchor" type="Control" parent="PlayerCards"]
+visible = false
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -82,6 +90,7 @@ layout_mode = 1
 player_index = 2
 
 [node name="PlayerCard3Anchor" type="Control" parent="PlayerCards"]
+visible = false
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -134,19 +143,40 @@ vertical_alignment = 1
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -42.0
+offset_right = 70.0
+offset_bottom = -2.0
+grow_vertical = 0
+scale = Vector2(0.64, 0.64)
 script = ExtResource("3_og24l")
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
+offset_left = -26.0
+offset_top = -108.0
+offset_right = 244.0
+offset_bottom = 34.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lbym6")
 
 [node name="Score J1" type="Label" parent="Control"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_p7vvi")
-layout_mode = 0
-offset_left = 69.0
-offset_top = 67.0
-offset_right = 297.0
-offset_bottom = 150.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -136.0
+offset_right = 206.0
+offset_bottom = -53.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
 theme_override_font_sizes/font_size = 60
 text = "Score j1"
@@ -154,11 +184,18 @@ text = "Score j1"
 [node name="Score J2" type="Label" parent="Control"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_0fcvg")
-layout_mode = 0
-offset_left = 850.0
-offset_top = 69.0
-offset_right = 1078.0
-offset_bottom = 152.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -72.0
+offset_right = 206.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
 theme_override_font_sizes/font_size = 60
 text = "Score j2"
