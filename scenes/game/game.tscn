@@ -48,5 +48,6 @@ spawn_path = NodePath("../Hosts")
 
 [connection signal="p1_scored" from="." to="HUD/ScoreCard" method="_on_game_p_1_scored"]
 [connection signal="p2_scored" from="." to="HUD/ScoreCard" method="_on_game_p_2_scored"]
+[connection signal="scoreAtteint" from="HUD/ScoreCard" to="." method="_on_score_card_score_atteint"]
 
 [editable path="HUD"]

@@ -19,6 +19,7 @@ var hosts: Array[Host] = []
 var player_index: int
 var is_game_started: bool
 var is_choice_step: bool
+var is_game_over: bool = false
 var selected_player: Player
 var player_index_playing: int = -1
 
@@ -59,14 +60,17 @@ func on_player_played():
             saved_host = host
             
             player.parasited.connect(on_parasiting_done)
-
+            
+            player.shoot_your_shot(host.position)
+            player.shoot_your_shot.rpc(host.position)
+            
+            #on attend 1 seconde avant de tout kill
+            await get_tree().create_timer(1).timeout
+            
             if player_index_playing == 0:
                 emit_signal("p1_scored")
             else:
                 emit_signal("p2_scored")
-            
-            player.shoot_your_shot(host.position)
-            player.shoot_your_shot.rpc(host.position)
         else:
             on_turn_done()
 
@@ -123,6 +127,10 @@ func propagate_turn(player_index: int):
 @rpc('authority')
 func finish_game():
     hud.set_winning_label(is_player_active_turn())
+    # on cache tout
+    is_game_over = true
+    player_managers.visible = false
+    grid.visible = false
 
 @rpc('any_peer')
 func start_game():
@@ -143,13 +151,16 @@ func spawn_host(grid_pos: Vector2):
     host_spawner.spawn(grid.get_screen_pos(grid_pos))
     
 func spawn_host_client(position):
-    var host = host_scene.instantiate() 
-    host.position = position
-    host.played.connect(on_host_played)
+    if is_game_over:
+        pass
+    else: 
+        var host = host_scene.instantiate() 
+        host.position = position
+        host.played.connect(on_host_played)
     
-    hosts.append(host)
+        hosts.append(host)
     
-    return host
+        return host
     
     
 @rpc('authority')
@@ -253,3 +264,6 @@ func check_octo_around_player(player: Player):
             return null
             
     return null
+
+func _on_score_card_score_atteint():
+    finish_game.rpc() # Replace with function body.

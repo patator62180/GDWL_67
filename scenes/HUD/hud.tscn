@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://biqj0t60x1dv0"]
+[gd_scene load_steps=11 format=3 uid="uid://biqj0t60x1dv0"]
 
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_0lgt1"]
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
@@ -31,6 +31,14 @@ shader_parameter/Shift_Hue = 0.225
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0fcvg"]
 shader = ExtResource("4_wnq48")
 shader_parameter/Shift_Hue = null
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_76jcf"]
+properties/0/path = NodePath("ScoreCard/Score J1:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("ScoreCard/Score J2:text")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards")]
 script = ExtResource("1_wj8wa")
@@ -197,3 +205,6 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
 theme_override_font_sizes/font_size = 60
 text = "Player 2:"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_76jcf")
