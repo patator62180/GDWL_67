@@ -27,8 +27,8 @@ var saved_host_pos
 var saved_player_pos
 var saved_host
 
-var respawn_timer = 1
-var respawn_timer_max = 1
+var respawn_timer = 0.3
+var respawn_timer_max = respawn_timer
 
 func _ready():
     if multiplayer and multiplayer.is_server():
@@ -85,6 +85,7 @@ func on_parasiting_done():
     
 func respawn_host():
     spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
+    await get_tree().create_timer(0.5).timeout
     on_turn_done()
 
 func on_turn_done():
@@ -92,6 +93,7 @@ func on_turn_done():
     
     for host in hosts:
         host.move_host(grid)
+        host.get_node("HostAnimationPlayer").play("idle")
     
     if hosts.is_empty():
         on_host_played()
@@ -154,11 +156,12 @@ func spawn_host_client(position):
     if is_game_over:
         pass
     else: 
-        var host = host_scene.instantiate() 
+        var host = host_scene.instantiate()
+        host.get_node("HostAnimationPlayer").play("spawn")
         host.position = position
         host.played.connect(on_host_played)
     
-        hosts.append(host)
+        hosts.append(host) 
     
         return host
     
