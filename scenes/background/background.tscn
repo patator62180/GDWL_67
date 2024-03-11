@@ -1,17 +1,33 @@
-[gd_scene load_steps=5 format=3 uid="uid://b81kmauxqg4ws"]
+[gd_scene load_steps=8 format=3 uid="uid://b81kmauxqg4ws"]
 
 [ext_resource type="Shader" path="res://scenes/background/infinite_background.gdshader" id="1_i8cim"]
-[ext_resource type="Texture2D" uid="uid://dfi348pkyrqp6" path="res://sprites/styleshit.png" id="1_ynv4w"]
+[ext_resource type="Texture2D" uid="uid://suiden8bgl0d" path="res://sprites/dot.png" id="2_yoxxc"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hx8cl"]
+[sub_resource type="Gradient" id="Gradient_bjjgb"]
+colors = PackedColorArray(0.945098, 0.956863, 0.894118, 1, 0.666667, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nbutl"]
+fractal_type = 2
+fractal_gain = -0.02
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a61c7"]
+seamless = true
+color_ramp = SubResource("Gradient_bjjgb")
+noise = SubResource("FastNoiseLite_nbutl")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s5s6m"]
 shader = ExtResource("1_i8cim")
-shader_parameter/speed = Vector2(1, -0.5)
-shader_parameter/zoom = 0.02
-shader_parameter/input_texture = ExtResource("1_ynv4w")
+shader_parameter/speed = Vector2(0.002, 0.001)
+shader_parameter/pixel_scale = 10.0
+shader_parameter/color_floor = 10.0
+shader_parameter/input_texture = SubResource("NoiseTexture2D_a61c7")
+shader_parameter/input_texture_dot = ExtResource("2_yoxxc")
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0munu"]
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_kj0u0"]
 
-[node name="Background" type="Sprite2D"]
-material = SubResource("ShaderMaterial_hx8cl")
-scale = Vector2(2000, 2000)
-texture = SubResource("PlaceholderTexture2D_0munu")
+[node name="Node2D" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_s5s6m")
+scale = Vector2(12000, 12000)
+texture = SubResource("PlaceholderTexture2D_kj0u0")
