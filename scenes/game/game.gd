@@ -4,9 +4,14 @@ const MAX_PLAYERS_COUNT = 4
 
 @export var host_scene: PackedScene
 @export var host_root: Node2D
-@export var player_characters: Array[PlayerManager]
+@export var player_managers: PlayerManagers
 @export var grid: Grid
 @export var host_spawner: MultiplayerSpawner
+@export var hud : HUD
+
+signal p1_scored
+signal p2_scored
+
 
 
 var players = []
@@ -14,6 +19,7 @@ var hosts: Array[Host] = []
 var player_index: int
 var is_game_started: bool
 var is_choice_step: bool
+var is_game_over: bool = false
 var selected_player: Player
 var player_index_playing: int = -1
 
@@ -21,14 +27,14 @@ var saved_host_pos
 var saved_player_pos
 var saved_host
 
-var respawn_timer = 1
-var respawn_timer_max = 1
+var respawn_timer = 0.3
+var respawn_timer_max = respawn_timer
 
 func _ready():
     if multiplayer and multiplayer.is_server():
         Immersive.client.peer_player_joined.connect(on_peer_player_joined)
         
-        for player_character in player_characters:
+        for player_character in player_managers.array:
             player_character.played.connect(on_player_played)
             
     host_spawner.spawn_function = spawn_host_client
@@ -45,7 +51,7 @@ func _process(delta):
 
 func on_player_played():
     #check if a player is next to a host
-    for player in player_characters[player_index_playing].player_characters:
+    for player in player_managers.array[player_index_playing].player_characters:
         var host = check_octo_around_player(player)
         
         if host != null:
@@ -57,12 +63,20 @@ func on_player_played():
             
             player.shoot_your_shot(host.position)
             player.shoot_your_shot.rpc(host.position)
+            
+            #on attend 1 seconde avant de tout kill
+            await get_tree().create_timer(1).timeout
+            
+            if player_index_playing == 0:
+                emit_signal("p1_scored")
+            else:
+                emit_signal("p2_scored")
         else:
             on_turn_done()
 
 func on_parasiting_done():
-    player_characters[player_index_playing].spawn_player(grid, saved_host_pos)
-    player_characters[player_index_playing].kill_player(grid, saved_player_pos)
+    player_managers.array[player_index_playing].spawn_player(grid, saved_host_pos)
+    player_managers.array[player_index_playing].kill_player(grid, saved_player_pos)
     
     hosts.erase(saved_host)
     saved_host.queue_free()
@@ -71,6 +85,7 @@ func on_parasiting_done():
     
 func respawn_host():
     spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
+    await get_tree().create_timer(0.5).timeout
     on_turn_done()
 
 func on_turn_done():
@@ -78,6 +93,7 @@ func on_turn_done():
     
     for host in hosts:
         host.move_host(grid)
+        host.get_node("HostAnimationPlayer").play("idle")
     
     if hosts.is_empty():
         on_host_played()
@@ -89,7 +105,7 @@ func on_host_played():
 
 func check_if_player_won():
     for host in hosts:
-        var current_player_manager = player_characters[player_index_playing]
+        var current_player_manager = player_managers.array[player_index_playing]
         for player in current_player_manager.player_characters:
             if(host.position == player.position):
                 finish_game.rpc()
@@ -99,7 +115,7 @@ func set_turn(player_index: int):
     propagate_turn.rpc(player_index)
     
     for index in range(MAX_PLAYERS_COUNT):
-        $HUD.player_cards[index].set_playing(player_index == index)
+        hud.player_cards[index].set_playing(player_index == index)
     
     player_index_playing = player_index
 
@@ -112,7 +128,11 @@ func propagate_turn(player_index: int):
 
 @rpc('authority')
 func finish_game():
-    $HUD.set_winning_label(is_player_active_turn())
+    hud.set_winning_label(is_player_active_turn())
+    # on cache tout
+    is_game_over = true
+    player_managers.visible = false
+    grid.visible = false
 
 @rpc('any_peer')
 func start_game():
@@ -122,9 +142,9 @@ func start_game():
         
         for player_index in range(MAX_PLAYERS_COUNT):
             if player_index > len(players) - 1:
-                $HUD.player_cards[player_index].visible = false
+                hud.player_cards[player_index].visible = false
             else:
-                player_characters[player_index].spawn_initial_player(grid)
+                player_managers.array[player_index].spawn_initial_player(grid)
         
         spawn_host(Vector2(0, -1))
         set_turn(0)
@@ -133,28 +153,32 @@ func spawn_host(grid_pos: Vector2):
     host_spawner.spawn(grid.get_screen_pos(grid_pos))
     
 func spawn_host_client(position):
-    var host = host_scene.instantiate() 
-    host.position = position
-    host.played.connect(on_host_played)
+    if is_game_over:
+        pass
+    else: 
+        var host = host_scene.instantiate()
+        host.get_node("HostAnimationPlayer").play("spawn")
+        host.position = position
+        host.played.connect(on_host_played)
     
-    hosts.append(host)
+        hosts.append(host) 
     
-    return host
+        return host
     
     
 @rpc('authority')
 func assign_player(player_index: int):
     self.player_index = player_index
-    $HUD.player_cards[player_index].assign()
+    hud.player_cards[player_index].assign()
 
 @rpc('authority')
 func give_start_game_permission():
-    $HUD.player_cards[player_index].set_start_game_button_enabled(true)
-    $HUD.player_cards[player_index].start_game_pressed.connect(request_start_game)
+    hud.player_cards[player_index].set_start_game_button_enabled(true)
+    hud.player_cards[player_index].start_game_pressed.connect(request_start_game)
 
 @rpc('authority')
 func propagate_start_game():
-    $HUD.player_cards[player_index].set_start_game_button_enabled(false)
+    hud.player_cards[player_index].set_start_game_button_enabled(false)
 
 func request_start_game():
     start_game.rpc_id(1)
@@ -164,18 +188,18 @@ func on_peer_player_joined(id: int):
     
     players.append(id)
     assign_player.rpc_id(id, player_index)
-    $HUD.player_cards[player_index].set_connected()
+    hud.player_cards[player_index].set_connected()
     
     if player_index == 1:
         give_start_game_permission.rpc_id(players[0])
 
 func move_player(player_index: int, action: String):
     if multiplayer and multiplayer.is_server():
-        player_characters[player_index].process_action(action)
+        player_managers.array[player_index].process_action(action)
         
 func on_cell_click(grid_pos: Vector2):
     if multiplayer and not multiplayer.is_server() and is_player_active_turn():
-        var player_manager = player_characters[player_index]
+        var player_manager = player_managers.array[player_index]
         var found_player = player_manager.get_character_at_position(grid_pos, grid)
 
         if found_player != null:
@@ -209,7 +233,7 @@ func propagate_add_wall(grid_pos: Vector2, tile_index: int):
     grid.add_wall(grid_pos, tile_index)
     
 func check_for_player(grid_pos:Vector2, playerIndex: int):
-    for player in player_characters[playerIndex].player_characters:
+    for player in player_managers.array[playerIndex].player_characters:
         var player_grid_pos = grid.get_grid_pos(player.position)
             
         if (player_grid_pos == grid_pos):
@@ -243,3 +267,6 @@ func check_octo_around_player(player: Player):
             return null
             
     return null
+
+func _on_score_card_score_atteint():
+    finish_game.rpc() # Replace with function body.

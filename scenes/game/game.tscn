@@ -1,86 +1,53 @@
-[gd_scene load_steps=11 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=8 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
-[ext_resource type="PackedScene" uid="uid://fceu5xy8mw51" path="res://scenes/player_manager/player_manager.tscn" id="3_6h5xp"]
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
 [ext_resource type="Script" path="res://scenes/game/hazard_mananger.gd" id="3_vmlt8"]
 [ext_resource type="PackedScene" uid="uid://biqj0t60x1dv0" path="res://scenes/HUD/hud.tscn" id="4_df5lj"]
-[ext_resource type="Script" path="res://scenes/grid/grid.gd" id="5_0p7w5"]
-[ext_resource type="TileSet" uid="uid://dpgv8vcohuucb" path="res://tile_sets/level1.tres" id="5_quoa4"]
-[ext_resource type="TileSet" uid="uid://baqdshuahgp71" path="res://tile_sets/selection.tres" id="6_owf1v"]
-[ext_resource type="TileSet" uid="uid://wxknivquryt0" path="res://tile_sets/walls.tres" id="8_5prta"]
+[ext_resource type="PackedScene" uid="uid://de6fuev88g57f" path="res://scenes/grid/grid.tscn" id="6_ybaom"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
+[ext_resource type="PackedScene" uid="uid://cuou6t7fy6v45" path="res://scenes/player_manager/player_managers.tscn" id="10_ukfxk"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_characters", "grid", "host_spawner")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_managers", "grid", "host_spawner", "hud")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
-player_characters = [NodePath("PlayerManager0"), NodePath("PlayerManager1"), NodePath("PlayerManager2"), NodePath("PlayerManager3")]
+player_managers = NodePath("PlayerManagers")
 grid = NodePath("Grid")
 host_spawner = NodePath("HostSpawner")
+hud = NodePath("HUD")
 
 [node name="Background" parent="." instance=ExtResource("3_qtcvc")]
 
-[node name="HUD" parent="." node_paths=PackedStringArray("PlayerManager0", "PlayerManager1") instance=ExtResource("4_df5lj")]
-PlayerManager0 = NodePath("../PlayerManager0")
-PlayerManager1 = NodePath("../PlayerManager1")
+[node name="HUD" parent="." node_paths=PackedStringArray("PlayerManagers") instance=ExtResource("4_df5lj")]
+PlayerManagers = NodePath("../PlayerManagers")
 
-[node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("tile_map")]
-script = ExtResource("3_vmlt8")
-tile_map = NodePath("../Grid/TileMap")
-bounds = Vector4(0, 0, 10, 10)
+[node name="Score J1" parent="HUD/ScoreCard" index="1"]
+text = "Player 1: 0 points"
 
-[node name="Grid" type="Node2D" parent="." node_paths=PackedStringArray("tile_map", "selection_tile_map", "wall_tile_map", "selection_wall_tile_map")]
-script = ExtResource("5_0p7w5")
-tile_map = NodePath("TileMap")
-selection_tile_map = NodePath("TileSelection")
-wall_tile_map = NodePath("TileMapWall")
-selection_wall_tile_map = NodePath("TileMapWallSelection")
-
-[node name="TileMap" type="TileMap" parent="Grid"]
-tile_set = ExtResource("5_quoa4")
-format = 2
-layer_0/tile_data = PackedInt32Array(-65541, 1, 0, -5, 0, 0, -65540, 0, 0, -4, 1, 0, -65539, 1, 0, -3, 0, 0, -65538, 0, 0, -2, 1, 0, -65537, 1, 0, -1, 0, 0, -131072, 0, 0, -65536, 1, 0, -131071, 1, 0, -65535, 0, 0, -131070, 0, 0, -65534, 1, 0, -131069, 1, 0, -65533, 0, 0, -131068, 0, 0, -65532, 1, 0, 65531, 1, 0, 131067, 0, 0, 65532, 0, 0, 131068, 1, 0, 65533, 1, 0, 131069, 0, 0, 65534, 0, 0, 131070, 1, 0, 65535, 1, 0, 131071, 0, 0, 0, 0, 0, 65536, 1, 0, 1, 1, 0, 65537, 0, 0, 2, 0, 0, 65538, 1, 0, 3, 1, 0, 65539, 0, 0, 4, 0, 0, 65540, 1, 0, 196604, 0, 0, 196606, 0, 0, 131072, 0, 0, 131074, 0, 0, -131075, 0, 0, -131073, 0, 0, -196607, 0, 0, -196605, 0, 0, -131076, 1, 0, -131074, 1, 0, -196608, 1, 0, -196606, 1, 0, 196605, 1, 0, 196607, 1, 0, 131073, 1, 0, 131075, 1, 0)
-
-[node name="TileSelection" type="TileMap" parent="Grid"]
-tile_set = ExtResource("6_owf1v")
-format = 2
-
-[node name="TileMapWall" type="TileMap" parent="Grid"]
-position = Vector2(50, 50)
-tile_set = ExtResource("8_5prta")
-format = 2
-
-[node name="TileMapWallSelection" type="TileMap" parent="Grid"]
-position = Vector2(50, 50)
-tile_set = ExtResource("8_5prta")
-format = 2
+[node name="Score J2" parent="HUD/ScoreCard" index="2"]
+text = "Player 2: 0 points"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.8, 0.8)
+
+[node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("grid")]
+script = ExtResource("3_vmlt8")
+grid = NodePath("../Grid")
+bounds = Vector4(0, 0, 10, 10)
 
 [node name="HostSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://scenes/host/host.tscn")
 spawn_path = NodePath("../Hosts")
 
+[node name="Grid" parent="." instance=ExtResource("6_ybaom")]
+
+[node name="PlayerManagers" parent="." instance=ExtResource("10_ukfxk")]
+
 [node name="Hosts" type="Node2D" parent="."]
 
-[node name="PlayerManager0" parent="." instance=ExtResource("3_6h5xp")]
-initial_grid_pos = Vector2i(-2, -2)
-modulateFaceColor = 0.71
+[connection signal="p1_scored" from="." to="HUD/ScoreCard" method="_on_game_p_1_scored"]
+[connection signal="p2_scored" from="." to="HUD/ScoreCard" method="_on_game_p_2_scored"]
+[connection signal="scoreAtteint" from="HUD/ScoreCard" to="." method="_on_score_card_score_atteint"]
 
-[node name="PlayerManager1" parent="." instance=ExtResource("3_6h5xp")]
-initial_grid_pos = Vector2i(2, -2)
-modulateFaceColor = 0.28
-
-[node name="PlayerManager2" parent="." instance=ExtResource("3_6h5xp")]
-initial_grid_pos = Vector2i(-2, 2)
-modulateFaceColor = 0.775
-
-[node name="PlayerManager3" parent="." instance=ExtResource("3_6h5xp")]
-initial_grid_pos = Vector2i(2, 2)
-
-[editable path="PlayerManager0"]
-[editable path="PlayerManager1"]
-[editable path="PlayerManager2"]
-[editable path="PlayerManager3"]
+[editable path="HUD"]

@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://de6fuev88g57f"]
+
+[ext_resource type="Script" path="res://scenes/grid/grid.gd" id="1_qbift"]
+[ext_resource type="TileSet" uid="uid://dpgv8vcohuucb" path="res://tile_sets/level1.tres" id="2_pqvwu"]
+[ext_resource type="TileSet" uid="uid://baqdshuahgp71" path="res://tile_sets/selection.tres" id="3_i4i5g"]
+[ext_resource type="TileSet" uid="uid://wxknivquryt0" path="res://tile_sets/walls.tres" id="4_7guad"]
+
+[node name="Grid" type="Node2D" node_paths=PackedStringArray("tile_map", "selection_tile_map", "wall_tile_map", "selection_wall_tile_map")]
+script = ExtResource("1_qbift")
+tile_map = NodePath("TileMap")
+selection_tile_map = NodePath("TileSelection")
+wall_tile_map = NodePath("TileMapWall")
+selection_wall_tile_map = NodePath("TileMapWallSelection")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_pqvwu")
+format = 2
+layer_0/tile_data = PackedInt32Array(-65541, 1, 0, -5, 0, 0, -65540, 0, 0, -4, 1, 0, -65539, 1, 0, -3, 0, 0, -65538, 0, 0, -2, 1, 0, -65537, 1, 0, -1, 0, 0, -131072, 0, 0, -65536, 1, 0, -131071, 1, 0, -65535, 0, 0, -131070, 0, 0, -65534, 1, 0, -131069, 1, 0, -65533, 0, 0, -131068, 0, 0, -65532, 1, 0, 65531, 1, 0, 131067, 0, 0, 65532, 0, 0, 131068, 1, 0, 65533, 1, 0, 131069, 0, 0, 65534, 0, 0, 131070, 1, 0, 65535, 1, 0, 131071, 0, 0, 0, 0, 0, 65536, 1, 0, 1, 1, 0, 65537, 0, 0, 2, 0, 0, 65538, 1, 0, 3, 1, 0, 65539, 0, 0, 4, 0, 0, 65540, 1, 0, 196604, 0, 0, 196606, 0, 0, 131072, 0, 0, 131074, 0, 0, -131075, 0, 0, -131073, 0, 0, -196607, 0, 0, -196605, 0, 0, -131076, 1, 0, -131074, 1, 0, -196608, 1, 0, -196606, 1, 0, 196605, 1, 0, 196607, 1, 0, 131073, 1, 0, 131075, 1, 0)
+
+[node name="TileSelection" type="TileMap" parent="."]
+tile_set = ExtResource("3_i4i5g")
+format = 2
+
+[node name="TileMapWall" type="TileMap" parent="."]
+position = Vector2(50, 50)
+tile_set = ExtResource("4_7guad")
+format = 2
+
+[node name="TileMapWallSelection" type="TileMap" parent="."]
+position = Vector2(50, 50)
+tile_set = ExtResource("4_7guad")
+format = 2

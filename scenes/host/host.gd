@@ -15,3 +15,4 @@ func move_host(grid: Grid):
     directions.shuffle()
     
     move_to(self.position + directions[0] * grid.grid_size)
+    %HostAnimationPlayer.play("idle")

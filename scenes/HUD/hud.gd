@@ -1,8 +1,9 @@
 extends CanvasLayer
 
+class_name HUD
+
 @export var player_cards: Array[PlayerCard]
-@export var PlayerManager0: PlayerManager
-@export var PlayerManager1: PlayerManager
+@export var PlayerManagers: PlayerManagers
 
 
 func set_winning_label(isWinning : bool):
