@@ -22,6 +22,12 @@ hud = NodePath("HUD")
 [node name="HUD" parent="." node_paths=PackedStringArray("PlayerManagers") instance=ExtResource("4_df5lj")]
 PlayerManagers = NodePath("../PlayerManagers")
 
+[node name="Score J1" parent="HUD/ScoreCard" index="1"]
+text = "Player 1: 0 points"
+
+[node name="Score J2" parent="HUD/ScoreCard" index="2"]
+text = "Player 2: 0 points"
+
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.8, 0.8)
 
@@ -39,3 +45,8 @@ spawn_path = NodePath("../Hosts")
 [node name="PlayerManagers" parent="." instance=ExtResource("10_ukfxk")]
 
 [node name="Hosts" type="Node2D" parent="."]
+
+[connection signal="p1_scored" from="." to="HUD/ScoreCard" method="_on_game_p_1_scored"]
+[connection signal="p2_scored" from="." to="HUD/ScoreCard" method="_on_game_p_2_scored"]
+
+[editable path="HUD"]

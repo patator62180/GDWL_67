@@ -9,6 +9,10 @@ const MAX_PLAYERS_COUNT = 4
 @export var host_spawner: MultiplayerSpawner
 @export var hud : HUD
 
+signal p1_scored
+signal p2_scored
+
+
 
 var players = []
 var hosts: Array[Host] = []
@@ -55,6 +59,11 @@ func on_player_played():
             saved_host = host
             
             player.parasited.connect(on_parasiting_done)
+
+            if player_index_playing == 0:
+                emit_signal("p1_scored")
+            else:
+                emit_signal("p2_scored")
             
             player.shoot_your_shot(host.position)
             player.shoot_your_shot.rpc(host.position)

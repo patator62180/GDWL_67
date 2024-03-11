@@ -152,6 +152,8 @@ offset_right = 40.0
 grow_vertical = 0
 scale = Vector2(0.64, 0.64)
 script = ExtResource("3_og24l")
+scoreJ1 = null
+scoreJ2 = null
 
 [node name="Panel" type="Panel" parent="ScoreCard"]
 layout_mode = 1
