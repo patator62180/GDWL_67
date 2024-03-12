@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://w8glstws2q30"]
 
-[ext_resource type="Script" path="res://scenes/hand/card.gd" id="1_bybg6"]
-[ext_resource type="Texture2D" uid="uid://qfq8gm06d23p" path="res://sprites/tuile_blue.png" id="1_v3jlg"]
+[ext_resource type="Script" path="res://scenes/cards/card.gd" id="1_7d03g"]
+[ext_resource type="Texture2D" uid="uid://qfq8gm06d23p" path="res://sprites/tuile_blue.png" id="2_300yh"]
 
 [node name="Card" type="Control" node_paths=PackedStringArray("outline")]
 custom_minimum_size = Vector2(150, 0)
@@ -17,7 +17,7 @@ offset_right = 75.0
 grow_horizontal = 2
 grow_vertical = 0
 pivot_offset = Vector2(75, 250)
-script = ExtResource("1_bybg6")
+script = ExtResource("1_7d03g")
 outline = NodePath("Outline")
 selected_color = Color(0, 1, 0, 1)
 
@@ -35,7 +35,7 @@ offset_right = 80.0
 offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_v3jlg")
+texture = ExtResource("2_300yh")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -50,7 +50,7 @@ offset_right = 75.0
 offset_bottom = 125.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_v3jlg")
+texture = ExtResource("2_300yh")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

@@ -14,8 +14,8 @@ signal card_selected(cardType : String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    cards_loaded.append(preload("res://scenes/hand/movement_card.tscn"))
-    cards_loaded.append(preload("res://scenes/hand/wall_card.tscn"))
+    cards_loaded.append(preload("res://scenes/cards/movement_card.tscn"))
+    cards_loaded.append(preload("res://scenes/cards/wall_card.tscn"))
     pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

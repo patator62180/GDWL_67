@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dsmt3xnq7i1eu"]
 
-[ext_resource type="Script" path="res://scenes/hand/hand.gd" id="1_7w1tl"]
+[ext_resource type="Script" path="res://scenes/cards/hand.gd" id="1_cctgx"]
 
 [node name="Hand" type="Control"]
 layout_mode = 3
@@ -13,4 +13,4 @@ offset_top = -200.0
 offset_bottom = -200.0
 grow_horizontal = 2
 grow_vertical = 0
-script = ExtResource("1_7w1tl")
+script = ExtResource("1_cctgx")

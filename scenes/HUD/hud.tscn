@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
 [ext_resource type="Script" path="res://scenes/game/ScoreControl.gd" id="3_og24l"]
 [ext_resource type="Shader" path="res://scenes/game/scoreHueJ1.gdshader" id="4_wnq48"]
-[ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/hand/hand.tscn" id="5_euuyo"]
+[ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/cards/hand.tscn" id="5_euuyo"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
 font_size = 50

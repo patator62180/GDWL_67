@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c7c40bidrm85h" path="res://scenes/immersive/immersive.tscn" id="1_7burc"]
 [ext_resource type="PackedScene" uid="uid://27xb7kekk1ck" path="res://scenes/menus/menus.tscn" id="2_5c3tl"]
 [ext_resource type="PackedScene" uid="uid://dswfe7yyh4daq" path="res://scenes/game/game.tscn" id="2_l3lpd"]
-[ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/hand/hand.tscn" id="4_fdwri"]
+[ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/cards/hand.tscn" id="4_fdwri"]
 
 [node name="Main" type="Node2D"]
 
