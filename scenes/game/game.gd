@@ -197,7 +197,7 @@ func on_peer_player_joined(id: int):
 func move_player(player_index: int, action: String):
     if multiplayer and multiplayer.is_server():
         player_managers.array[player_index].process_action(action)
-        
+
 func on_cell_click(grid_pos: Vector2):
     if multiplayer and not multiplayer.is_server() and is_player_active_turn():
         var player_manager = player_managers.array[player_index]
