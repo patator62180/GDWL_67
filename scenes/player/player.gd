@@ -56,14 +56,17 @@ func _process(delta):
         %AnimationPlayer.play("player_moving")
         %AnimationPlayer.queue("idle")
         
-func can_move_to(grid_pos: Vector2, grid: Grid):
+func can_move_to(grid_pos: Vector2, grid: Grid, player_managers: PlayerManagers):
     var player_grid_pos = grid.get_grid_pos(self.position)
     var direction = grid_pos - player_grid_pos
     
     var is_possible_movement = grid.is_possible_movement(player_grid_pos, direction)
     var is_possible_tile = grid.is_possible_tile(grid_pos)
     
-    return player_grid_pos.distance_to(grid_pos) <= 1 and is_possible_movement and is_possible_tile
+    return player_grid_pos.distance_to(grid_pos) <= 1 \
+        and is_possible_movement \
+        and is_possible_tile \
+        and player_managers.check_for_player(grid, grid_pos) == null
 
 func process_action(action: String):
     match action:
