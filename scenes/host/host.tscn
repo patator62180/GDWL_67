@@ -175,6 +175,7 @@ _data = {
 
 [node name="Host" type="Node2D" node_paths=PackedStringArray("raycast")]
 script = ExtResource("1_xj1si")
+is_moving = null
 raycast = NodePath("RayCast2D")
 
 [node name="NodeSprite" type="Node2D" parent="."]
