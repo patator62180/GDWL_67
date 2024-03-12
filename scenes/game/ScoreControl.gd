@@ -7,9 +7,9 @@ var scoreJ2 = 0
 signal scoreAtteint
 
 func _ready():
-    %"Score J1".material.set_shader_parameter("Shift_Hue", get_parent().PlayerManagers.array[0].modulateFaceColor)
-    %"Score J2".material.set_shader_parameter("Shift_Hue", get_parent().PlayerManagers.array[1].modulateFaceColor)
-
+    if not OS.has_feature('dedicated_server'):
+        %"Score J1".material.set_shader_parameter("Shift_Hue", get_parent().PlayerManagers.array[0].modulateFaceColor)
+        %"Score J2".material.set_shader_parameter("Shift_Hue", get_parent().PlayerManagers.array[1].modulateFaceColor)
 
 
 func _on_game_p_1_scored():
