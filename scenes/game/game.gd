@@ -243,6 +243,7 @@ func on_cell_click(grid_pos: Vector2):
 func on_wall_click(grid_pos: Vector2, tile_index: int):
     if multiplayer and not multiplayer.is_server():
         add_wall.rpc_id(1, grid_pos, tile_index)
+        hud.hand.consume_selected_card()
 
 @rpc('any_peer')
 func add_wall(grid_pos: Vector2, tile_index: int):
