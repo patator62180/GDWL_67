@@ -67,10 +67,6 @@ func on_player_played():
             #on attend 1 seconde avant de tout kill
             await get_tree().create_timer(1).timeout
             
-            if player_index_playing == 0:
-                emit_signal("p1_scored")
-            else:
-                emit_signal("p2_scored")
         else:
             on_turn_done()
 
@@ -80,6 +76,11 @@ func on_parasiting_done():
     
     hosts.erase(saved_host)
     saved_host.queue_free()
+    
+    if player_index_playing == 0:
+        emit_signal("p1_scored")
+    else:
+        emit_signal("p2_scored")
     
     respawn_timer = 0
     
