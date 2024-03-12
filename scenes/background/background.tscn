@@ -42,3 +42,21 @@ material = SubResource("ShaderMaterial_s5s6m")
 position = Vector2(436.5, -43)
 scale = Vector2(12000, 12000)
 texture = SubResource("PlaceholderTexture2D_kj0u0")
+
+[node name="YourTurn" type="TextEdit" parent="Control"]
+layout_mode = 0
+offset_left = 490.5
+offset_top = 341.0
+offset_right = 630.5
+offset_bottom = 391.0
+theme_override_font_sizes/font_size = 26
+text = "Your turn!"
+
+[node name="OtherPlayerTurn" type="TextEdit" parent="Control"]
+layout_mode = 0
+offset_left = 411.5
+offset_top = 341.0
+offset_right = 708.5
+offset_bottom = 391.0
+theme_override_font_sizes/font_size = 26
+text = "Waiting for opponent..."
