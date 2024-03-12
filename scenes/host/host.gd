@@ -2,17 +2,18 @@ extends Player
 
 class_name Host
 
-func move_after_players_turns():
-    var directions = [Vector2.LEFT, Vector2.RIGHT, Vector2.UP, Vector2.DOWN]
-    directions.shuffle()
-    
-    for direction in directions:
-        if move(direction):
-            break
 
 func move_host(grid: Grid):
-    var directions = grid.cardinal
+    var directions = [Vector2.LEFT, Vector2.RIGHT, Vector2.UP, Vector2.DOWN]
+    var grid_pos = grid.get_grid_pos(position)
     directions.shuffle()
-    
-    move_to(self.position + directions[0] * grid.grid_size)
-    %HostAnimationPlayer.play("idle")
+
+    for direction in directions:
+        var next_grid_pos = grid_pos + direction
+
+        if can_move_to(next_grid_pos, grid):
+            var next_pos = grid.get_screen_pos(next_grid_pos)
+            move_to(next_pos)
+            %HostAnimationPlayer.play("idle")
+            break
+
