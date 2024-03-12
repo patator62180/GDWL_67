@@ -129,6 +129,10 @@ func propagate_turn(player_index: int):
 @rpc('authority')
 func finish_game():
     hud.set_winning_label(is_player_active_turn())
+    if is_player_active_turn():
+        get_node("Audio/Victory").play()
+    else: get_node("Audio/Defeat").play()
+
     # on cache tout
     is_game_over = true
     player_managers.visible = false
@@ -261,5 +265,5 @@ func check_octo_around_player(player: Player):
     return null
 
 func _on_score_card_score_atteint():
-    finish_game.rpc() # Replace with function body.
+    finish_game.rpc()
     Immersive.client.end_game()
