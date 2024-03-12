@@ -22,8 +22,6 @@ hud = NodePath("HUD")
 shockwave_scene = ExtResource("3_ouo1f")
 camera = NodePath("Camera2D")
 
-[node name="Background" parent="." instance=ExtResource("3_qtcvc")]
-
 [node name="HUD" parent="." node_paths=PackedStringArray("PlayerManagers") instance=ExtResource("4_df5lj")]
 PlayerManagers = NodePath("../PlayerManagers")
 
@@ -44,6 +42,8 @@ bounds = Vector4(0, 0, 10, 10)
 [node name="HostSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://scenes/host/host.tscn")
 spawn_path = NodePath("../Hosts")
+
+[node name="Background" parent="." instance=ExtResource("3_qtcvc")]
 
 [node name="Grid" parent="." instance=ExtResource("6_ybaom")]
 

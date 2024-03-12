@@ -52,6 +52,10 @@ func _process(delta):
     check_wall_input_released()
         
     manage_highlight_arows()
+    
+    if selection_tile_map.get_cell_source_id(0, get_grid_pos(get_local_mouse_position())) == 1:
+        play_sound_hovered_tile()
+
         
 func get_grid_pos(position: Vector2):
     return Vector2(floor(position.x / grid_size), floor(position.y / grid_size))
@@ -67,6 +71,7 @@ func show_possible_selection(grid_pos: Vector2, player_managers: PlayerManagers)
         var pos = Vector2(grid_pos + direction)
         if is_possible_tile(pos) and is_possible_movement(grid_pos, direction) and player_managers.check_for_player(self, pos) == null:
             selection_tile_map.set_cell(0, pos, 0, Vector2(0,0))
+          
 
 func clear_possible_selections():
     selected_tile = null
@@ -105,7 +110,7 @@ func try_move_player():
                 
     var cell_tile_data = tile_map.get_cell_source_id(0, grid_pos)
     if cell_tile_data != -1:
-        cell_click.emit(grid_pos)        
+        cell_click.emit(grid_pos)      
     
 func try_create_wall():
     if selected_wall_tile != null:
@@ -138,14 +143,14 @@ func check_wall_input_released():
             
 func manage_highlight_arows():
     if selected_tile != null:
-        if previous_hovered_tile != null:
+        if previous_hovered_tile != null:           
             selection_tile_map.set_cell(0, previous_hovered_tile, 0, Vector2.ZERO)
         
         var mouse_pos = get_local_mouse_position()
         var grid_pos = get_grid_pos(mouse_pos)
         
         var highlight_id = selection_tile_map.get_cell_source_id(0, grid_pos)
-        
+            
         if highlight_id == 0:
             var direction = grid_pos - selected_tile
             var atlas_id = Vector2.ZERO
@@ -158,4 +163,13 @@ func manage_highlight_arows():
                     atlas_id = Vector2(3,0)
                     
             selection_tile_map.set_cell(0, grid_pos, 1, atlas_id)
+            #play_sound_hovered_tile()  
             previous_hovered_tile = grid_pos
+        #if highlight_id == 1:
+        #    play_sound_hovered_tile()  
+
+func play_sound_hovered_tile():
+    get_node("Audio/HoverTile").play()
+    var rng = RandomNumberGenerator.new()
+    get_node("Audio/HoverTile").pitch_scale = rng.randf_range(0.70,1.30)
+    
