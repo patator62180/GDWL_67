@@ -64,3 +64,8 @@ stream = ExtResource("9_po4kl")
 [connection signal="scoreAtteint" from="HUD/ScoreCard" to="." method="_on_score_card_score_atteint"]
 
 [editable path="HUD"]
+[editable path="PlayerManagers"]
+[editable path="PlayerManagers/PlayerManager0"]
+[editable path="PlayerManagers/PlayerManager1"]
+[editable path="PlayerManagers/PlayerManager2"]
+[editable path="PlayerManagers/PlayerManager3"]

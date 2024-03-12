@@ -243,8 +243,7 @@ texture = ExtResource("3_dawvx")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_rm4md")
 autoplay = "default"
-frame = 8
-frame_progress = 0.5949
+frame_progress = 0.211061
 
 [node name="Eyes" type="Sprite2D" parent="NodeSprite"]
 texture_filter = 1

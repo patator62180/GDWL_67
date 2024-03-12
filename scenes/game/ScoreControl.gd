@@ -1,6 +1,6 @@
 extends Control
 
-var scoreJ1 = 2
+var scoreJ1 = 0
 var scoreJ2 = 0
 @export var scoreObjectif = 3
 

@@ -5,7 +5,7 @@ class_name PlayerManager
 @export var players_root: Node2D
 @export var player_scene: PackedScene
 @export var initial_grid_pos: Vector2i
-@export var modulateFaceColor = 0.25
+@export var modulateFaceColor = 0
 @export var player_spawner: MultiplayerSpawner
 
 var player_characters: Array[Player]:

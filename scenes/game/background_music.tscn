@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bplw4vh771m1x"]
 
-[ext_resource type="AudioStream" path="res://sfx/BGmusic.mp3" id="1_kltoi"]
+[ext_resource type="AudioStream" uid="uid://bsgf5ff0scm6k" path="res://sfx/BGmusic.mp3" id="1_kltoi"]
 
 [node name="BackgroundMusic" type="Node"]
 

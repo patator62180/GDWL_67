@@ -10,6 +10,7 @@ const MAX_PLAYERS_COUNT = 4
 @export var hud : HUD
 @export var shockwave_scene: PackedScene
 @export var camera: Camera2D
+@export var camera_drag = 25
 
 signal p1_scored
 signal p2_scored
@@ -50,13 +51,16 @@ func _ready():
     if multiplayer and !multiplayer.is_server():
         shockwave = shockwave_scene.instantiate()
         camera.add_child(shockwave)
-   
+            
+       
 func _process(delta):
     if respawn_timer < respawn_timer_max:
         respawn_timer = respawn_timer + delta
         
         if respawn_timer >= respawn_timer_max:
             respawn_host()
+    
+    get_node("Camera2D").position = get_local_mouse_position()/camera_drag
 
 func on_player_played():
     #check if a player is next to a host
@@ -199,6 +203,7 @@ func give_start_game_permission():
 @rpc('authority')
 func propagate_start_game():
     hud.player_cards[player_index].set_start_game_button_enabled(false)
+    get_node("PlayerManagers/PlayerManager0").modulateFaceColor = get_node("HUD/ColorChoicePlayer1/HSlider").value
 
 func request_start_game():
     start_game.rpc_id(1)
