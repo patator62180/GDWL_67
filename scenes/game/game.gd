@@ -22,6 +22,7 @@ var is_choice_step: bool
 var is_game_over: bool = false
 var selected_player: Player
 var player_index_playing: int = -1
+var selected_card_type: String
 
 var saved_host_pos
 var saved_player_pos
@@ -43,6 +44,8 @@ func _ready():
 
     grid.cell_click.connect(on_cell_click)
     grid.wall_click.connect(on_wall_click)
+    
+    hud.hand.card_selected.connect(on_card_selected);
     
     if multiplayer and !multiplayer.is_server():
         shockwave = shockwave_scene.instantiate()
@@ -216,6 +219,8 @@ func move_player(player_index: int, action: String):
 
 func on_cell_click(grid_pos: Vector2):
     if multiplayer and not multiplayer.is_server() and is_player_active_turn():
+        if(selected_card_type != "Movement"):
+            return
         var player_manager = player_managers.array[player_index]
         var found_player = player_manager.get_character_at_position(grid_pos, grid)
 
@@ -226,6 +231,7 @@ func on_cell_click(grid_pos: Vector2):
         elif selected_player != null:
             if selected_player.can_move_to(grid_pos, grid, player_managers):
                 selected_player.move_to.rpc_id(1, grid.get_screen_pos(grid_pos))
+                hud.hand.consume_selected_card()
                 
             selected_player = null
             grid.clear_possible_selections()
@@ -295,3 +301,6 @@ func play_shockwave_anim(saved_host_pos: Vector2):
     screen_ratio.y = screen_ratio.y / screen_size.y
     
     shockwave.play_shockwave_anim(screen_ratio)
+
+func on_card_selected(cardType : String):
+    selected_card_type = cardType

@@ -4,6 +4,7 @@ class_name HUD
 
 @export var player_cards: Array[PlayerCard]
 @export var PlayerManagers: PlayerManagers
+@export var hand: Hand
 
 
 func set_winning_label(isWinning : bool):

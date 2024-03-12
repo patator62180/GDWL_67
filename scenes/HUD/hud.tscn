@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://biqj0t60x1dv0"]
+[gd_scene load_steps=12 format=3 uid="uid://biqj0t60x1dv0"]
 
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_0lgt1"]
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
 [ext_resource type="Script" path="res://scenes/game/ScoreControl.gd" id="3_og24l"]
 [ext_resource type="Shader" path="res://scenes/game/scoreHueJ1.gdshader" id="4_wnq48"]
+[ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/hand/hand.tscn" id="5_euuyo"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
 font_size = 50
@@ -40,9 +41,10 @@ properties/1/path = NodePath("ScoreCard/Score J2:text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards", "hand")]
 script = ExtResource("1_wj8wa")
 player_cards = [NodePath("PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("PlayerCards/PlayerCard3Anchor/PlayerCard3")]
+hand = NodePath("Hand")
 
 [node name="PlayerCards" type="Control" parent="."]
 layout_mode = 3
@@ -148,6 +150,8 @@ text = "YOU LOSE TORP BAD WEESH"
 label_settings = SubResource("LabelSettings_2m1vi")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Hand" parent="." instance=ExtResource("5_euuyo")]
 
 [node name="ScoreCard" type="Control" parent="."]
 unique_name_in_owner = true
