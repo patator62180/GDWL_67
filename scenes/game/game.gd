@@ -61,6 +61,9 @@ func _process(delta):
             respawn_host()
     
     get_node("Camera2D").position = get_local_mouse_position()/camera_drag
+    
+    turn_indicator()
+    
 
 func on_player_played():
     #check if a player is next to a host
@@ -139,6 +142,18 @@ func set_turn(player_index: int):
 
 func is_player_active_turn():
     return player_index_playing == player_index
+    
+func turn_indicator():
+    if is_player_active_turn():
+        get_node("Background/Control/Background").material.set_shader_parameter("tint_color", Color(1,1,1,1))
+        #get_node("Background/Control/YourTurn").visible = true
+        #get_node("Background/Control/OtherPlayerTurn").visible = false
+    else:
+        get_node("Background/Control/Background").material.set_shader_parameter("tint_color", Color(1,0.3,0.3,1))
+        #get_node("Background/Control/YourTurn").visible = false
+        #get_node("Background/Control/OtherPlayerTurn").visible = true
+
+        
 
 @rpc('authority')
 func propagate_turn(player_index: int):
@@ -307,6 +322,11 @@ func play_shockwave_anim(saved_host_pos: Vector2):
     screen_ratio.y = screen_ratio.y / screen_size.y
     
     shockwave.play_shockwave_anim(screen_ratio)
+    get_node("Audio/Shockwave").play()
+
 
 func on_card_selected(cardType : String):
+    var rng = RandomNumberGenerator.new()
+    get_node("Audio/CardSelection").pitch_scale = rng.randf_range(0.70,1.30)
+    get_node("Audio/CardSelection").play()
     selected_card_type = cardType
