@@ -81,6 +81,10 @@ class Client:
         if not is_faking_requests:
             request('/game-instances/%s/' % game_room_code, HTTPClient.METHOD_PUT, {'status': 'playing'})
 
+    func end_game():
+        if not is_faking_requests:
+            request('/game-instances/%s/' % game_room_code, HTTPClient.METHOD_PUT, {'status': 'ended'})
+
     func book_game_room(game_name: String):
         if is_local and is_faking_requests:
             on_game_room_info_received(null, null, null, {'code': LOCAL_CODE, 'port': LOCAL_PORT})
