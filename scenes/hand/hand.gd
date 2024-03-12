@@ -1,14 +1,15 @@
 extends Control
 
 var cards = []
-var card_loaded 
+var cards_loaded = []
 var card_width = 150
 
 var card_id = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    card_loaded = preload("res://scenes/hand/card.tscn")
+    cards_loaded.append(preload("res://scenes/hand/movement_card.tscn"))
+    cards_loaded.append(preload("res://scenes/hand/wall_card.tscn"))
     pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -18,7 +19,8 @@ func _process(delta):
     pass
     
 func draw():
-    var card = card_loaded.instantiate() as Card
+    var card_index = randi_range(0,cards_loaded.size()-1)
+    var card = cards_loaded[card_index].instantiate() as Card
     add_child(card)
     
     card_id += 1
