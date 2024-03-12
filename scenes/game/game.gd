@@ -140,6 +140,7 @@ func propagate_turn(player_index: int):
 @rpc('authority')
 func finish_game():
     hud.set_winning_label(is_player_active_turn())
+    get_tree().get_root().get_node("BackgroundMusic/BGMusic").stream_paused = true
     if is_player_active_turn():
         get_node("Audio/Victory").play()
     else: get_node("Audio/Defeat").play()
