@@ -8,11 +8,11 @@ const MAX_PLAYERS_COUNT = 4
 @export var grid: Grid
 @export var host_spawner: MultiplayerSpawner
 @export var hud : HUD
+@export var shockwave_scene: PackedScene
+@export var camera: Camera2D
 
 signal p1_scored
 signal p2_scored
-
-
 
 var players = []
 var hosts: Array[Host] = []
@@ -30,6 +30,8 @@ var saved_host
 var respawn_timer = 0.3
 var respawn_timer_max = respawn_timer
 
+var shockwave = Shockwave
+
 func _ready():
     if multiplayer and multiplayer.is_server():
         Immersive.client.peer_player_joined.connect(on_peer_player_joined)
@@ -41,6 +43,10 @@ func _ready():
 
     grid.cell_click.connect(on_cell_click)
     grid.wall_click.connect(on_wall_click)
+    
+    if multiplayer and !multiplayer.is_server():
+        shockwave = shockwave_scene.instantiate()
+        camera.add_child(shockwave)
    
 func _process(delta):
     if respawn_timer < respawn_timer_max:
@@ -71,6 +77,10 @@ func on_player_played():
             on_turn_done()
 
 func on_parasiting_done():
+    play_shockwave_anim.rpc(saved_host_pos)
+    
+    await get_tree().create_timer(1).timeout
+    
     player_managers.array[player_index_playing].spawn_player(grid, saved_host_pos)
     player_managers.array[player_index_playing].kill_player(grid, saved_player_pos)
     
@@ -251,6 +261,9 @@ func check_tile(grid_pos:Vector2, check_players: bool):
                 return player_is_present
     
     for host in hosts:
+        if host == null:
+            hosts.erase(host)
+            continue
         var host_grid_pos = grid.get_grid_pos(host.position)
         if (host_grid_pos == grid_pos):
             return host
@@ -273,3 +286,16 @@ func check_octo_around_player(player: Player):
 func _on_score_card_score_atteint():
     finish_game.rpc() # Replace with function body.
     Immersive.client.end_game()
+
+@rpc('authority') 
+func play_shockwave_anim(saved_host_pos: Vector2):
+    var screen_pos = check_tile(saved_host_pos, false).get_global_transform_with_canvas().get_origin()
+    screen_pos.x = screen_pos.x + 50
+    screen_pos.y = screen_pos.y + 50
+    
+    var screen_size = get_viewport_rect().size
+    var screen_ratio = screen_pos
+    screen_ratio.x = screen_ratio.x / screen_size.x
+    screen_ratio.y = screen_ratio.y / screen_size.y
+    
+    shockwave.play_shockwave_anim(screen_ratio)

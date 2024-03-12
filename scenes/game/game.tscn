@@ -1,14 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=9 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
 [ext_resource type="Script" path="res://scenes/game/hazard_mananger.gd" id="3_vmlt8"]
 [ext_resource type="PackedScene" uid="uid://biqj0t60x1dv0" path="res://scenes/HUD/hud.tscn" id="4_df5lj"]
+[ext_resource type="PackedScene" uid="uid://5cbujpr3l37j" path="res://scenes/simulation/shockwave.tscn" id="5_u66ru"]
 [ext_resource type="PackedScene" uid="uid://de6fuev88g57f" path="res://scenes/grid/grid.tscn" id="6_ybaom"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 [ext_resource type="PackedScene" uid="uid://cuou6t7fy6v45" path="res://scenes/player_manager/player_managers.tscn" id="10_ukfxk"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_managers", "grid", "host_spawner", "hud")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_managers", "grid", "host_spawner", "hud", "camera")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
@@ -16,6 +17,8 @@ player_managers = NodePath("PlayerManagers")
 grid = NodePath("Grid")
 host_spawner = NodePath("HostSpawner")
 hud = NodePath("HUD")
+shockwave_scene = ExtResource("5_u66ru")
+camera = NodePath("Camera2D")
 
 [node name="Background" parent="." instance=ExtResource("3_qtcvc")]
 
@@ -29,7 +32,6 @@ text = "Player 1: 0 points"
 text = "Player 2: 0 points"
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.8, 0.8)
 
 [node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("grid")]
 script = ExtResource("3_vmlt8")
