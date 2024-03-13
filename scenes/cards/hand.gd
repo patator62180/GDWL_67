@@ -12,6 +12,8 @@ var selected_card
 var card_scene
 var total_weight = 0
 
+@export var selected_color = Color(0.4, 1, 0.2, 1)
+
 signal card_selected(cardType : String)
 
 # Called when the node enters the scene tree for the first time.
@@ -69,12 +71,13 @@ func select_card(card_id):
             card_selected.emit(card.get_type())
             selected_card_index = i
             selected_card = card
+            selected_card.get_node("Background").material.set_shader_parameter("color", selected_color)
             break
             
 func unselect_selected_card():
     if selected_card_index == -1:
         return
-    selected_card.unselect()
+    selected_card.get_node("Background").material.set_shader_parameter("color", Color(0.4, 1, 0.2, 0))
     selected_card_index = -1
     selected_card = null    
     card_selected.emit("")  
