@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://b04li8a4ocs22"]
+
+[ext_resource type="Script" path="res://scenes/cards/card_resource.gd" id="1_53hyi"]
+[ext_resource type="Texture2D" uid="uid://bps2mwf4l2yxg" path="res://sprites/wall.png" id="1_h47ax"]
+
+[resource]
+script = ExtResource("1_53hyi")
+icon = ExtResource("1_h47ax")
+type = "Wall"
+weight = 8

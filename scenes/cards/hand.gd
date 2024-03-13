@@ -3,19 +3,24 @@ extends Control
 class_name Hand
 
 var cards = []
-var cards_loaded = []
+var card_ressources = []
 var card_width = 150
 
 var card_count = 0
 var selected_card_index = -1
 var selected_card
+var card_scene
+var total_weight = 0
 
 signal card_selected(cardType : String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    cards_loaded.append(preload("res://scenes/cards/movement_card.tscn"))
-    cards_loaded.append(preload("res://scenes/cards/wall_card.tscn"))
+    card_ressources.append(preload("res://scenes/cards/movement_card.tres"))
+    card_ressources.append(preload("res://scenes/cards/wall_card.tres"))
+    card_scene = preload("res://scenes/cards/card.tscn")
+    for ressource in card_ressources:
+        total_weight += ressource.weight
     pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,9 +31,23 @@ func _process(delta):
         unselect_selected_card()
     pass
     
+func get_card_index() -> int:
+    var rand = randi_range(0,total_weight-1)
+    var weight = 0
+    for i in range(0, card_ressources.size()):
+        weight += card_ressources[i].weight
+        print(weight)
+        if(rand<weight):
+            return i
+    assert(false, "total_weight < rand")
+    return 0
+    
 func draw():
-    var card_index = randi_range(0,cards_loaded.size()-1)
-    var card = cards_loaded[card_index].instantiate() as Card
+    var card_index = get_card_index()
+    var card_ressource = card_ressources[card_index]
+    var card = card_scene.instantiate() as Card
+    card.init(card_ressource)
+    
     add_child(card)
     
     card_count += 1
