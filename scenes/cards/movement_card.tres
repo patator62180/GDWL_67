@@ -1,10 +1,10 @@
 [gd_resource type="Resource" load_steps=3 format=3 uid="uid://u4r5dn3womcs"]
 
-[ext_resource type="Texture2D" uid="uid://bw52dcpcy8bxh" path="res://sprites/baldur.png" id="1_ivios"]
+[ext_resource type="Texture2D" uid="uid://cctxx75o7fc3p" path="res://sprites/Fond_carte_deplacement.png" id="1_10hp7"]
 [ext_resource type="Script" path="res://scenes/cards/card_resource.gd" id="2_x4hco"]
 
 [resource]
 script = ExtResource("2_x4hco")
-icon = ExtResource("1_ivios")
+icon = ExtResource("1_10hp7")
 type = "Movement"
 weight = 10

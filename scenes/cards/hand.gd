@@ -12,7 +12,7 @@ var selected_card
 var card_scene
 var total_weight = 0
 
-@export var selected_color = Color(0.4, 1, 0.2, 1)
+@export var selected_color = Color(0.4, 1, 0.2, 0.85)
 
 signal card_selected(cardType : String)
 
