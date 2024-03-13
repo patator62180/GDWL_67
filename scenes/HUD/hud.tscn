@@ -252,6 +252,7 @@ offset_top = 594.0
 offset_right = 1140.0
 offset_bottom = 638.0
 toggle_mode = true
+button_pressed = true
 texture_normal = ExtResource("6_5163j")
 texture_pressed = ExtResource("7_yym30")
 ignore_texture_size = true

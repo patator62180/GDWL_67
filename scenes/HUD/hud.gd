@@ -23,4 +23,6 @@ func set_winning_label(isWinning : bool):
     $YouLostLabel.visible = !isWinning
 
 func _on_mute_sound_toggled(toggled_on):
-    pass # Replace with function body.
+    if toggled_on:
+        get_parent().get_node("/root/BackgroundMusic/BGMusic").volume_db = -1000
+    else: get_parent().get_node("/root/BackgroundMusic/BGMusic").volume_db = -3.5
