@@ -9,23 +9,23 @@
 [ext_resource type="AudioStream" uid="uid://fmbwgsnigl5y" path="res://sfx/victory.mp3" id="8_2tbbm"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 [ext_resource type="AudioStream" uid="uid://c0yeg5i535w70" path="res://sfx/defeat.mp3" id="9_po4kl"]
-[ext_resource type="PackedScene" uid="uid://cuou6t7fy6v45" path="res://scenes/player_manager/player_managers.tscn" id="10_ukfxk"]
+[ext_resource type="PackedScene" uid="uid://cuou6t7fy6v45" path="res://scenes/character_manager/character_managers.tscn" id="10_ukfxk"]
 [ext_resource type="AudioStream" uid="uid://b3htu031n8oek" path="res://sfx/card_select.mp3" id="11_xco32"]
 [ext_resource type="AudioStream" uid="uid://mdgr2oybyu2j" path="res://sfx/shockwave.mp3" id="12_xl8hs"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_managers", "grid", "host_spawner", "hud", "camera")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "character_managers", "grid", "host_spawner", "hud", "camera")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
-player_managers = NodePath("PlayerManagers")
+character_managers = NodePath("CharacterManagers")
 grid = NodePath("Grid")
 host_spawner = NodePath("HostSpawner")
 hud = NodePath("HUD")
 shockwave_scene = ExtResource("3_ouo1f")
 camera = NodePath("Camera2D")
 
-[node name="HUD" parent="." node_paths=PackedStringArray("PlayerManagers") instance=ExtResource("4_df5lj")]
-PlayerManagers = NodePath("../PlayerManagers")
+[node name="HUD" parent="." node_paths=PackedStringArray("character_managers") instance=ExtResource("4_df5lj")]
+character_managers = NodePath("../CharacterManagers")
 
 [node name="Score J1" parent="HUD/ScoreCard" index="1"]
 text = "Player 1: 0 points"
@@ -47,9 +47,11 @@ spawn_path = NodePath("../Hosts")
 
 [node name="Background" parent="." instance=ExtResource("3_qtcvc")]
 
-[node name="Grid" parent="." instance=ExtResource("6_ybaom")]
+[node name="Grid" parent="." node_paths=PackedStringArray("tile_map", "selection_tile_map") instance=ExtResource("6_ybaom")]
+tile_map = NodePath("TileMapWall")
+selection_tile_map = NodePath("TileMap")
 
-[node name="PlayerManagers" parent="." instance=ExtResource("10_ukfxk")]
+[node name="CharacterManagers" parent="." instance=ExtResource("10_ukfxk")]
 
 [node name="Hosts" type="Node2D" parent="."]
 
@@ -67,14 +69,10 @@ stream = ExtResource("11_xco32")
 [node name="Shockwave" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("12_xl8hs")
 
-[connection signal="p1_scored" from="." to="HUD/ScoreCard" method="_on_game_p_1_scored"]
-[connection signal="p2_scored" from="." to="HUD/ScoreCard" method="_on_game_p_2_scored"]
 [connection signal="scoreAtteint" from="HUD/ScoreCard" to="." method="_on_score_card_score_atteint"]
 
 [editable path="HUD"]
 [editable path="Background"]
-[editable path="PlayerManagers"]
-[editable path="PlayerManagers/PlayerManager0"]
-[editable path="PlayerManagers/PlayerManager1"]
-[editable path="PlayerManagers/PlayerManager2"]
-[editable path="PlayerManagers/PlayerManager3"]
+[editable path="CharacterManagers"]
+[editable path="CharacterManagers/CharacterManager0"]
+[editable path="CharacterManagers/CharacterManager1"]

@@ -3,8 +3,8 @@ extends CanvasLayer
 class_name HUD
 
 @export var player_cards: Array[PlayerCard]
-@export var PlayerManagers: PlayerManagers
 @export var hand: Hand
+@export var character_managers: CharacterManagers
 
 func _ready():
     $YouWinLabel.visible = false

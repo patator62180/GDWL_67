@@ -63,13 +63,13 @@ func get_grid_pos(position: Vector2):
 func get_screen_pos(grid_pos: Vector2):
     return Vector2(grid_pos.x, grid_pos.y) * grid_size
     
-func show_possible_selection(grid_pos: Vector2, player_managers: PlayerManagers):
+func show_possible_selection(grid_pos: Vector2, character_managers: CharacterManagers):
     selected_tile = grid_pos
     selection_tile_map.clear()
     
     for direction in cardinal:
         var pos = Vector2(grid_pos + direction)
-        if is_possible_tile(pos) and is_possible_movement(grid_pos, direction) and player_managers.check_for_player(self, pos) == null:
+        if is_possible_tile(pos) and is_possible_movement(grid_pos, direction) and character_managers.check_for_player(self, pos) == null:
             selection_tile_map.set_cell(0, pos, 0, Vector2(0,0))
           
 

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://fceu5xy8mw51"]
+
+[ext_resource type="Script" path="res://scenes/character_manager/character_manager.gd" id="1_xbxu0"]
+[ext_resource type="PackedScene" uid="uid://bef6pckymx8bi" path="res://scenes/character/character.tscn" id="2_fd35r"]
+
+[node name="CharacterManager" type="Node2D" node_paths=PackedStringArray("characters_root", "character_spawner")]
+script = ExtResource("1_xbxu0")
+characters_root = NodePath("Characters")
+character_scene = ExtResource("2_fd35r")
+character_spawner = NodePath("CharacterSpawner")
+
+[node name="CharacterSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Characters")
+
+[node name="Characters" type="Node2D" parent="."]

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuou6t7fy6v45"]
+
+[ext_resource type="Script" path="res://scenes/character_manager/character_managers.gd" id="1_dly6x"]
+[ext_resource type="PackedScene" uid="uid://fceu5xy8mw51" path="res://scenes/character_manager/character_manager.tscn" id="2_ax8tw"]
+
+[node name="CharacterManagers" type="Node2D" node_paths=PackedStringArray("array")]
+script = ExtResource("1_dly6x")
+array = [NodePath("CharacterManager0"), NodePath("CharacterManager1")]
+
+[node name="CharacterManager0" parent="." instance=ExtResource("2_ax8tw")]
+initial_grid_pos = Vector2i(-2, -2)
+
+[node name="CharacterManager1" parent="." instance=ExtResource("2_ax8tw")]
+initial_grid_pos = Vector2i(2, -2)
+
+[editable path="CharacterManager0"]
+[editable path="CharacterManager1"]

@@ -1,8 +1,8 @@
 extends Node2D
 
-class_name PlayerManagers
+class_name CharacterManagers
 
-@export var array: Array[PlayerManager]
+@export var array: Array[CharacterManager]
 
 func check_for_player(grid: Grid, grid_pos:Vector2):
     for player_manager in array:

@@ -1,10 +1,10 @@
 extends Node2D
 
-const MAX_PLAYERS_COUNT = 4
+const MAX_PLAYERS_COUNT = 2
 
 @export var host_scene: PackedScene
 @export var host_root: Node2D
-@export var player_managers: PlayerManagers
+@export var character_managers: CharacterManagers
 @export var grid: Grid
 @export var host_spawner: MultiplayerSpawner
 @export var hud : HUD
@@ -21,7 +21,7 @@ var player_index: int
 var is_game_started: bool
 var is_choice_step: bool
 var is_game_over: bool = false
-var selected_player: Player
+var selected_character: Character
 var player_index_playing: int = -1
 var selected_card_type: String
 
@@ -38,8 +38,8 @@ func _ready():
     if multiplayer and multiplayer.is_server():
         Immersive.client.peer_player_joined.connect(on_peer_player_joined)
         
-        for player_character in player_managers.array:
-            player_character.played.connect(on_player_played)
+        for character_manager in character_managers.array:
+            character_manager.played.connect(on_player_played)
             
     host_spawner.spawn_function = spawn_host_client
 
@@ -66,19 +66,20 @@ func _process(delta):
     
 
 func on_player_played():
+    print('on_player_played')
     #check if a player is next to a host
-    for player in player_managers.array[player_index_playing].player_characters:
-        var host = check_octo_around_player(player)
+    for character in character_managers.array[player_index_playing].characters:
+        var host = check_octo_around_character(character)
         
         if host != null:
             saved_host_pos = grid.get_grid_pos(host.position)
-            saved_player_pos = grid.get_grid_pos(player.position)
+            saved_player_pos = grid.get_grid_pos(character.position)
             saved_host = host
             
-            player.parasited.connect(on_parasiting_done)
+            character.parasited.connect(on_parasiting_done)
             
-            player.shoot_your_shot(host.position)
-            player.shoot_your_shot.rpc(host.position)
+            character.shoot_your_shot(host.position)
+            character.shoot_your_shot.rpc(host.position)
             
             #on attend 1 seconde avant de tout kill
             await get_tree().create_timer(1).timeout
@@ -91,8 +92,8 @@ func on_parasiting_done():
     
     await get_tree().create_timer(1).timeout
     
-    player_managers.array[player_index_playing].spawn_player(grid, saved_host_pos)
-    player_managers.array[player_index_playing].kill_player(grid, saved_player_pos)
+    character_managers.array[player_index_playing].spawn_player(grid, saved_host_pos)
+    character_managers.array[player_index_playing].kill_player(grid, saved_player_pos)
     
     hosts.erase(saved_host)
     saved_host.queue_free()
@@ -110,10 +111,12 @@ func respawn_host():
     on_turn_done()
 
 func on_turn_done():
+    print('on_turn_done')
+
     player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
     
     for host in hosts:
-        host.move_host(grid, player_managers)
+        host.move_host(grid, character_managers)
         host.get_node("HostAnimationPlayer").play("idle")
     
     if hosts.is_empty():
@@ -126,9 +129,9 @@ func on_host_played():
 
 func check_if_player_won():
     for host in hosts:
-        var current_player_manager = player_managers.array[player_index_playing]
-        for player in current_player_manager.player_characters:
-            if(host.position == player.position):
+        var current_character_manager = character_managers.array[player_index_playing]
+        for character in current_character_manager.characters:
+            if(host.position == character.position):
                 finish_game.rpc()
 
 
@@ -153,8 +156,6 @@ func turn_indicator():
         #get_node("Background/Control/YourTurn").visible = false
         #get_node("Background/Control/OtherPlayerTurn").visible = true
 
-        
-
 @rpc('authority')
 func propagate_turn(player_index: int):
     player_index_playing = player_index
@@ -169,7 +170,7 @@ func finish_game():
 
     # on cache tout
     is_game_over = true
-    player_managers.visible = false
+    character_managers.visible = false
     grid.visible = false
 
 @rpc('any_peer')
@@ -182,7 +183,7 @@ func start_game():
             if player_index > len(players) - 1:
                 hud.player_cards[player_index].visible = false
             else:
-                player_managers.array[player_index].spawn_initial_player(grid)
+                character_managers.array[player_index].spawn_initial_player(grid)
 
         spawn_host(Vector2(0, -1))
         set_turn(0)
@@ -218,7 +219,7 @@ func give_start_game_permission():
 @rpc('authority')
 func propagate_start_game():
     hud.player_cards[player_index].set_start_game_button_enabled(false)
-    get_node("PlayerManagers/PlayerManager0").modulateFaceColor = get_node("HUD/ColorChoicePlayer1/HSlider").value
+    character_managers.array[0].modulateFaceColor = get_node("HUD/ColorChoicePlayer1/HSlider").value
 
 func request_start_game():
     start_game.rpc_id(1)
@@ -235,29 +236,29 @@ func on_peer_player_joined(id: int):
 
 func move_player(player_index: int, action: String):
     if multiplayer and multiplayer.is_server():
-        player_managers.array[player_index].process_action(action)
+        character_managers.array[player_index].process_action(action)
 
 func on_cell_click(grid_pos: Vector2):
     if multiplayer and not multiplayer.is_server() and is_player_active_turn():
         if(selected_card_type != "Movement"):
             return
-        var player_manager = player_managers.array[player_index]
+        var player_manager = character_managers.array[player_index]
         var found_player = player_manager.get_character_at_position(grid_pos, grid)
 
         if found_player != null:
-            selected_player = found_player
-            grid.show_possible_selection(grid_pos, player_managers)
+            selected_character = found_player
+            grid.show_possible_selection(grid_pos, character_managers)
             return
-        elif selected_player != null:
-            if selected_player.can_move_to(grid_pos, grid, player_managers):
-                selected_player.move_to.rpc_id(1, grid.get_screen_pos(grid_pos))
+        elif selected_character != null:
+            if selected_character.can_move_to(grid_pos, grid, character_managers):
+                selected_character.move_to.rpc_id(1, grid.get_screen_pos(grid_pos))
                 hud.hand.consume_selected_card()
                 
-            selected_player = null
+            selected_character = null
             grid.clear_possible_selections()
             return
         else:
-            selected_player = null
+            selected_character = null
             grid.clear_possible_selections()
 
 func on_wall_click(grid_pos: Vector2, tile_index: int):
@@ -279,7 +280,7 @@ func propagate_add_wall(grid_pos: Vector2, tile_index: int):
 func check_tile(grid_pos:Vector2, check_players: bool):
     if check_players:
         for i in range(0, players.size()):
-            var player_is_present = player_managers.check_for_player(grid, grid_pos)
+            var player_is_present = character_managers.check_for_player(grid, grid_pos)
             if player_is_present != null:
                 return player_is_present
     
@@ -293,15 +294,15 @@ func check_tile(grid_pos:Vector2, check_players: bool):
             
     return null
 
-func check_octo_around_player(player: Player):
-    var player_grid_pos = grid.get_grid_pos(player.position)
+func check_octo_around_character(character: Character):
+    var character_grid_pos = grid.get_grid_pos(character.position)
     
     for direction in grid.octo:
-        var found_entity = check_tile(player_grid_pos + direction, false)
+        var found_entity = check_tile(character_grid_pos + direction, false)
 
         if found_entity is Host:
             return found_entity as Host
-        elif found_entity is Player:
+        elif found_entity is Character:
             return null
             
     return null
