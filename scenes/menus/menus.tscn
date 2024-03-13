@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://27xb7kekk1ck"]
+[gd_scene load_steps=4 format=3 uid="uid://27xb7kekk1ck"]
 
 [ext_resource type="Script" path="res://scenes/menus/menus.gd" id="1_w7o1w"]
 [ext_resource type="PackedScene" uid="uid://dswfe7yyh4daq" path="res://scenes/game/game.tscn" id="2_h078q"]
+[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="3_sn0x5"]
 
 [node name="Menus" type="Node2D" node_paths=PackedStringArray("create_button", "join_button", "join_room_code")]
 script = ExtResource("1_w7o1w")
@@ -37,16 +38,19 @@ grow_vertical = 2
 [node name="CreateButton" type="Button" parent="CanvasLayer/Viewport/VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
+theme = ExtResource("3_sn0x5")
 theme_override_font_sizes/font_size = 30
 text = "CREATE ROOM"
 
 [node name="JoinRoomCode" type="TextEdit" parent="CanvasLayer/Viewport/VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
+theme = ExtResource("3_sn0x5")
 theme_override_font_sizes/font_size = 30
 
 [node name="JoinButton" type="Button" parent="CanvasLayer/Viewport/VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
+theme = ExtResource("3_sn0x5")
 theme_override_font_sizes/font_size = 30
 text = "JOIN ROOM"

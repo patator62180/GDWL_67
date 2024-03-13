@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://biumy12wvsfs5"]
+[gd_scene load_steps=4 format=3 uid="uid://biumy12wvsfs5"]
 
 [ext_resource type="Script" path="res://scenes/player_card/player_card.gd" id="1_n1egu"]
+[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="2_dmo1j"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ivrl7"]
 properties/0/path = NodePath("VBoxContainer/Status:text")
@@ -47,18 +48,21 @@ offset_bottom = 40.0
 
 [node name="PlayerIndex" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_dmo1j")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "PLAYER 1 (YOU)"
 
 [node name="Status" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_dmo1j")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
 text = "NOT CONNECTED"
 
 [node name="StartGameButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_dmo1j")
 text = "Start Game"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
