@@ -46,6 +46,7 @@ scale = Vector2(12000, 12000)
 texture = SubResource("PlaceholderTexture2D_kj0u0")
 
 [node name="YourTurn" type="TextEdit" parent="Control"]
+visible = false
 layout_mode = 0
 offset_left = 491.0
 offset_top = -72.0
@@ -56,6 +57,7 @@ theme_override_font_sizes/font_size = 36
 text = "Your turn!"
 
 [node name="OtherPlayerTurn" type="TextEdit" parent="Control"]
+visible = false
 layout_mode = 0
 offset_left = 407.5
 offset_top = -72.0
