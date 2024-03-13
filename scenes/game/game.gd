@@ -183,12 +183,14 @@ func start_game():
         for player_index in range(MAX_PLAYERS_COUNT):
             if player_index > len(players) - 1:
                 hud.player_cards[player_index].visible = false
+                get_node("HUD/PlayerCards").visible = false
             else:
                 player_managers.array[player_index].spawn_initial_player(grid)
 
         spawn_host(Vector2(0, -1))
         set_turn(0)
         Immersive.client.starts_playing()
+        
 
 func spawn_host(grid_pos: Vector2):
     host_spawner.spawn(grid.get_screen_pos(grid_pos))
