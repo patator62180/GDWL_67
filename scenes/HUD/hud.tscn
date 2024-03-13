@@ -1,10 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://biqj0t60x1dv0"]
+[gd_scene load_steps=15 format=3 uid="uid://biqj0t60x1dv0"]
 
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_0lgt1"]
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
 [ext_resource type="Script" path="res://scenes/game/ScoreControl.gd" id="3_og24l"]
 [ext_resource type="Shader" path="res://scenes/game/scoreHueJ1.gdshader" id="4_wnq48"]
 [ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/cards/hand.tscn" id="5_euuyo"]
+[ext_resource type="Texture2D" uid="uid://bla2q5wqubnu8" path="res://sprites/sound_mute.png" id="6_5163j"]
+[ext_resource type="Texture2D" uid="uid://bsqi6cgf3k5c7" path="res://sprites/sound_unmute.png" id="7_yym30"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
 font_size = 50
@@ -243,3 +245,16 @@ color = Color(1, 0.71, 0.306, 1)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_76jcf")
+
+[node name="MuteSound" type="TextureButton" parent="."]
+offset_left = 1096.0
+offset_top = 594.0
+offset_right = 1140.0
+offset_bottom = 638.0
+toggle_mode = true
+texture_normal = ExtResource("6_5163j")
+texture_pressed = ExtResource("7_yym30")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="toggled" from="MuteSound" to="." method="_on_mute_sound_toggled"]

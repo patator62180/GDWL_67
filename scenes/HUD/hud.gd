@@ -6,6 +6,8 @@ class_name HUD
 @export var PlayerManagers: PlayerManagers
 @export var hand: Hand
 
+signal mute_music
+
 func _ready():
     $YouWinLabel.visible = false
     $YouLostLabel.visible = false
@@ -20,3 +22,5 @@ func set_winning_label(isWinning : bool):
     $YouWinLabel.visible = isWinning
     $YouLostLabel.visible = !isWinning
 
+func _on_mute_sound_toggled(toggled_on):
+    pass # Replace with function body.

@@ -53,8 +53,8 @@ func _process(delta):
         
     manage_highlight_arows()
     
-    if selection_tile_map.get_cell_source_id(0, get_grid_pos(get_local_mouse_position())) == 1:
-        play_sound_hovered_tile()
+    #if selection_tile_map.get_cell_source_id(0, get_grid_pos(get_local_mouse_position())) == 1:
+        #play_sound_hovered_tile()
 
         
 func get_grid_pos(position: Vector2):
@@ -99,6 +99,7 @@ func is_possible_movement(grid_pos: Vector2, direction: Vector2):
     
     
 func add_wall(grid_pos: Vector2, tile_index: int):
+    get_node("Audio/WallPlaced").play()
     wall_tile_map.set_cell(0, grid_pos, tile_index, Vector2.ZERO)
     
     
@@ -163,10 +164,11 @@ func manage_highlight_arows():
                     atlas_id = Vector2(3,0)
                     
             selection_tile_map.set_cell(0, grid_pos, 1, atlas_id)
-            #play_sound_hovered_tile()  
-            previous_hovered_tile = grid_pos
-        #if highlight_id == 1:
-        #    play_sound_hovered_tile()  
+            #play_sound_hovered_tile()
+            if !(previous_hovered_tile == grid_pos):
+                print("nouvelle tile")
+                play_sound_hovered_tile()                        
+            previous_hovered_tile = grid_pos 
 
 func play_sound_hovered_tile():
     get_node("Audio/HoverTile").play()

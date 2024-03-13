@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://de6fuev88g57f"]
+[gd_scene load_steps=7 format=3 uid="uid://de6fuev88g57f"]
 
 [ext_resource type="Script" path="res://scenes/grid/grid.gd" id="1_qbift"]
 [ext_resource type="TileSet" uid="uid://dpgv8vcohuucb" path="res://tile_sets/level1.tres" id="2_pqvwu"]
 [ext_resource type="TileSet" uid="uid://baqdshuahgp71" path="res://tile_sets/selection.tres" id="3_i4i5g"]
 [ext_resource type="TileSet" uid="uid://wxknivquryt0" path="res://tile_sets/walls.tres" id="4_7guad"]
 [ext_resource type="AudioStream" uid="uid://tji23qvojdb7" path="res://sfx/pop.mp3" id="5_pwjkd"]
+[ext_resource type="AudioStream" uid="uid://cu3s0qtl3ihm" path="res://sfx/wall_placed.mp3" id="6_bt221"]
 
 [node name="Grid" type="Node2D" node_paths=PackedStringArray("tile_map", "selection_tile_map", "wall_tile_map", "selection_wall_tile_map")]
 script = ExtResource("1_qbift")
@@ -37,3 +38,9 @@ format = 2
 [node name="HoverTile" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("5_pwjkd")
 pitch_scale = 1.29
+
+[node name="WallPlaced" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_bt221")
+volume_db = 3.514
+pitch_scale = 0.49
+max_polyphony = 2
