@@ -36,11 +36,14 @@ func get_card_index() -> int:
     var weight = 0
     for i in range(0, card_ressources.size()):
         weight += card_ressources[i].weight
-        print(weight)
         if(rand<weight):
             return i
     assert(false, "total_weight < rand")
     return 0
+
+func draw_multiple(count : int):
+    for i in range(0,count):
+        draw()
     
 func draw():
     var card_index = get_card_index()

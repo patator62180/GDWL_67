@@ -158,6 +158,8 @@ func turn_indicator():
 @rpc('authority')
 func propagate_turn(player_index: int):
     player_index_playing = player_index
+    if is_player_active_turn():
+        hud.hand.draw()
 
 @rpc('authority')
 func finish_game():
@@ -219,6 +221,7 @@ func give_start_game_permission():
 func propagate_start_game():
     hud.player_cards[player_index].set_start_game_button_enabled(false)
     get_node("PlayerManagers/PlayerManager0").modulateFaceColor = get_node("HUD/ColorChoicePlayer1/HSlider").value
+    hud.hand.draw_multiple(2)
 
 func request_start_game():
     start_game.rpc_id(1)
