@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://ddsgdn7jinj07"]
+[gd_scene load_steps=15 format=3 uid="uid://ddsgdn7jinj07"]
 
 [ext_resource type="Script" path="res://scenes/host/host.gd" id="1_xj1si"]
 [ext_resource type="Texture2D" uid="uid://bt7ayn6cf25vw" path="res://sprites/host/host_face.png" id="2_j7jfi"]
 [ext_resource type="Texture2D" uid="uid://vc86upo1af8w" path="res://sprites/host/host_eyes.png" id="3_o6kn0"]
 [ext_resource type="Texture2D" uid="uid://bvy0a4h78ocik" path="res://sprites/host/host_smile.png" id="4_o157e"]
+[ext_resource type="AudioStream" uid="uid://cvqesd4804rxk" path="res://sfx/host_spawn.mp3" id="5_426f7"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jq7ml"]
 properties/0/path = NodePath(".:position")
@@ -84,6 +85,18 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector2(0, 0)]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AnimationTree/AudioStreamPlayer:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_xlvip"]
 resource_name = "idle"
@@ -117,6 +130,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_2l565"]
 resource_name = "spawn"
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -165,6 +179,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [0.907571, 0.0]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimationTree/AudioStreamPlayer:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cw1j3"]
 _data = {
@@ -172,6 +198,24 @@ _data = {
 "idle": SubResource("Animation_xlvip"),
 "spawn": SubResource("Animation_2l565")
 }
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dq6gb"]
+animation = &"spawn"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5eax4"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_2eil6"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_bsadf"]
+graph_offset = Vector2(-547.507, 96.9112)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_5eax4")
+nodes/Animation/position = Vector2(-400, 180)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_dq6gb")
+"nodes/Animation 2/position" = Vector2(-380, 320)
+nodes/OneShot/node = SubResource("AnimationNodeOneShot_2eil6")
+nodes/OneShot/position = Vector2(-40, 160)
+node_connections = [&"OneShot", 0, &"Animation", &"OneShot", 1, &"Animation 2", &"output", 0, &"OneShot"]
 
 [node name="Host" type="Node2D" node_paths=PackedStringArray("raycast")]
 script = ExtResource("1_xj1si")
@@ -198,9 +242,24 @@ replication_config = SubResource("SceneReplicationConfig_jq7ml")
 position = Vector2(50, 50)
 target_position = Vector2(0, 75)
 
-[node name="HostAnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cw1j3")
+}
+tree_root = SubResource("AnimationNodeBlendTree_bsadf")
+anim_player = NodePath("HostAnimationPlayer")
+parameters/OneShot/active = false
+parameters/OneShot/internal_active = false
+parameters/OneShot/request = 0
+
+[node name="HostAnimationPlayer" type="AnimationPlayer" parent="AnimationTree"]
 unique_name_in_owner = true
+root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_cw1j3")
 }
 autoplay = "idle"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AnimationTree"]
+stream = ExtResource("5_426f7")
+pitch_scale = 0.25

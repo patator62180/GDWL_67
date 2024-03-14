@@ -108,7 +108,6 @@ func on_turn_done():
     
     for host in hosts:
         host.move_host(grid, player_managers)
-        host.get_node("HostAnimationPlayer").play("idle")
     
     if hosts.is_empty():
         on_host_played()
@@ -130,7 +129,6 @@ func spawn_host_client(position):
         pass
     else: 
         var host = host_scene.instantiate()
-        host.get_node("HostAnimationPlayer").play("spawn")
         host.position = position
         host.played.connect(on_host_played)
     

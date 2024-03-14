@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsmt3xnq7i1eu"]
+[gd_scene load_steps=4 format=3 uid="uid://dsmt3xnq7i1eu"]
 
 [ext_resource type="Script" path="res://scenes/cards/hand.gd" id="1_cctgx"]
 [ext_resource type="Texture2D" uid="uid://547e7ytc7lrc" path="res://sprites/card_back.png" id="2_kyxea"]
+[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="3_nr81q"]
 
 [node name="Hand" type="Control" node_paths=PackedStringArray("cards_parent")]
 layout_mode = 3
@@ -68,7 +69,8 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme = ExtResource("3_nr81q")
+theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 41
 bbcode_enabled = true
 text = "[center]DRAW[/center]"
