@@ -12,6 +12,7 @@ signal wall_click
 
 var grid_size
 
+var selected_card_type
 var selected_wall_tile = null
 var current_wall_index = 0
 
@@ -123,7 +124,7 @@ func try_create_wall():
     return false     
 
 func check_wall_input_pressed():
-    if get_parent().selected_card_type == "Wall":
+    if selected_card_type == "Wall":
         var mouse_pos = get_local_mouse_position()
         var grid_pos_offset = get_grid_pos(mouse_pos - Vector2.ONE * grid_size / 2)
         
@@ -138,7 +139,7 @@ func check_wall_input_pressed():
             selection_wall_tile_map.set_cell(0, selected_wall_tile, current_wall_index, Vector2.ZERO)  
             
 func check_wall_input_released():  
-    if get_parent().selected_card_type != "Wall":
+    if selected_card_type != "Wall":
         selection_wall_tile_map.clear()
         selected_wall_tile = null
             

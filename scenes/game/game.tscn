@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=15 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://5cbujpr3l37j" path="res://scenes/simulation/shockwave.tscn" id="3_ouo1f"]
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
 [ext_resource type="Script" path="res://scenes/game/hazard_mananger.gd" id="3_vmlt8"]
 [ext_resource type="PackedScene" uid="uid://biqj0t60x1dv0" path="res://scenes/HUD/hud.tscn" id="4_df5lj"]
+[ext_resource type="Script" path="res://scenes/game/player_controller.gd" id="5_c6l1t"]
 [ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="5_j0bn7"]
 [ext_resource type="PackedScene" uid="uid://de6fuev88g57f" path="res://scenes/grid/grid.tscn" id="6_ybaom"]
 [ext_resource type="AudioStream" uid="uid://fmbwgsnigl5y" path="res://sfx/victory.mp3" id="8_2tbbm"]
@@ -14,7 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://b3htu031n8oek" path="res://sfx/card_select.mp3" id="11_xco32"]
 [ext_resource type="AudioStream" uid="uid://mdgr2oybyu2j" path="res://sfx/shockwave.mp3" id="12_xl8hs"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_managers", "grid", "host_spawner", "hud", "camera")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_managers", "grid", "host_spawner", "hud", "player_controller", "camera")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
@@ -23,7 +24,23 @@ grid = NodePath("Grid")
 host_spawner = NodePath("HostSpawner")
 hud = NodePath("HUD")
 shockwave_scene = ExtResource("3_ouo1f")
+player_controller = NodePath("PlayerController")
 camera = NodePath("Camera2D")
+
+[node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("hud", "game", "player_managers", "grid", "background", "your_turn", "other_player_turn", "defeat_sound", "victory_sound", "card_selection_sound", "horizontal_slider")]
+script = ExtResource("5_c6l1t")
+hud = NodePath("../HUD")
+game = NodePath("..")
+player_managers = NodePath("../PlayerManagers")
+grid = NodePath("../Grid")
+host_scene = ExtResource("8_va0h3")
+background = NodePath("../Background/Control/Background")
+your_turn = NodePath("../Background/Control/YourTurn")
+other_player_turn = NodePath("../Background/Control/OtherPlayerTurn")
+defeat_sound = NodePath("../Audio/Defeat")
+victory_sound = NodePath("../Audio/Victory")
+card_selection_sound = NodePath("../Audio/CardSelection")
+horizontal_slider = NodePath("../HUD/ColorChoicePlayer1/HSlider")
 
 [node name="HUD" parent="." node_paths=PackedStringArray("PlayerManagers") instance=ExtResource("4_df5lj")]
 PlayerManagers = NodePath("../PlayerManagers")
