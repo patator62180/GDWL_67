@@ -64,6 +64,12 @@ func _process(delta):
     
     turn_indicator()
     
+    if(selected_card_type == "Hole"):
+        grid.show_hole_selection(player_managers)
+        if Input.is_action_just_pressed("mouse_select"):
+            grid.create_hole()
+            on_player_played()
+    
 
 func on_player_played():
     #check if a player is next to a host

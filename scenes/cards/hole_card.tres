@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://d3kvpxoxk5qxj"]
+
+[ext_resource type="Texture2D" uid="uid://bjlre1l8ka865" path="res://sprites/circle.png" id="1_5cj0a"]
+[ext_resource type="Script" path="res://scenes/cards/card_resource.gd" id="2_pm103"]
+
+[resource]
+script = ExtResource("2_pm103")
+icon = ExtResource("1_5cj0a")
+type = "Hole"
+weight = 1000

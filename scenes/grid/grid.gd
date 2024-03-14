@@ -50,11 +50,8 @@ func _process(delta):
     
     check_wall_input_pressed()
     check_wall_input_released()
-        
+       
     manage_highlight_arows()
-    
-    #if selection_tile_map.get_cell_source_id(0, get_grid_pos(get_local_mouse_position())) == 1:
-        #play_sound_hovered_tile()
 
         
 func get_grid_pos(position: Vector2):
@@ -175,3 +172,25 @@ func play_sound_hovered_tile():
     var rng = RandomNumberGenerator.new()
     get_node("Audio/HoverTile").pitch_scale = rng.randf_range(0.70,1.30)
     
+func show_hole_selection(player_managers : PlayerManagers):
+    selection_tile_map.clear()   
+    var mouse_pos = get_local_mouse_position()
+    var grid_pos_offset = get_grid_pos(mouse_pos)
+    if is_possible_tile(grid_pos_offset) and player_managers.check_for_player(self, grid_pos_offset) == null:
+        selection_tile_map.set_cell(0, grid_pos_offset, 0, Vector2(0,0))
+
+func create_hole():
+    selection_tile_map.clear()
+    var mouse_pos = get_local_mouse_position()
+    var grid_pos = get_grid_pos(mouse_pos)
+    request_create_hole.rpc(grid_pos)    
+
+@rpc('any_peer')
+func request_create_hole(grid_position : Vector2):
+    if multiplayer.is_server():
+        propagate_create_hole.rpc(grid_position)
+    
+@rpc('authority')
+func propagate_create_hole(grid_position : Vector2):    
+    tile_map.set_cell(0, grid_position, 0, Vector2(1,1))
+    print("propagate")

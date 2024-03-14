@@ -20,6 +20,7 @@ signal card_selected(cardType : String)
 func _ready():
     card_ressources.append(preload("res://scenes/cards/movement_card.tres"))
     card_ressources.append(preload("res://scenes/cards/wall_card.tres"))
+    card_ressources.append(preload("res://scenes/cards/hole_card.tres"))
     card_scene = preload("res://scenes/cards/card.tscn")
     for ressource in card_ressources:
         total_weight += ressource.weight

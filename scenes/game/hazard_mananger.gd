@@ -23,4 +23,3 @@ func pass_turn():
     var randomY = rng.randi_range(bounds.y, bounds.w)
     
     grid.tile_map.set_cell(0, Vector2(randomX, randomY), 0, Vector2(1,1))
-    
