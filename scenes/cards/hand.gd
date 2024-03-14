@@ -13,6 +13,10 @@ var card_scene
 var total_weight = 0
 
 @export var selected_color = Color(0.4, 1, 0.2, 0.85)
+@export var cards_parent: Control
+
+@export var max_width: int
+@export var max_card_angle: float
 
 signal card_selected(cardType : String)
 
@@ -27,8 +31,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-    if Input.is_action_just_pressed("ui_accept"):
-        draw()
+    #if Input.is_action_just_pressed("ui_accept"):
+        #draw()
     if Input.is_action_just_pressed("escape"):
         unselect_selected_card()
     pass
@@ -53,7 +57,7 @@ func draw():
     var card = card_scene.instantiate() as Card
     card.init(card_ressource)
     
-    add_child(card)
+    cards_parent.add_child(card)
     
     card_count += 1
     card.card_id = card_count
@@ -61,6 +65,8 @@ func draw():
     
     cards.push_back(card)
     reposition_cards()
+    
+    play_card_appear_anims(card)
 
 func select_card(card_id):
     unselect_selected_card()
@@ -83,11 +89,28 @@ func unselect_selected_card():
     card_selected.emit("")  
     
 func reposition_cards():
+    var authorized_card_width = card_width
+    if cards.size() > 1: 
+        authorized_card_width = (max_width - card_width) as float / (cards.size() - 1)
+    
+    var actual_width = min(card_width, authorized_card_width)
+    
     for i in range(0, cards.size()):
-        cards[i].position = Vector2(i * card_width - cards.size() * card_width / 2, 0)
+        cards[i].position = Vector2(i * actual_width - (cards.size() - 1) * actual_width / 2 - card_width / 2, 0)
+        cards[i].rotation_degrees = ((i+0.5) as float / cards.size()) * max_card_angle - max_card_angle / 2
+        print(cards[i].rotation_degrees)
 
 func consume_selected_card():
     cards.remove_at(selected_card_index)
     selected_card.queue_free()
     unselect_selected_card()
     reposition_cards()
+
+func _on_deck_gui_input(event):
+    if event is InputEventMouseButton and event.get_button_index() == MOUSE_BUTTON_LEFT and event.is_pressed():
+        draw()
+
+func play_card_appear_anims(card: Card):
+    card.show_card_appear()
+    await get_tree().create_timer(0.3).timeout
+    card.flip_card()
