@@ -84,7 +84,7 @@ func on_cell_click(grid_pos: Vector2):
             return
         elif selected_player != null:
             if selected_player.can_move_to(grid_pos, grid, player_managers):
-                selected_player.move_to.rpc_id(1, grid.get_screen_pos(grid_pos))
+                Mediator.instance.call_on_server(selected_player.move_to, grid.get_screen_pos(grid_pos))
                 hud.hand.consume_selected_card()
                 
             selected_player = null

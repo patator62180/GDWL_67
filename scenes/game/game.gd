@@ -72,7 +72,7 @@ func on_player_played():
             player.parasited.connect(on_parasiting_done)
             
             player.shoot_your_shot(host.position)
-            player.shoot_your_shot.rpc(host.position)
+            Mediator.instance.call_on_players(player.shoot_your_shot, host.position)
             
             #on attend 1 seconde avant de tout kill
             await get_tree().create_timer(1).timeout
@@ -81,7 +81,7 @@ func on_player_played():
             on_turn_done()
 
 func on_parasiting_done():
-    play_shockwave_anim.rpc(saved_host_pos)
+    Mediator.instance.call_on_players(play_shockwave_anim, saved_host_pos)
     
     await get_tree().create_timer(1).timeout
     
@@ -122,7 +122,7 @@ func check_if_player_won():
         var current_player_manager = player_managers.array[player_index_playing]
         for player in current_player_manager.player_characters:
             if(host.position == player.position):
-                player_controller.finish_game.rpc()
+                Mediator.instance.call_on_players(player_controller.finish_game)
 
 func spawn_host_client(position):
     if is_game_over:
@@ -137,7 +137,7 @@ func spawn_host_client(position):
         return host
 
 func set_turn(player_index: int):
-    player_controller.propagate_turn.rpc(player_index)
+    Mediator.instance.call_on_players(player_controller.propagate_turn, player_index)
     
     for index in range(MAX_PLAYERS_COUNT):
         hud.player_cards[index].set_playing(player_index == index)
@@ -147,7 +147,7 @@ func set_turn(player_index: int):
 @rpc('any_peer')
 func start_game():
     if multiplayer and multiplayer.is_server():
-        player_controller.propagate_start_game.rpc()
+        Mediator.instance.call_on_players(player_controller.propagate_start_game)
         is_game_started = true
 
         for player_index in range(MAX_PLAYERS_COUNT):
@@ -166,17 +166,17 @@ func spawn_host(grid_pos: Vector2):
     host_spawner.spawn(grid.get_screen_pos(grid_pos))
     
 func request_start_game():
-    start_game.rpc_id(1)
+    Mediator.instance.call_on_server(start_game)
 
 func on_peer_player_joined(id: int):
     var player_index = len(players)
     
     players.append(id)
-    player_controller.assign_player.rpc_id(id, player_index)
+    Mediator.instance.call_on_player(id, player_controller.assign_player, player_index)
     hud.player_cards[player_index].set_connected()
     
     if player_index == 1:
-        player_controller.give_start_game_permission.rpc_id(players[0])
+        Mediator.instance.call_on_player(players[0], player_controller.give_start_game_permission)
 
 func move_player(player_index: int, action: String):
     if multiplayer and multiplayer.is_server():
@@ -185,14 +185,14 @@ func move_player(player_index: int, action: String):
 
 func on_wall_click(grid_pos: Vector2, tile_index: int):
     if multiplayer and not multiplayer.is_server():
-        add_wall.rpc_id(1, grid_pos, tile_index)
+        Mediator.instance.call_on_server(add_wall, grid_pos, tile_index)
         hud.hand.consume_selected_card()
 
 @rpc('any_peer')
 func add_wall(grid_pos: Vector2, tile_index: int):
     if multiplayer and multiplayer.is_server():
         grid.add_wall(grid_pos, tile_index)
-        propagate_add_wall.rpc(grid_pos, tile_index)
+        Mediator.instance.call_on_players(propagate_add_wall, grid_pos, tile_index)
         on_player_played()
 
 @rpc('authority')
@@ -213,7 +213,7 @@ func check_tile(grid_pos:Vector2, check_players: bool):
         var host_grid_pos = grid.get_grid_pos(host.position)
         if (host_grid_pos == grid_pos):
             return host
-            
+
     return null
 
 func check_octo_around_player(player: Player):
@@ -230,7 +230,7 @@ func check_octo_around_player(player: Player):
     return null
 
 func _on_score_card_score_atteint():
-    player_controller.finish_game.rpc()
+    Mediator.instance.call_on_players(player_controller.finish_game)
     Immersive.client.end_game()
 
 @rpc('authority') 

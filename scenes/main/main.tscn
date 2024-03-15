@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcv21hlg1vmfw"]
+[gd_scene load_steps=6 format=3 uid="uid://bcv21hlg1vmfw"]
 
 [ext_resource type="PackedScene" uid="uid://c7c40bidrm85h" path="res://scenes/immersive/immersive.tscn" id="1_7burc"]
 [ext_resource type="PackedScene" uid="uid://27xb7kekk1ck" path="res://scenes/menus/menus.tscn" id="2_5c3tl"]
 [ext_resource type="PackedScene" uid="uid://dswfe7yyh4daq" path="res://scenes/game/game.tscn" id="2_l3lpd"]
 [ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/cards/hand.tscn" id="4_fdwri"]
+[ext_resource type="Script" path="res://scenes/main/mediator.gd" id="4_kih3o"]
 
 [node name="Main" type="Node2D"]
 
@@ -12,6 +13,9 @@ client_start_scene = ExtResource("2_5c3tl")
 server_start_scene = ExtResource("2_l3lpd")
 remote_server_uri = "wss://immersive.dawee.org"
 remote_immersive_api = "https://immersive.dawee.org"
+
+[node name="Mediator" type="Node2D" parent="."]
+script = ExtResource("4_kih3o")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
