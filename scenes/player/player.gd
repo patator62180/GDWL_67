@@ -35,7 +35,7 @@ func move(direction):
 
 @rpc("any_peer")
 func move_to(position: Vector2):
-    if multiplayer and multiplayer.is_server():
+    if Mediator.instance.is_server():
         is_moving = true
         start_pos = self.position
         target_pos = position

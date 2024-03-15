@@ -4,10 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://dswfe7yyh4daq" path="res://scenes/game/game.tscn" id="2_h078q"]
 [ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="3_sn0x5"]
 
-[node name="Menus" type="Node2D" node_paths=PackedStringArray("create_button", "join_button", "join_room_code")]
+[node name="Menus" type="Node2D" node_paths=PackedStringArray("create_button", "join_button", "play_local_button", "join_room_code")]
 script = ExtResource("1_w7o1w")
 create_button = NodePath("CanvasLayer/Viewport/VBoxContainer/CreateButton")
 join_button = NodePath("CanvasLayer/Viewport/VBoxContainer/JoinButton")
+play_local_button = NodePath("CanvasLayer/Viewport/VBoxContainer/LocalRoomButton")
 join_room_code = NodePath("CanvasLayer/Viewport/VBoxContainer/JoinRoomCode")
 game_scene = ExtResource("2_h078q")
 
@@ -34,6 +35,13 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="LocalRoomButton" type="Button" parent="CanvasLayer/Viewport/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme = ExtResource("3_sn0x5")
+theme_override_font_sizes/font_size = 30
+text = "PLAY LOCAL"
 
 [node name="CreateButton" type="Button" parent="CanvasLayer/Viewport/VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)

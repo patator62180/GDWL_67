@@ -35,8 +35,8 @@ var respawn_timer_max = respawn_timer
 var shockwave = Shockwave
 
 func _ready():
-    if multiplayer and multiplayer.is_server():
-        Immersive.client.peer_player_joined.connect(on_peer_player_joined)
+    if Mediator.instance.is_server():
+        Mediator.instance.listen_peer_player_connection(on_peer_player_joined)
         
         for player_character in player_managers.array:
             player_character.played.connect(on_player_played)
@@ -44,7 +44,7 @@ func _ready():
     grid.wall_click.connect(on_wall_click)
     host_spawner.spawn_function = spawn_host_client
     
-    if multiplayer and !multiplayer.is_server():
+    if Mediator.instance.is_player():
         shockwave = shockwave_scene.instantiate()
         camera.add_child(shockwave)
             
@@ -146,7 +146,7 @@ func set_turn(player_index: int):
 
 @rpc('any_peer')
 func start_game():
-    if multiplayer and multiplayer.is_server():
+    if Mediator.instance.is_server():
         Mediator.instance.call_on_players(player_controller.propagate_start_game)
         is_game_started = true
 
@@ -179,18 +179,18 @@ func on_peer_player_joined(id: int):
         Mediator.instance.call_on_player(players[0], player_controller.give_start_game_permission)
 
 func move_player(player_index: int, action: String):
-    if multiplayer and multiplayer.is_server():
+    if Mediator.instance.is_server():
         player_managers.array[player_index].process_action(action)
 
 
 func on_wall_click(grid_pos: Vector2, tile_index: int):
-    if multiplayer and not multiplayer.is_server():
+    if Mediator.instance.is_player():
         Mediator.instance.call_on_server(add_wall, grid_pos, tile_index)
         hud.hand.consume_selected_card()
 
 @rpc('any_peer')
 func add_wall(grid_pos: Vector2, tile_index: int):
-    if multiplayer and multiplayer.is_server():
+    if Mediator.instance.is_server():
         grid.add_wall(grid_pos, tile_index)
         Mediator.instance.call_on_players(propagate_add_wall, grid_pos, tile_index)
         on_player_played()

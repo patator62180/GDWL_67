@@ -35,14 +35,14 @@ func propagate_start_game():
 @rpc('authority')
 func propagate_turn(player_index: int):
     player_index_playing = player_index
-    if is_player_active_turn():
+    if can_play():
         hud.hand.draw()
 
 @rpc('authority')
 func finish_game():
-    hud.set_winning_label(is_player_active_turn())
+    hud.set_winning_label(can_play())
     get_tree().get_root().get_node("BackgroundMusic/BGMusic").stream_paused = true
-    if is_player_active_turn():
+    if can_play():
         victory_sound.play()
     else: 
         defeat_sound.play()
@@ -60,9 +60,11 @@ func assign_player(player_index: int):
 func is_player_active_turn():
     return player_index_playing == player_index
 
+func can_play():
+    return Mediator.instance.is_couch or is_player_active_turn()
 
 func turn_indicator():
-    if is_player_active_turn():
+    if can_play():
         background.material.set_shader_parameter("tint_color", Color(1,1,1,1))
         your_turn.visible = true
         other_player_turn.visible = false
@@ -72,10 +74,10 @@ func turn_indicator():
         other_player_turn.visible = true
 
 func on_cell_click(grid_pos: Vector2):
-    if multiplayer and not multiplayer.is_server() and is_player_active_turn():
+    if Mediator.instance.is_player() and can_play():
         if(grid.selected_card_type != "Movement"):
             return
-        var player_manager = player_managers.array[player_index]
+        var player_manager = player_managers.array[player_index_playing]
         var found_player = player_manager.get_character_at_position(grid_pos, grid)
 
         if found_player != null:
