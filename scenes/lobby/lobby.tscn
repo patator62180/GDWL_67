@@ -3,12 +3,13 @@
 [ext_resource type="Script" path="res://scenes/lobby/lobby.gd" id="1_061j6"]
 [ext_resource type="PackedScene" uid="uid://b8f8j4dualeev" path="res://scenes/menus/connected_player.tscn" id="2_al2yg"]
 
-[node name="Lobby" type="CanvasLayer" node_paths=PackedStringArray("start_button", "screen_title", "connected_players_list")]
+[node name="Lobby" type="CanvasLayer" node_paths=PackedStringArray("start_button", "screen_title", "connected_players_list", "nickname_edit")]
 script = ExtResource("1_061j6")
 start_button = NodePath("Container/StartButton")
 screen_title = NodePath("Container/Title")
 connected_player_scene = ExtResource("2_al2yg")
 connected_players_list = NodePath("Container/ConnectedPlayers/VBoxContainer")
+nickname_edit = NodePath("Container/Setup/Nickname/TextEdit")
 
 [node name="Container" type="Control" parent="."]
 layout_mode = 3
@@ -123,7 +124,7 @@ offset_top = -4.0
 offset_bottom = 4.0
 grow_horizontal = 0
 grow_vertical = 2
-text = "Michel"
+text = "_____________"
 
 [node name="Color" type="Control" parent="Container/Setup"]
 custom_minimum_size = Vector2(400, 50)
