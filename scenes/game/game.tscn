@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=13 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://dr81328k8drup" path="res://scenes/camera/camera_2d.tscn" id="6_upsda"]
 [ext_resource type="PackedScene" uid="uid://de6fuev88g57f" path="res://scenes/grid/grid.tscn" id="6_ybaom"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
-[ext_resource type="Script" path="res://scenes/background/background.gd" id="9_o4or6"]
 [ext_resource type="PackedScene" uid="uid://cuou6t7fy6v45" path="res://scenes/player_manager/player_managers.tscn" id="10_ukfxk"]
 [ext_resource type="PackedScene" uid="uid://1yk62pn2f4xr" path="res://scenes/audio_player/audio_player.tscn" id="11_3jgb6"]
 [ext_resource type="PackedScene" uid="uid://wqmj852ihkvi" path="res://scenes/host/host_manager.tscn" id="14_jipfn"]
@@ -43,7 +42,6 @@ grid = NodePath("../Grid")
 bounds = Vector4(0, 0, 10, 10)
 
 [node name="Background" parent="." instance=ExtResource("3_qtcvc")]
-script = ExtResource("9_o4or6")
 
 [node name="Grid" parent="." instance=ExtResource("6_ybaom")]
 

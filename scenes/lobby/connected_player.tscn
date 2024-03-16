@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8f8j4dualeev"]
+
+[ext_resource type="Script" path="res://scenes/lobby/connected_player.gd" id="1_h6eg3"]
+[ext_resource type="PackedScene" uid="uid://bef6pckymx8bi" path="res://scenes/player/player.tscn" id="2_g5iu7"]
+
+[node name="ConnectedPlayer" type="Control" node_paths=PackedStringArray("label", "player")]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_h6eg3")
+label = NodePath("Label")
+player = NodePath("Player")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -54.0
+offset_top = -11.0
+offset_right = -10.0
+offset_bottom = 11.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+text = "Player1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("2_g5iu7")]
+position = Vector2(26.915, 0)
+scale = Vector2(0.5, 0.5)

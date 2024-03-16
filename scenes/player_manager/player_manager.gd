@@ -7,6 +7,7 @@ class_name PlayerManager
 @export var initial_grid_pos: Vector2i
 @export var modulateFaceColor = 0
 @export var player_spawner: MultiplayerSpawner
+@export var color: float = 0
 
 var player_characters: Array[Player]:
     get:
@@ -31,8 +32,8 @@ func spawn_player(grid: Grid, grid_pos: Vector2):
 func spawn_player_client(position):
     var player_character = player_scene.instantiate() 
     player_character.position = position
+    player_character.color = color
     player_spawned.emit(player_character)
-    
     return player_character
     
 func kill_player(grid: Grid, grid_pos: Vector2):

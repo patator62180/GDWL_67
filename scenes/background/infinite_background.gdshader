@@ -11,7 +11,7 @@ uniform vec4 tint_color = vec4(1.0, 1.0, 1.0, 1.0);
 void fragment() {
     vec2 pixelated_uv = (floor(FRAGCOORD.xy/pixel_scale)*pixel_scale)*SCREEN_PIXEL_SIZE;
     vec2 moving_uv = mod((pixelated_uv) + (TIME*speed), 1.0f);
-	vec4 color = texture(input_texture, moving_uv);
+    vec4 color = texture(input_texture, moving_uv);
     COLOR = floor(color*color_floor)/color_floor * tint_color;
     
     vec2 uv_dist = abs(SCREEN_UV-pixelated_uv);
