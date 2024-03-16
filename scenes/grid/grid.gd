@@ -128,6 +128,11 @@ func check_wall_input_pressed():
         var mouse_pos = get_local_mouse_position()
         var grid_pos_offset = get_grid_pos(mouse_pos - Vector2.ONE * grid_size / 2)
         
+        if !is_possible_tile(grid_pos_offset):
+            selected_wall_tile = null
+            selection_wall_tile_map.clear()
+            return
+        
         if selected_wall_tile != grid_pos_offset:
             selected_wall_tile = grid_pos_offset
             selection_wall_tile_map.clear()

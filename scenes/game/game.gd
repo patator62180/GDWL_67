@@ -116,22 +116,27 @@ func end_turn(try_parasiting: bool = false):
     start_turn(try_parasiting)
 
 func start_turn(try_parasiting: bool = false):
+    #players start moving here on their turn
     Mediator.instance.call_on_players(player_controller.propagate_turn, player_index_playing, turn_state)
     
     match turn_state:
         TurnState.PLAYER_TURN:
             pass
         TurnState.AI_TURN:
+            #wait for player moving
             await get_tree().create_timer(0.5).timeout
             
+            #wait for parasiting
             if try_parasiting:
                 await try_parasiting()
             
+            #move and wait hosts
             for host in hosts:
                 host.move_host(grid, player_managers)
             
             await get_tree().create_timer(0.5).timeout
             
+            #give control back to next player
             end_turn()
             pass
             
