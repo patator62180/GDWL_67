@@ -20,9 +20,16 @@ var timer_max = 0.5
 @export var raycast: RayCast2D
 @export var parasite_scene: PackedScene
 
+
+var color: float = 0:
+    set(value):
+        if not OS.has_feature('dedicated_server'):
+            $NodeSprite/Face.material.set_shader_parameter("Shift_Hue", value)
+
 func _ready():
-    if !(self is Host) and not OS.has_feature('dedicated_server'):
-        $NodeSprite/Face.material.set_shader_parameter("Shift_Hue", get_parent().get_parent().modulateFaceColor)
+    pass
+    #if !(self is Host) and not OS.has_feature('dedicated_server') and modulate_color_holder:
+        #$NodeSprite/Face.material.set_shader_parameter("Shift_Hue", modulate_color_holder.modulateFaceColor)
 
 func move(direction):
     raycast.rotation = atan2(-direction.x, direction.y)

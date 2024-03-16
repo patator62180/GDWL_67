@@ -21,11 +21,9 @@ func _ready():
     lose_label.visible = false
     your_turn_label.visible = false
     other_player_turn_label.visible = false
-    game.p1_scored.connect(score_card._on_game_p_1_scored)
-    game.p2_scored.connect(score_card._on_game_p_2_scored)
+    game.player_scored.connect(score_card.on_player_scored)
     game.game_finished.connect(set_winning_label)
     mute_button.toggled.connect(_on_mute_sound_toggled)
-    
 
 func _process(delta):
     set_turn_label()
@@ -45,8 +43,3 @@ func _on_mute_sound_toggled(toggled_on):
 func set_turn_label():
     your_turn_label.visible = PlayerController.instance.can_play()
     other_player_turn_label.visible = not PlayerController.instance.can_play()
-
-func set_player_color():
-    var slider1 = get_node("ColorChoicePlayer1/HSlider").value
-    if not OS.has_feature('dedicated_server'):
-        get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)

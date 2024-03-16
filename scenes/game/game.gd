@@ -9,18 +9,20 @@ const MAX_PLAYERS_COUNT = 4
 @export var grid: Grid
 @export var player_controller: PlayerController
 @export var camera: Camera2D
+@export var win_score: int = 1
 
-signal p1_scored
-signal p2_scored
+signal player_scored(player_index : int, score : int)
 signal game_finished(bool)
 
 class PeerPlayer:
     var peer_id: int
     var nickname: String
+    var color: float
     
     func _init(peer_id: int):
         self.peer_id = peer_id
         self.nickname = 'Player%d' % peer_id
+        self.color = randf()
 
 var peer_players: Array[PeerPlayer] = []
 var is_game_over: bool = false
@@ -31,6 +33,8 @@ var respawn_timer = 0.3
 var respawn_timer_max = respawn_timer
 
 var turn_state = TurnState.NONE
+
+var player_scores: Array[int] = [0,0,0,0]
 
 func _ready():
     if Mediator.instance.is_server():
@@ -67,7 +71,20 @@ func end_player_turn_place_wall(grid_pos: Vector2, tile_index: int):
         grid.add_wall(grid_pos, tile_index)
         Mediator.instance.call_on_players(propagate_add_wall, grid_pos, tile_index)
         end_turn()
-    
+
+@rpc('any_peer')
+func update_nickname(player_index: int, nickname: String):
+    if player_index <= len(peer_players) - 1:
+        peer_players[player_index].nickname = nickname
+        Mediator.instance.call_on_players(player_controller.update_connected_player, player_index, nickname, peer_players[player_index].color)
+
+@rpc('any_peer')
+func update_color(player_index: int, color: float):
+    if player_index <= len(peer_players) - 1:
+        peer_players[player_index].color = color
+        player_managers.array[player_index].color = color
+        Mediator.instance.call_on_players(player_controller.update_connected_player, player_index, peer_players[player_index].nickname, color)
+
 func respawn_host():
     spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
 
@@ -127,12 +144,13 @@ func try_parasiting():
             var player_pos = grid.get_grid_pos(player.position)
             Mediator.instance.call_on_players(player.shoot_your_shot, host.position)
 
+
             await get_tree().create_timer(1).timeout
             
-            if player_index_playing == 0:
-                p1_scored.emit()
-            else:
-                p2_scored.emit()
+            player_scores[player_index_playing] += 1
+            player_scored.emit(player_index_playing, player_scores[player_index_playing])
+            if(player_scores[player_index_playing] == win_score):
+                on_score_reached()
             
             player_managers.array[player_index_playing].spawn_player(grid, host_pos)
             player_managers.array[player_index_playing].kill_player(grid, player_pos)
@@ -162,7 +180,6 @@ func start_game():
         
         start_turn()
         Immersive.client.starts_playing()
-        
 
 func spawn_host(grid_pos: Vector2):    
     if !is_game_over:
@@ -178,9 +195,10 @@ func on_peer_player_joined(id: int):
     
     peer_players.append(peer_player)
     Mediator.instance.call_on_player(id, player_controller.assign_player, player_index)
+    player_managers.array[player_index].color = peer_player.color
     
     for peer_player_index in range(len(peer_players)):
-        Mediator.instance.call_on_players(player_controller.update_connected_player, peer_player_index, peer_players[peer_player_index].nickname)
+        Mediator.instance.call_on_players(player_controller.update_connected_player, peer_player_index, peer_players[peer_player_index].nickname, peer_players[peer_player_index].color)
     
     if player_index == 1:
         Mediator.instance.call_on_player(peer_players[0].peer_id, player_controller.give_start_game_permission)
@@ -224,7 +242,7 @@ func check_octo_around_player(player: Player):
             
     return null
 
-func _on_score_card_score_atteint():
+func on_score_reached():
     Mediator.instance.call_on_players(player_controller.finish_game)
     Immersive.client.end_game()
 
@@ -242,7 +260,11 @@ func play_shockwave_anim(saved_host_pos: Vector2):
     camera.play_shockwave_anim(screen_ratio)
     
 func finish_game():
-    game_finished.emit(player_controller.can_play())
+    var player_winning_index = 0
+    for i in range(player_scores.size()):
+        if player_scores[i] == MAX_PLAYERS_COUNT:
+            player_winning_index = i
+    game_finished.emit(player_winning_index == player_controller.player_index)
     get_tree().get_root().get_node("BackgroundMusic/BGMusic").stream_paused = true
 
     # on cache tout
