@@ -43,6 +43,7 @@ func _ready():
         camera.add_child(shockwave)
         hud.set_player_controller(player_controller)
 
+
 func _process(delta):
     if respawn_timer < respawn_timer_max:
         respawn_timer = respawn_timer + delta

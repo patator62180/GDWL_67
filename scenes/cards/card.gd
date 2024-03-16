@@ -66,10 +66,12 @@ func _on_mouse_exited():
         
 func select_card():
     card_clicked.emit(card_id)
-    background_texture_rect.material.set_shader_parameter("color", selected_color)
+    if not OS.has_feature('dedicated_server'):
+        background_texture_rect.material.set_shader_parameter("color", selected_color)
 
 func deselect_card():
-    background_texture_rect.material.set_shader_parameter("color", Color.TRANSPARENT)
+    if not OS.has_feature('dedicated_server'):
+        background_texture_rect.material.set_shader_parameter("color", Color.TRANSPARENT)
  
 func raise_card():
     z_index = 1

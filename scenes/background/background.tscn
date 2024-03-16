@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://b81kmauxqg4ws"]
+[gd_scene load_steps=7 format=3 uid="uid://b81kmauxqg4ws"]
 
 [ext_resource type="Shader" path="res://scenes/background/infinite_background.gdshader" id="1_i8cim"]
-[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="2_q54su"]
 
 [sub_resource type="Gradient" id="Gradient_bjjgb"]
 colors = PackedColorArray(0.945098, 0.956863, 0.894118, 1, 0.666667, 1, 1, 1)
@@ -27,42 +26,8 @@ shader_parameter/input_texture = SubResource("NoiseTexture2D_a61c7")
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_kj0u0"]
 
-[node name="Node2D" type="Node2D"]
-
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_left = -559.5
-offset_top = -308.0
-offset_right = -559.5
-offset_bottom = -308.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Background" type="Sprite2D" parent="Control"]
+[node name="Background" type="Sprite2D"]
 material = SubResource("ShaderMaterial_s5s6m")
 position = Vector2(436.5, -43)
 scale = Vector2(12000, 12000)
 texture = SubResource("PlaceholderTexture2D_kj0u0")
-
-[node name="YourTurn" type="TextEdit" parent="Control"]
-visible = false
-layout_mode = 0
-offset_left = 491.0
-offset_top = -72.0
-offset_right = 625.0
-offset_bottom = -22.0
-theme = ExtResource("2_q54su")
-theme_override_font_sizes/font_size = 36
-text = "Your turn!"
-
-[node name="OtherPlayerTurn" type="TextEdit" parent="Control"]
-visible = false
-layout_mode = 0
-offset_left = 407.5
-offset_top = -72.0
-offset_right = 708.5
-offset_bottom = -22.0
-theme = ExtResource("2_q54su")
-theme_override_font_sizes/font_size = 36
-text = "Waiting for opponent..."

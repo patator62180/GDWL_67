@@ -7,13 +7,9 @@ class_name PlayerController
 @export var player_managers: PlayerManagers
 @export var grid: Grid
 @export var host_scene: PackedScene
-@export var background: Sprite2D
-@export var your_turn: TextEdit
-@export var other_player_turn: TextEdit
 @export var defeat_sound: AudioStreamPlayer
 @export var victory_sound: AudioStreamPlayer
 @export var card_selection_sound: AudioStreamPlayer
-@export var horizontal_slider: HSlider
 
 var player_index: int
 var player_index_playing: int = -1
@@ -21,6 +17,8 @@ var is_game_over: bool = false
 var selected_player: Player
 
 var game_turn_state = TurnState.NONE
+
+static var instance: PlayerController
 
 @rpc('authority')
 func give_start_game_permission():
@@ -30,7 +28,7 @@ func give_start_game_permission():
 @rpc('authority')
 func propagate_start_game():
     hud.player_cards[player_index].set_start_game_button_enabled(false)
-    player_managers.array[0].modulateFaceColor = horizontal_slider.value
+    player_managers.array[0].modulateFaceColor = hud.horizontal_slider.value
     hud.hand.draw_multiple(2)
 
 @rpc('authority')
@@ -66,16 +64,6 @@ func is_player_active_turn():
 
 func can_play():
     return Mediator.instance.is_couch or is_player_active_turn()
-
-func turn_indicator():
-    if can_play():
-        background.material.set_shader_parameter("tint_color", Color(1,1,1,1))
-        your_turn.visible = true
-        other_player_turn.visible = false
-    else:
-        background.material.set_shader_parameter("tint_color", Color(1,0.3,0.3,1))
-        your_turn.visible = false
-        other_player_turn.visible = true
 
 func on_cell_click(grid_pos: Vector2):
     if Mediator.instance.is_player() and can_play():
@@ -117,10 +105,13 @@ func on_card_draw():
     Mediator.instance.call_on_server(game.draw_for_turn)
 
 func _ready():
+    instance = self
     grid.cell_click.connect(on_cell_click)
     hud.hand.card_selected.connect(on_card_selected)
     hud.hand.draw_card_for_turn.connect(on_card_draw)
+
     grid.wall_click.connect(on_wall_click)
     
 func _process(delta):
     turn_indicator()
+
