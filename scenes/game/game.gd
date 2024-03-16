@@ -17,10 +17,12 @@ signal game_finished(bool)
 class PeerPlayer:
 	var peer_id: int
 	var nickname: String
+	var color: float
 	
 	func _init(peer_id: int):
 		self.peer_id = peer_id
 		self.nickname = 'Player%d' % peer_id
+		self.color = randf()
 
 var peer_players: Array[PeerPlayer] = []
 var is_game_over: bool = false
@@ -67,12 +69,18 @@ func end_player_turn_place_wall(grid_pos: Vector2, tile_index: int):
 		grid.add_wall(grid_pos, tile_index)
 		Mediator.instance.call_on_players(propagate_add_wall, grid_pos, tile_index)
 		end_turn()
-	
+
 @rpc('any_peer')
 func update_nickname(player_index: int, nickname: String):
 	if player_index <= len(peer_players) - 1:
 		peer_players[player_index].nickname = nickname
-		Mediator.instance.call_on_players(player_controller.update_connected_player, player_index, nickname)
+		Mediator.instance.call_on_players(player_controller.update_connected_player, player_index, nickname, peer_players[player_index].color)
+
+@rpc('any_peer')
+func update_color(player_index: int, color: float):
+	if player_index <= len(peer_players) - 1:
+		peer_players[player_index].color = color
+		Mediator.instance.call_on_players(player_controller.update_connected_player, player_index, peer_players[player_index].nickname, color)
 
 func respawn_host():
 	spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
@@ -186,7 +194,7 @@ func on_peer_player_joined(id: int):
 	Mediator.instance.call_on_player(id, player_controller.assign_player, player_index)
 	
 	for peer_player_index in range(len(peer_players)):
-		Mediator.instance.call_on_players(player_controller.update_connected_player, peer_player_index, peer_players[peer_player_index].nickname)
+		Mediator.instance.call_on_players(player_controller.update_connected_player, peer_player_index, peer_players[peer_player_index].nickname, peer_players[peer_player_index].color)
 	
 	if player_index == 1:
 		Mediator.instance.call_on_player(peer_players[0].peer_id, player_controller.give_start_game_permission)

@@ -4,6 +4,7 @@ class_name Lobby
 
 signal started_game
 signal nickname_edited
+signal color_changed
 
 @export var start_button: Button
 @export var screen_title: Label
@@ -18,6 +19,10 @@ var nickname: String = "":
 		if value != nickname_edit.text:
 			nickname_edit.text = value
 
+var color: float = 0:
+	set(value):
+		color_picker_player_preview.color = value
+
 func _ready():
 	if Mediator.instance and Mediator.instance.is_server(false):
 		close()
@@ -29,25 +34,30 @@ func close():
 	queue_free()
 
 func on_color_slider_changed(value: float):
-	color_picker_player_preview.color = value / 1000
+	var color = value / 1000
+
+	color_picker_player_preview.color = color
+	color_changed.emit(color)
 
 func on_text_changed():
 	if len(nickname_edit.text) >= 1:
 		nickname_edited.emit(nickname_edit.text)
 
-func update_connected_player(index: int, nickname: String):
+func update_connected_player(index: int, nickname: String, color: float):
 	var list_items = connected_players_list.get_children()
 	
 	if index > len(list_items) - 1:
-		add_connected_player(nickname)
+		add_connected_player(nickname, color)
 	else:
 		var connected_player = list_items[index] as ConnectedPlayer
 		connected_player.nickname = nickname
+		connected_player.color = color
 
-func add_connected_player(nickname: String):
+func add_connected_player(nickname: String, color: float):
 	var list_item = connected_player_scene.instantiate() as ConnectedPlayer
 	
 	list_item.nickname = nickname
+	list_item.color = color
 	connected_players_list.add_child(list_item)
 
 func set_can_start_game():

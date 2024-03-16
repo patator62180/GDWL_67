@@ -1,14 +1,14 @@
 [gd_scene load_steps=4 format=3 uid="uid://d3q7s8lnam8nw"]
 
 [ext_resource type="Script" path="res://scenes/lobby/lobby.gd" id="1_061j6"]
-[ext_resource type="PackedScene" uid="uid://b8f8j4dualeev" path="res://scenes/menus/connected_player.tscn" id="2_al2yg"]
+[ext_resource type="PackedScene" uid="uid://b8f8j4dualeev" path="res://scenes/lobby/connected_player.tscn" id="2_37kpl"]
 [ext_resource type="PackedScene" uid="uid://bef6pckymx8bi" path="res://scenes/player/player.tscn" id="3_4stck"]
 
 [node name="Lobby" type="CanvasLayer" node_paths=PackedStringArray("start_button", "screen_title", "connected_players_list", "nickname_edit", "color_slider", "color_picker_player_preview")]
 script = ExtResource("1_061j6")
 start_button = NodePath("Container/StartButton")
 screen_title = NodePath("Container/Title")
-connected_player_scene = ExtResource("2_al2yg")
+connected_player_scene = ExtResource("2_37kpl")
 connected_players_list = NodePath("Container/ConnectedPlayers/VBoxContainer")
 nickname_edit = NodePath("Container/Setup/Nickname/TextEdit")
 color_slider = NodePath("Container/Setup/Color/ColorPicker/Slider")
