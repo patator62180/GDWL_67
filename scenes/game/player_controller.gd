@@ -20,6 +20,7 @@ var player_index_playing: int = -1
 var is_game_over: bool = false
 var selected_player: Player
 
+static var instance: PlayerController
 
 @rpc('authority')
 func give_start_game_permission():
@@ -67,16 +68,6 @@ func is_player_active_turn():
 func can_play():
     return Mediator.instance.is_couch or is_player_active_turn()
 
-func turn_indicator():
-    if can_play():
-        background.material.set_shader_parameter("tint_color", Color(1,1,1,1))
-        your_turn.visible = true
-        other_player_turn.visible = false
-    else:
-        background.material.set_shader_parameter("tint_color", Color(1,0.3,0.3,1))
-        your_turn.visible = false
-        other_player_turn.visible = true
-
 func on_cell_click(grid_pos: Vector2):
     if Mediator.instance.is_player() and can_play():
         if(grid.selected_card_type != "Movement"):
@@ -110,9 +101,7 @@ func on_card_draw():
     Mediator.instance.call_on_server(draw_for_turn)
 
 func _ready():
+    instance = self
     grid.cell_click.connect(on_cell_click)
     hud.hand.card_selected.connect(on_card_selected)
     hud.hand.draw_card_for_turn.connect(on_card_draw)
-    
-func _process(delta):
-    turn_indicator()

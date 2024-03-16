@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://biqj0t60x1dv0"]
+[gd_scene load_steps=16 format=3 uid="uid://biqj0t60x1dv0"]
 
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_0lgt1"]
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/cards/hand.tscn" id="5_euuyo"]
 [ext_resource type="Texture2D" uid="uid://bla2q5wqubnu8" path="res://sprites/sound_mute.png" id="6_5163j"]
 [ext_resource type="Texture2D" uid="uid://bsqi6cgf3k5c7" path="res://sprites/sound_unmute.png" id="7_yym30"]
+[ext_resource type="Theme" path="res://scenes/background/theme_principal.tres" id="8_0kiu8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
 font_size = 50
@@ -47,10 +48,12 @@ properties/1/path = NodePath("ScoreCard/Score J2:text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards", "hand")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards", "hand", "your_turn_label", "other_player_turn_label")]
 script = ExtResource("1_wj8wa")
 player_cards = [NodePath("PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 hand = NodePath("Hand")
+your_turn_label = NodePath("TurnLabel")
+other_player_turn_label = NodePath("OtherPlayerTurnLabel")
 
 [node name="PlayerCards" type="Control" parent="."]
 layout_mode = 3
@@ -257,5 +260,31 @@ texture_normal = ExtResource("6_5163j")
 texture_pressed = ExtResource("7_yym30")
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="TurnLabel" type="TextEdit" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -67.0
+offset_top = 100.0
+offset_right = 67.0
+offset_bottom = 150.0
+grow_horizontal = 2
+theme = ExtResource("8_0kiu8")
+theme_override_font_sizes/font_size = 36
+text = "Your turn!"
+
+[node name="OtherPlayerTurnLabel" type="TextEdit" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.5
+offset_top = 100.0
+offset_right = 150.5
+offset_bottom = 150.0
+grow_horizontal = 2
+theme = ExtResource("8_0kiu8")
+theme_override_font_sizes/font_size = 36
+text = "Waiting for opponent..."
 
 [connection signal="toggled" from="MuteSound" to="." method="_on_mute_sound_toggled"]
