@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://1yk62pn2f4xr"]
+
+[ext_resource type="Script" path="res://scenes/audio_player/audio_player.gd" id="1_5jfk7"]
+[ext_resource type="AudioStream" uid="uid://fmbwgsnigl5y" path="res://sfx/victory.mp3" id="2_j6c70"]
+[ext_resource type="AudioStream" uid="uid://c0yeg5i535w70" path="res://sfx/defeat.mp3" id="3_oy8eq"]
+[ext_resource type="AudioStream" uid="uid://b3htu031n8oek" path="res://sfx/card_select.mp3" id="4_5hmtx"]
+[ext_resource type="AudioStream" uid="uid://mdgr2oybyu2j" path="res://sfx/shockwave.mp3" id="5_wvbsh"]
+
+[node name="audio_player" type="Node" node_paths=PackedStringArray("defeat_sound", "victory_sound", "card_selection_sound", "shockwave_sound")]
+script = ExtResource("1_5jfk7")
+defeat_sound = NodePath("Defeat")
+victory_sound = NodePath("Victory")
+card_selection_sound = NodePath("CardSelection")
+shockwave_sound = NodePath("Shockwave")
+
+[node name="Victory" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_j6c70")
+
+[node name="Defeat" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_oy8eq")
+
+[node name="CardSelection" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_5hmtx")
+
+[node name="Shockwave" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_wvbsh")

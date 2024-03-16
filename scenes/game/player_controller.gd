@@ -7,7 +7,6 @@ class_name PlayerController
 @export var player_managers: PlayerManagers
 @export var grid: Grid
 @export var host_scene: PackedScene
-@export var card_selection_sound: AudioStreamPlayer
 
 var player_index: int
 var player_index_playing: int = -1
@@ -85,8 +84,8 @@ func on_wall_click(grid_pos: Vector2, tile_index: int):
 
 func on_card_selected(cardType : String):
     var rng = RandomNumberGenerator.new()
-    card_selection_sound.pitch_scale = rng.randf_range(0.70,1.30)
-    card_selection_sound.play()
+    game.audio_player.card_selection_sound.pitch_scale = rng.randf_range(0.70,1.30)
+    game.audio_player.card_selection_sound.play()
     grid.selected_card_type = cardType
 
 func on_card_draw():
