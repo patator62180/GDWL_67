@@ -12,6 +12,8 @@ class_name PlayerController
 var player_index: int
 var player_index_playing: int = -1
 var selected_player: Player
+var nickname: String
+var color: float
 
 var game_turn_state = TurnState.NONE
 

@@ -80,6 +80,7 @@ func update_nickname(player_index: int, nickname: String):
 func update_color(player_index: int, color: float):
 	if player_index <= len(peer_players) - 1:
 		peer_players[player_index].color = color
+		player_managers.array[player_index].color = color
 		Mediator.instance.call_on_players(player_controller.update_connected_player, player_index, peer_players[player_index].nickname, color)
 
 func respawn_host():
@@ -192,6 +193,7 @@ func on_peer_player_joined(id: int):
 	
 	peer_players.append(peer_player)
 	Mediator.instance.call_on_player(id, player_controller.assign_player, player_index)
+	player_managers.array[player_index].color = peer_player.color
 	
 	for peer_player_index in range(len(peer_players)):
 		Mediator.instance.call_on_players(player_controller.update_connected_player, peer_player_index, peer_players[peer_player_index].nickname, peer_players[peer_player_index].color)
