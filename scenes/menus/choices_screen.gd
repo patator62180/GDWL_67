@@ -29,7 +29,7 @@ func on_game_room_joined(game_room_code: String, client_id: int):
     var game = game_scene.instantiate()
     node_to_replace.get_parent().add_child(game)
     node_to_replace.queue_free()
-    game.lobby.initialize(game_room_code)
+    game.player_controller.lobby.initialize(game_room_code)
 
 func create_game_room():
     Immersive.client.book_game_room(GAME_NAME)

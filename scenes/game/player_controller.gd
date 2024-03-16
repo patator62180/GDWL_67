@@ -7,6 +7,7 @@ class_name PlayerController
 @export var player_managers: PlayerManagers
 @export var grid: Grid
 @export var host_scene: PackedScene
+@export var lobby: Lobby
 
 var player_index: int
 var player_index_playing: int = -1
@@ -18,12 +19,12 @@ static var instance: PlayerController
 
 @rpc('authority')
 func give_start_game_permission():
-    game.lobby.set_can_start_game()
-    game.lobby.started_game.connect(game.request_start_game)
+    lobby.set_can_start_game()
+    lobby.started_game.connect(game.request_start_game)
 
 @rpc('authority')
 func propagate_start_game():
-    game.lobby.close()
+    lobby.close()
     hud.player_cards[player_index].set_start_game_button_enabled(false)
     player_managers.array[0].modulateFaceColor = hud.horizontal_slider.value
     hud.hand.draw_multiple(2)
@@ -44,7 +45,10 @@ func finish_game():
 func assign_player(player_index: int):
     self.player_index = player_index
     hud.player_cards[player_index].assign()
-    
+
+@rpc('authority')
+func update_connected_player(player_index: int, nickname: String):
+    lobby.update_connected_player(player_index, nickname)
 
 func is_player_active_turn():
     return player_index_playing == player_index and game_turn_state == TurnState.PLAYER_TURN
