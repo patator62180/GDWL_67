@@ -9,6 +9,7 @@ class_name HUD
 @export var other_player_turn_label : Control
 @export var horizontal_slider: HSlider
 @export var score_card : ScoreControl
+@export var mute_button : BaseButton
 
 signal mute_music
 
@@ -19,7 +20,9 @@ func _ready():
     other_player_turn_label.visible = false
     var game = get_parent() as Game
     game.p1_scored.connect(score_card._on_game_p_1_scored)
-    game.p1_scored.connect(score_card._on_game_p_1_scored)
+    game.p2_scored.connect(score_card._on_game_p_2_scored)
+    mute_button.toggled.connect(_on_mute_sound_toggled)
+    
 
 func _process(delta):
     set_turn_label()

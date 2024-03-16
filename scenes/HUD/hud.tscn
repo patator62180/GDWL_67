@@ -48,7 +48,7 @@ properties/1/path = NodePath("ScoreCard/Score J2:text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards", "hand", "your_turn_label", "other_player_turn_label", "horizontal_slider", "score_card")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards", "hand", "your_turn_label", "other_player_turn_label", "horizontal_slider", "score_card", "mute_button")]
 script = ExtResource("1_wj8wa")
 player_cards = [NodePath("PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 hand = NodePath("Hand")
@@ -56,6 +56,7 @@ your_turn_label = NodePath("TurnLabel")
 other_player_turn_label = NodePath("OtherPlayerTurnLabel")
 horizontal_slider = NodePath("ColorChoicePlayer1/HSlider")
 score_card = NodePath("ScoreCard")
+mute_button = NodePath("MuteSound")
 
 [node name="PlayerCards" type="Control" parent="."]
 layout_mode = 3
@@ -287,5 +288,3 @@ grow_horizontal = 2
 theme = ExtResource("8_0kiu8")
 theme_override_font_sizes/font_size = 36
 text = "Waiting for opponent..."
-
-[connection signal="toggled" from="MuteSound" to="." method="_on_mute_sound_toggled"]
