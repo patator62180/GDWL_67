@@ -21,8 +21,9 @@ signal draw_card_for_turn
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    card_ressources.append(preload("res://scenes/cards/movement_card.tres"))
-    card_ressources.append(preload("res://scenes/cards/wall_card.tres"))
+    card_ressources.append(preload("res://scenes/cards/resources/movement_card.tres"))
+    card_ressources.append(preload("res://scenes/cards/resources/wall_card.tres"))
+    card_ressources.append(preload("res://scenes/cards/resources/hammer_card.tres"))
     card_scene = preload("res://scenes/cards/card.tscn")
     for ressource in card_ressources:
         total_weight += ressource.weight

@@ -97,6 +97,11 @@ func on_wall_click(grid_pos: Vector2, tile_index: int):
         Mediator.instance.call_on_server(game.end_player_turn_place_wall, grid_pos, tile_index)
         hud.hand.consume_selected_card()
 
+func on_hammer_click(grid_pos: Vector2):
+    if Mediator.instance.is_player() and can_play():
+        Mediator.instance.call_on_server(game.end_player_turn_hammer, grid_pos)
+        hud.hand.consume_selected_card()
+        
 func on_card_selected(cardType : String):
     grid.selected_card_type = cardType
 
@@ -109,7 +114,9 @@ func _ready():
     hud.hand.card_selected.connect(on_card_selected)
     hud.hand.draw_card_for_turn.connect(on_card_draw)
     grid.wall_click.connect(on_wall_click)
+    grid.hammer_click.connect(on_hammer_click)
     lobby.nickname_edited.connect(on_nickname_edited)
     lobby.color_changed.connect(on_color_changed)
+    
 
 

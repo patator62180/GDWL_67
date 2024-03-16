@@ -73,6 +73,23 @@ func end_player_turn_place_wall(grid_pos: Vector2, tile_index: int):
         end_turn()
 
 @rpc('any_peer')
+func end_player_turn_hammer(grid_pos: Vector2):
+    if Mediator.instance.is_server():
+        #grid.add_wall(grid_pos, tile_index)
+        var hammer_hits = grid.get_hammer_hits(grid_pos)
+        #grid.break_walls(grid_pos, hammer_hits)
+        
+        grid.add_wall(grid_pos, hammer_hits[0])
+        Mediator.instance.call_on_players(propagate_add_wall, grid_pos, hammer_hits[0])
+        
+        for i in range(grid.cardinal.size()):
+            var direction = grid.cardinal[i]
+            grid.add_wall(grid_pos + direction, hammer_hits[i+1])
+            Mediator.instance.call_on_players(propagate_add_wall, grid_pos + direction, hammer_hits[i+1])
+            
+        end_turn()
+
+@rpc('any_peer')
 func update_nickname(player_index: int, nickname: String):
     if player_index <= len(peer_players) - 1:
         peer_players[player_index].nickname = nickname
@@ -211,6 +228,10 @@ func move_player(player_index: int, action: String):
 @rpc('authority')
 func propagate_add_wall(grid_pos: Vector2, tile_index: int):
     grid.add_wall(grid_pos, tile_index)
+
+@rpc('authority')
+func propagate_break_wall(grid_pos: Vector2, hammer_hits: Array[int]):
+    grid.break_walls(grid_pos, hammer_hits)
 
 func check_tile(grid_pos:Vector2, check_players: bool):
     if check_players:
