@@ -3,7 +3,7 @@ extends Node2D
 class_name Player
 
 signal played
-signal parasited
+#signal parasited
 
 var tile_size = 100
 
@@ -83,7 +83,7 @@ func process_action(action: String):
 func shoot_your_shot(position: Vector2):
     $Audio/ThrowParasite.play()
     var parasite = parasite_scene.instantiate() as Parasite
-    parasite.parasited.connect(on_parasited)
+    #parasite.parasited.connect(on_parasited)
     get_parent().add_child(parasite)
     
     var offset = Vector2.ONE * tile_size / 2
@@ -92,7 +92,7 @@ func shoot_your_shot(position: Vector2):
     position = position + offset
     parasite.fly_to(position)
 
-func on_parasited():
-    parasited.emit()
+#func on_parasited():
+    #parasited.emit()
 
     

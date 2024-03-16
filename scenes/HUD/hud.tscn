@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/cards/hand.tscn" id="5_euuyo"]
 [ext_resource type="Texture2D" uid="uid://bla2q5wqubnu8" path="res://sprites/sound_mute.png" id="6_5163j"]
 [ext_resource type="Texture2D" uid="uid://bsqi6cgf3k5c7" path="res://sprites/sound_unmute.png" id="7_yym30"]
-[ext_resource type="Theme" path="res://scenes/background/theme_principal.tres" id="8_0kiu8"]
+[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="8_0kiu8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
 font_size = 50

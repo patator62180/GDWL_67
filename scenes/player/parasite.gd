@@ -2,7 +2,7 @@ extends Node2D
 
 class_name Parasite
 
-signal parasited
+#signal parasited
 
 var target_pos: Vector2
 var apogee_pos: Vector2
@@ -26,7 +26,7 @@ func _process(delta):
         self.position = _quadratic_bezier(start_pos, apogee_pos, target_pos, timer / timer_max)
         
         if timer >= timer_max:
-            parasited.emit()
+            #parasited.emit()
             queue_free()
     
 func fly_to(position: Vector2):
