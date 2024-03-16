@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://wqmj852ihkvi" path="res://scenes/host/host_manager.tscn" id="14_jipfn"]
 [ext_resource type="PackedScene" uid="uid://d3q7s8lnam8nw" path="res://scenes/lobby/lobby.tscn" id="15_0s1u7"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("lobby", "player_managers", "host_manager", "grid", "hud", "player_controller", "camera", "audio_player")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("lobby", "player_managers", "host_manager", "grid", "hud", "player_controller", "camera")]
 script = ExtResource("1_jy7t4")
 lobby = NodePath("Lobby")
 player_managers = NodePath("PlayerManagers")
@@ -23,7 +23,6 @@ grid = NodePath("Grid")
 hud = NodePath("HUD")
 player_controller = NodePath("PlayerController")
 camera = NodePath("Camera2D")
-audio_player = NodePath("audio_player")
 
 [node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("hud", "game", "player_managers", "grid")]
 script = ExtResource("5_c6l1t")
@@ -52,8 +51,9 @@ script = ExtResource("9_o4or6")
 
 [node name="HostManager" parent="." instance=ExtResource("14_jipfn")]
 
-[node name="audio_player" parent="." node_paths=PackedStringArray("game") instance=ExtResource("11_3jgb6")]
+[node name="audio_player" parent="." node_paths=PackedStringArray("game", "hud") instance=ExtResource("11_3jgb6")]
 game = NodePath("..")
+hud = NodePath("../HUD")
 
 [node name="Lobby" parent="." instance=ExtResource("15_0s1u7")]
 

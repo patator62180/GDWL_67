@@ -50,3 +50,6 @@ func set_player_color():
     var slider1 = get_node("ColorChoicePlayer1/HSlider").value
     if not OS.has_feature('dedicated_server'):
         get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)
+        
+func on_game_started():
+    pass

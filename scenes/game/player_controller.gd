@@ -83,9 +83,6 @@ func on_wall_click(grid_pos: Vector2, tile_index: int):
         hud.hand.consume_selected_card()
 
 func on_card_selected(cardType : String):
-    var rng = RandomNumberGenerator.new()
-    game.audio_player.card_selection_sound.pitch_scale = rng.randf_range(0.70,1.30)
-    game.audio_player.card_selection_sound.play()
     grid.selected_card_type = cardType
 
 func on_card_draw():

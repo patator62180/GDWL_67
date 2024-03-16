@@ -11,11 +11,11 @@ const MAX_PLAYERS_COUNT = 4
 @export var hud : HUD
 @export var player_controller: PlayerController
 @export var camera: Camera2D
-@export var audio_player : AudioPlayer
 
 signal p1_scored
 signal p2_scored
 signal game_finished(bool)
+signal game_started
 
 var players = []
 var is_game_started: bool
@@ -148,6 +148,7 @@ func start_game():
         turn_state = TurnState.PLAYER_TURN
         Mediator.instance.call_on_players(player_controller.propagate_start_game)
         is_game_started = true
+        game_started.emit()
 
         for player_index in range(MAX_PLAYERS_COUNT):
             if player_index > len(players) - 1:
