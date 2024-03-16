@@ -20,7 +20,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ChoicesScreen" type="Control" parent="CanvasLayer/Viewport" node_paths=PackedStringArray("create_button", "join_button", "play_local_button", "join_room_code", "node_to_replace")]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0

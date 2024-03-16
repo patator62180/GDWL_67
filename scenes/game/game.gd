@@ -9,9 +9,9 @@ const MAX_PLAYERS_COUNT = 4
 @export var grid: Grid
 @export var player_controller: PlayerController
 @export var camera: Camera2D
+@export var win_score: int = 1
 
-signal p1_scored
-signal p2_scored
+signal player_scored(player_index : int, score : int)
 signal game_finished(bool)
 
 class PeerPlayer:
@@ -31,6 +31,8 @@ var respawn_timer = 0.3
 var respawn_timer_max = respawn_timer
 
 var turn_state = TurnState.NONE
+
+var player_scores: Array[int] = [0,0,0,0]
 
 func _ready():
     if Mediator.instance.is_server():
@@ -129,10 +131,10 @@ func try_parasiting():
 
             await get_tree().create_timer(1).timeout
             
-            if player_index_playing == 0:
-                p1_scored.emit()
-            else:
-                p2_scored.emit()
+            player_scores[player_index_playing] += 1
+            player_scored.emit(player_index_playing, player_scores[player_index_playing])
+            if(player_scores[player_index_playing] == win_score):
+                on_score_reached()
             
             player_managers.array[player_index_playing].spawn_player(grid, host_pos)
             player_managers.array[player_index_playing].kill_player(grid, player_pos)
@@ -162,7 +164,6 @@ func start_game():
         
         start_turn()
         Immersive.client.starts_playing()
-        
 
 func spawn_host(grid_pos: Vector2):    
     if !is_game_over:
@@ -224,7 +225,7 @@ func check_octo_around_player(player: Player):
             
     return null
 
-func _on_score_card_score_atteint():
+func on_score_reached():
     Mediator.instance.call_on_players(player_controller.finish_game)
     Immersive.client.end_game()
 
@@ -242,7 +243,11 @@ func play_shockwave_anim(saved_host_pos: Vector2):
     camera.play_shockwave_anim(screen_ratio)
     
 func finish_game():
-    game_finished.emit(player_controller.can_play())
+    var player_winning_index = 0
+    for i in range(player_scores.size()):
+        if player_scores[i] == MAX_PLAYERS_COUNT:
+            player_winning_index = i
+    game_finished.emit(player_winning_index == player_controller.player_index)
     get_tree().get_root().get_node("BackgroundMusic/BGMusic").stream_paused = true
 
     # on cache tout

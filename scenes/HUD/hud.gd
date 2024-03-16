@@ -21,8 +21,7 @@ func _ready():
     lose_label.visible = false
     your_turn_label.visible = false
     other_player_turn_label.visible = false
-    game.p1_scored.connect(score_card._on_game_p_1_scored)
-    game.p2_scored.connect(score_card._on_game_p_2_scored)
+    game.player_scored.connect(score_card.on_player_scored)
     game.game_finished.connect(set_winning_label)
     mute_button.toggled.connect(_on_mute_sound_toggled)
     

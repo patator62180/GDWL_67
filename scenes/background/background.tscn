@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://b81kmauxqg4ws"]
+[gd_scene load_steps=8 format=3 uid="uid://b81kmauxqg4ws"]
 
 [ext_resource type="Shader" path="res://scenes/background/infinite_background.gdshader" id="1_i8cim"]
+[ext_resource type="Script" path="res://scenes/background/background.gd" id="2_pl4o3"]
 
 [sub_resource type="Gradient" id="Gradient_bjjgb"]
 colors = PackedColorArray(0.945098, 0.956863, 0.894118, 1, 0.666667, 1, 1, 1)
@@ -31,3 +32,4 @@ material = SubResource("ShaderMaterial_s5s6m")
 position = Vector2(436.5, -43)
 scale = Vector2(12000, 12000)
 texture = SubResource("PlaceholderTexture2D_kj0u0")
+script = ExtResource("2_pl4o3")
