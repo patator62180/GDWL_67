@@ -136,6 +136,7 @@ func try_parasiting():
             
             player_managers.array[player_index_playing].spawn_player(grid, host_pos)
             player_managers.array[player_index_playing].kill_player(grid, player_pos)
+            Mediator.instance.call_on_players(play_shockwave_anim, host_pos)
             
             host_manager.hosts.erase(host)
             host.queue_free()
