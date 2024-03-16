@@ -1,9 +1,13 @@
-[gd_scene format=3 uid="uid://b8f8j4dualeev"]
+[gd_scene load_steps=2 format=3 uid="uid://b8f8j4dualeev"]
 
-[node name="ConnectedPlayer" type="Control"]
+[ext_resource type="Script" path="res://scenes/menus/connected_player.gd" id="1_3vlpe"]
+
+[node name="ConnectedPlayer" type="Control" node_paths=PackedStringArray("label")]
 custom_minimum_size = Vector2(300, 50)
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("1_3vlpe")
+label = NodePath("Label")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1

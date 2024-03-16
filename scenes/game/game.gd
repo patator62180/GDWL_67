@@ -4,7 +4,6 @@ class_name Game
 
 const MAX_PLAYERS_COUNT = 4
 
-@export var lobby: Lobby
 @export var player_managers: PlayerManagers
 @export var host_manager: HostManager
 @export var grid: Grid
@@ -17,7 +16,15 @@ signal p2_scored
 signal game_finished(bool)
 signal game_started
 
-var players = []
+class PeerPlayer:
+    var peer_id: int
+    var nickname: String
+    
+    func _init(peer_id: int):
+        self.peer_id = peer_id
+        self.nickname = 'Player%d' % peer_id
+
+var peer_players: Array[PeerPlayer] = []
 var is_game_started: bool
 var is_game_over: bool = false
 var is_choice_step: bool
@@ -58,7 +65,7 @@ func end_player_turn_move(selected_player_index: int, grid_pos: Vector2):
         selected_player.move_to(grid_pos)
         
         end_turn(true)
-    
+
 @rpc('any_peer')
 func end_player_turn_place_wall(grid_pos: Vector2, tile_index: int):
     if Mediator.instance.is_server():
@@ -84,7 +91,7 @@ func end_turn(try_parasiting: bool = false):
         turn_state = TurnState.PLAYER_TURN
         
         player_index_playing = player_index_playing + 1
-        if player_index_playing >= len(players):
+        if player_index_playing >= len(peer_players):
             player_index_playing = 0
     
     start_turn(try_parasiting)
@@ -151,7 +158,7 @@ func start_game():
         game_started.emit()
 
         for player_index in range(MAX_PLAYERS_COUNT):
-            if player_index > len(players) - 1:
+            if player_index > len(peer_players) - 1:
                 hud.player_cards[player_index].visible = false
                 get_node("HUD/PlayerCards").visible = false
             else:
@@ -175,14 +182,18 @@ func request_start_game():
     Mediator.instance.call_on_server(start_game)
 
 func on_peer_player_joined(id: int):
-    var player_index = len(players)
+    var player_index = len(peer_players)
+    var peer_player = PeerPlayer.new(id)
     
-    players.append(id)
+    peer_players.append(peer_player)
     Mediator.instance.call_on_player(id, player_controller.assign_player, player_index)
     hud.player_cards[player_index].set_connected()
     
+    for peer_player_index in range(len(peer_players)):
+        Mediator.instance.call_on_players(player_controller.update_connected_player, peer_player_index, peer_players[peer_player_index].nickname)
+    
     if player_index == 1:
-        Mediator.instance.call_on_player(players[0], player_controller.give_start_game_permission)
+        Mediator.instance.call_on_player(peer_players[0].peer_id, player_controller.give_start_game_permission)
 
 func move_player(player_index: int, action: String):
     if Mediator.instance.is_server():
@@ -195,7 +206,7 @@ func propagate_add_wall(grid_pos: Vector2, tile_index: int):
 
 func check_tile(grid_pos:Vector2, check_players: bool):
     if check_players:
-        for i in range(0, players.size()):
+        for i in range(0, peer_players.size()):
             var player_is_present = player_managers.check_for_player(grid, grid_pos)
             if player_is_present != null:
                 return player_is_present

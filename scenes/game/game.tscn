@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=15 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
+[ext_resource type="PackedScene" uid="uid://5cbujpr3l37j" path="res://scenes/camera/shockwave.tscn" id="3_ouo1f"]
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
 [ext_resource type="Script" path="res://scenes/game/hazard_mananger.gd" id="3_vmlt8"]
 [ext_resource type="PackedScene" uid="uid://biqj0t60x1dv0" path="res://scenes/HUD/hud.tscn" id="4_df5lj"]
@@ -14,23 +15,25 @@
 [ext_resource type="PackedScene" uid="uid://wqmj852ihkvi" path="res://scenes/host/host_manager.tscn" id="14_jipfn"]
 [ext_resource type="PackedScene" uid="uid://d3q7s8lnam8nw" path="res://scenes/lobby/lobby.tscn" id="15_0s1u7"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("lobby", "player_managers", "host_manager", "grid", "hud", "player_controller", "camera")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("player_managers", "host_manager", "grid", "hud", "player_controller", "camera", "audio_player")]
 script = ExtResource("1_jy7t4")
-lobby = NodePath("Lobby")
 player_managers = NodePath("PlayerManagers")
 host_manager = NodePath("HostManager")
 grid = NodePath("Grid")
 hud = NodePath("HUD")
+shockwave_scene = ExtResource("3_ouo1f")
 player_controller = NodePath("PlayerController")
 camera = NodePath("Camera2D")
+audio_player = NodePath("audio_player")
 
-[node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("hud", "game", "player_managers", "grid")]
+[node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("hud", "game", "player_managers", "grid", "lobby")]
 script = ExtResource("5_c6l1t")
 hud = NodePath("../HUD")
 game = NodePath("..")
 player_managers = NodePath("../PlayerManagers")
 grid = NodePath("../Grid")
 host_scene = ExtResource("8_va0h3")
+lobby = NodePath("../Lobby")
 
 [node name="HUD" parent="." node_paths=PackedStringArray("PlayerManagers") instance=ExtResource("4_df5lj")]
 PlayerManagers = NodePath("../PlayerManagers")
@@ -51,9 +54,7 @@ script = ExtResource("9_o4or6")
 
 [node name="HostManager" parent="." instance=ExtResource("14_jipfn")]
 
-[node name="audio_player" parent="." node_paths=PackedStringArray("game", "hud") instance=ExtResource("11_3jgb6")]
-game = NodePath("..")
-hud = NodePath("../HUD")
+[node name="audio_player" parent="." instance=ExtResource("11_3jgb6")]
 
 [node name="Lobby" parent="." instance=ExtResource("15_0s1u7")]
 

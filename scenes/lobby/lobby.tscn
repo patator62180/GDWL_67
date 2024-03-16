@@ -1,12 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3q7s8lnam8nw"]
 
 [ext_resource type="Script" path="res://scenes/lobby/lobby.gd" id="1_061j6"]
-[ext_resource type="PackedScene" uid="uid://b8f8j4dualeev" path="res://scenes/menus/connected_player.tscn" id="1_igg4m"]
+[ext_resource type="PackedScene" uid="uid://b8f8j4dualeev" path="res://scenes/menus/connected_player.tscn" id="2_al2yg"]
 
-[node name="Lobby" type="CanvasLayer" node_paths=PackedStringArray("start_button", "screen_title")]
+[node name="Lobby" type="CanvasLayer" node_paths=PackedStringArray("start_button", "screen_title", "connected_players_list")]
 script = ExtResource("1_061j6")
 start_button = NodePath("Container/StartButton")
 screen_title = NodePath("Container/Title")
+connected_player_scene = ExtResource("2_al2yg")
+connected_players_list = NodePath("Container/ConnectedPlayers/VBoxContainer")
 
 [node name="Container" type="Control" parent="."]
 layout_mode = 3
@@ -68,12 +70,6 @@ anchor_left = 0.5
 anchor_right = 0.5
 offset_top = 70.0
 grow_horizontal = 2
-
-[node name="ConnectedPlayer0" parent="Container/ConnectedPlayers/VBoxContainer" instance=ExtResource("1_igg4m")]
-layout_mode = 2
-
-[node name="ConnectedPlayer1" parent="Container/ConnectedPlayers/VBoxContainer" instance=ExtResource("1_igg4m")]
-layout_mode = 2
 
 [node name="Setup" type="Control" parent="Container"]
 custom_minimum_size = Vector2(450, 300)
