@@ -111,7 +111,5 @@ func _ready():
     hud.hand.draw_card_for_turn.connect(on_card_draw)
 
     grid.wall_click.connect(on_wall_click)
-    
-func _process(delta):
-    turn_indicator()
+
 
