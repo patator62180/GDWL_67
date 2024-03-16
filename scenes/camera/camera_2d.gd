@@ -2,7 +2,7 @@ extends Camera2D
 
 class_name Camera
 
-static var instance: Camera2D
+static var instance: Camera
 
 @export var camera_drag : float = 25
 @export var shockwave : Shockwave
