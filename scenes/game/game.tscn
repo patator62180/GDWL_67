@@ -15,7 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://b3htu031n8oek" path="res://sfx/card_select.mp3" id="11_xco32"]
 [ext_resource type="AudioStream" uid="uid://mdgr2oybyu2j" path="res://sfx/shockwave.mp3" id="12_xl8hs"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_managers", "grid", "host_spawner", "hud", "player_controller", "camera")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_managers", "grid", "host_spawner", "hud", "player_controller", "camera", "defeat_sound", "victory_sound")]
 script = ExtResource("1_jy7t4")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
@@ -26,16 +26,16 @@ hud = NodePath("HUD")
 shockwave_scene = ExtResource("3_ouo1f")
 player_controller = NodePath("PlayerController")
 camera = NodePath("Camera2D")
+defeat_sound = NodePath("Audio/Defeat")
+victory_sound = NodePath("Audio/Victory")
 
-[node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("hud", "game", "player_managers", "grid", "defeat_sound", "victory_sound", "card_selection_sound")]
+[node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("hud", "game", "player_managers", "grid", "card_selection_sound")]
 script = ExtResource("5_c6l1t")
 hud = NodePath("../HUD")
 game = NodePath("..")
 player_managers = NodePath("../PlayerManagers")
 grid = NodePath("../Grid")
 host_scene = ExtResource("8_va0h3")
-defeat_sound = NodePath("../Audio/Defeat")
-victory_sound = NodePath("../Audio/Victory")
 card_selection_sound = NodePath("../Audio/CardSelection")
 
 [node name="HUD" parent="." node_paths=PackedStringArray("PlayerManagers") instance=ExtResource("4_df5lj")]

@@ -7,13 +7,10 @@ class_name PlayerController
 @export var player_managers: PlayerManagers
 @export var grid: Grid
 @export var host_scene: PackedScene
-@export var defeat_sound: AudioStreamPlayer
-@export var victory_sound: AudioStreamPlayer
 @export var card_selection_sound: AudioStreamPlayer
 
 var player_index: int
 var player_index_playing: int = -1
-var is_game_over: bool = false
 var selected_player: Player
 
 static var instance: PlayerController
@@ -37,17 +34,7 @@ func propagate_turn(player_index: int):
 
 @rpc('authority')
 func finish_game():
-    hud.set_winning_label(can_play())
-    get_tree().get_root().get_node("BackgroundMusic/BGMusic").stream_paused = true
-    if can_play():
-        victory_sound.play()
-    else: 
-        defeat_sound.play()
-
-    # on cache tout
-    is_game_over = true
-    player_managers.visible = false
-    grid.visible = false
+    game.finish_game()
 
 @rpc('authority')
 func assign_player(player_index: int):

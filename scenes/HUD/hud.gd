@@ -21,6 +21,7 @@ func _ready():
     var game = get_parent() as Game
     game.p1_scored.connect(score_card._on_game_p_1_scored)
     game.p2_scored.connect(score_card._on_game_p_2_scored)
+    game.game_finished.connect(set_winning_label)
     mute_button.toggled.connect(_on_mute_sound_toggled)
     
 
@@ -30,7 +31,8 @@ func _process(delta):
     if not OS.has_feature('dedicated_server'):
         get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)
 
-func set_winning_label(isWinning : bool):
+func set_winning_label():
+    var isWinning = PlayerController.instance.can_play()
     $YouWinLabel.visible = isWinning
     $YouLostLabel.visible = !isWinning
 
