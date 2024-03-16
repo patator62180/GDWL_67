@@ -1,14 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3q7s8lnam8nw"]
+[gd_scene load_steps=4 format=3 uid="uid://d3q7s8lnam8nw"]
 
 [ext_resource type="Script" path="res://scenes/lobby/lobby.gd" id="1_061j6"]
 [ext_resource type="PackedScene" uid="uid://b8f8j4dualeev" path="res://scenes/menus/connected_player.tscn" id="2_al2yg"]
+[ext_resource type="PackedScene" uid="uid://bef6pckymx8bi" path="res://scenes/player/player.tscn" id="3_4stck"]
 
-[node name="Lobby" type="CanvasLayer" node_paths=PackedStringArray("start_button", "screen_title", "connected_players_list")]
+[node name="Lobby" type="CanvasLayer" node_paths=PackedStringArray("start_button", "screen_title", "connected_players_list", "nickname_edit", "color_slider", "color_picker_player_preview")]
 script = ExtResource("1_061j6")
 start_button = NodePath("Container/StartButton")
 screen_title = NodePath("Container/Title")
 connected_player_scene = ExtResource("2_al2yg")
 connected_players_list = NodePath("Container/ConnectedPlayers/VBoxContainer")
+nickname_edit = NodePath("Container/Setup/Nickname/TextEdit")
+color_slider = NodePath("Container/Setup/Color/ColorPicker/Slider")
+color_picker_player_preview = NodePath("Container/Setup/Color/ColorPicker/Player")
 
 [node name="Container" type="Control" parent="."]
 layout_mode = 3
@@ -123,7 +127,6 @@ offset_top = -4.0
 offset_bottom = 4.0
 grow_horizontal = 0
 grow_vertical = 2
-text = "Michel"
 
 [node name="Color" type="Control" parent="Container/Setup"]
 custom_minimum_size = Vector2(400, 50)
@@ -145,53 +148,25 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 25
 text = "Color:"
 
-[node name="ColorPicker" type="HBoxContainer" parent="Container/Setup/Color"]
+[node name="ColorPicker" type="Control" parent="Container/Setup/Color"]
 layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -40.0
-offset_top = -20.0
-offset_bottom = 20.0
-grow_horizontal = 0
-grow_vertical = 2
+anchors_preset = 0
+offset_left = 92.0
+offset_top = 10.0
+offset_right = 132.0
+offset_bottom = 50.0
 
-[node name="ColorRect" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-color = Color(0, 0.811765, 0.831373, 1)
+[node name="Slider" type="HSlider" parent="Container/Setup/Color/ColorPicker"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+offset_left = -1.0
+offset_top = 10.0
+offset_right = 199.0
+offset_bottom = 26.0
+max_value = 1000.0
 
-[node name="ColorRect2" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-color = Color(1, 0.392157, 1, 1)
-
-[node name="ColorRect3" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-color = Color(1, 1, 0.12549, 1)
-
-[node name="ColorRect4" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-color = Color(0.105882, 0.784314, 0.333333, 1)
-
-[node name="ColorRect5" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-color = Color(0.968627, 0.564706, 0.32549, 1)
-
-[node name="ColorRect6" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-color = Color(0.619608, 0.635294, 0.92549, 1)
-
-[node name="ColorRect7" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-color = Color(0.780392, 0.611765, 0.0392157, 1)
+[node name="Player" parent="Container/Setup/Color/ColorPicker" instance=ExtResource("3_4stck")]
+position = Vector2(207, -10)
 
 [node name="StartButton" type="Button" parent="Container"]
 custom_minimum_size = Vector2(0, 50)
