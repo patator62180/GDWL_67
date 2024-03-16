@@ -7,9 +7,6 @@ class_name PlayerController
 @export var player_managers: PlayerManagers
 @export var grid: Grid
 @export var host_scene: PackedScene
-@export var background: Sprite2D
-@export var your_turn: TextEdit
-@export var other_player_turn: TextEdit
 @export var defeat_sound: AudioStreamPlayer
 @export var victory_sound: AudioStreamPlayer
 @export var card_selection_sound: AudioStreamPlayer
