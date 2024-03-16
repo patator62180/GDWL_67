@@ -8,7 +8,7 @@ signal started_game
 @export var screen_title: Label
 
 func _ready():
-    if Mediator.instance.is_server():
+    if Mediator.instance.is_server(false):
         close()
 
 func close():
