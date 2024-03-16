@@ -27,7 +27,6 @@ func give_start_game_permission():
 @rpc('authority')
 func propagate_start_game():
     lobby.close()
-    hud.player_cards[player_index].set_start_game_button_enabled(false)
     hud.hand.draw_multiple(2)
 
 @rpc('authority')
@@ -45,15 +44,21 @@ func finish_game():
 @rpc('authority')
 func assign_player(player_index: int):
     self.player_index = player_index
-    hud.player_cards[player_index].assign()
 
 @rpc('authority')
 func update_connected_player(player_index: int, nickname: String, color: float):
     lobby.update_connected_player(player_index, nickname, color)
+
+    hud.player_cards[player_index].nickname = nickname
+    hud.player_cards[player_index].color = color
     
     if player_index == self.player_index:
         lobby.nickname = nickname
         lobby.color = color
+
+@rpc('authority')
+func update_score(player_index: int, score: int):
+    hud.player_cards[player_index].score = score
 
 func on_nickname_edited(nickname: String):
     Mediator.instance.call_on_server(game.update_nickname, player_index, nickname)
@@ -97,11 +102,19 @@ func on_wall_click(grid_pos: Vector2, tile_index: int):
         Mediator.instance.call_on_server(game.end_player_turn_place_wall, grid_pos, tile_index)
         hud.hand.consume_selected_card()
 
+func on_hammer_click(grid_pos: Vector2):
+    if Mediator.instance.is_player() and can_play():
+        Mediator.instance.call_on_server(game.end_player_turn_hammer, grid_pos)
+        hud.hand.consume_selected_card()
+        
 func on_card_selected(cardType : String):
     grid.selected_card_type = cardType
 
 func on_card_draw():
     Mediator.instance.call_on_server(game.draw_for_turn)
+
+func on_player_scored(player_index: int, score: int):
+    Mediator.instance.call_on_players(update_score, player_index, score)
 
 func _ready():
     instance = self
@@ -109,7 +122,9 @@ func _ready():
     hud.hand.card_selected.connect(on_card_selected)
     hud.hand.draw_card_for_turn.connect(on_card_draw)
     grid.wall_click.connect(on_wall_click)
+    grid.hammer_click.connect(on_hammer_click)
     lobby.nickname_edited.connect(on_nickname_edited)
     lobby.color_changed.connect(on_color_changed)
+    game.player_scored.connect(on_player_scored)
 
 

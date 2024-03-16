@@ -2,29 +2,22 @@ extends Control
 
 class_name PlayerCard
 
-@export var player_index: int
+@export var nickname_label: Label
+@export var score_label: Label
 
-@export var player_index_label: Label
-@export var status_label: Label
-@export var start_game_button: Button
+var nickname: String = '':
+    set(value):
+        nickname_label.text = value
 
-signal start_game_pressed
+var score: int = 0:
+    set(value):
+        score_label.text = 'Points: %d' % value
+
+var color: float = 0:
+    set(value):
+        if not OS.has_feature('dedicated_server'):
+            nickname_label.material.set_shader_parameter("Shift_Hue", value)
+            score_label.material.set_shader_parameter("Shift_Hue", value)
 
 func _ready():
-    player_index_label.text = 'Player %d' % (player_index + 1)
-    set_start_game_button_enabled(false)
-    start_game_button.pressed.connect(func (): start_game_pressed.emit())
-    set_connected()
-
-func set_start_game_button_enabled(enabled: bool):
-    start_game_button.disabled = not enabled
-    start_game_button.visible = enabled
-
-func set_playing(playing: bool):
-    status_label.text = 'Playing' if playing else ''
-
-func set_connected():
-    status_label.text = 'Connected'
-
-func assign():
-    player_index_label.text = 'Player %d (You)' % (player_index + 1)
+    score = 0

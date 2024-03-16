@@ -1,7 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://biumy12wvsfs5"]
+[gd_scene load_steps=7 format=3 uid="uid://biumy12wvsfs5"]
 
 [ext_resource type="Script" path="res://scenes/player_card/player_card.gd" id="1_n1egu"]
-[ext_resource type="Theme" path="res://scenes/background/theme_principal.tres" id="2_dmo1j"]
+[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="2_dmo1j"]
+[ext_resource type="Shader" path="res://scenes/game/scoreHueJ1.gdshader" id="2_yk65v"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tdhdf"]
+resource_local_to_scene = true
+shader = ExtResource("2_yk65v")
+shader_parameter/Shift_Hue = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_utu1d"]
+resource_local_to_scene = true
+shader = ExtResource("2_yk65v")
+shader_parameter/Shift_Hue = null
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ivrl7"]
 properties/0/path = NodePath("VBoxContainer/Status:text")
@@ -11,7 +22,7 @@ properties/1/path = NodePath(".:visible")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="PlayerCard" type="Control" node_paths=PackedStringArray("player_index_label", "status_label", "start_game_button")]
+[node name="PlayerCard" type="Control" node_paths=PackedStringArray("nickname_label", "score_label")]
 custom_minimum_size = Vector2(300, 150)
 layout_mode = 3
 anchors_preset = 8
@@ -26,44 +37,29 @@ offset_bottom = 75.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n1egu")
-player_index_label = NodePath("VBoxContainer/PlayerIndex")
-status_label = NodePath("VBoxContainer/Status")
-start_game_button = NodePath("VBoxContainer/StartGameButton")
-
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -2.0
-offset_right = -2.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.866667, 0.866667, 0.866667, 1)
+nickname_label = NodePath("VBoxContainer/Nickname")
+score_label = NodePath("VBoxContainer/Score")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="PlayerIndex" type="Label" parent="VBoxContainer"]
+[node name="Nickname" type="Label" parent="VBoxContainer"]
+material = SubResource("ShaderMaterial_tdhdf")
 layout_mode = 2
 theme = ExtResource("2_dmo1j")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
-text = "PLAYER 1 (YOU)"
+text = "Player"
 
-[node name="Status" type="Label" parent="VBoxContainer"]
+[node name="Score" type="Label" parent="VBoxContainer"]
+material = SubResource("ShaderMaterial_utu1d")
 layout_mode = 2
 theme = ExtResource("2_dmo1j")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
-text = "NOT CONNECTED"
-
-[node name="StartGameButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme = ExtResource("2_dmo1j")
-text = "Start Game"
+text = "Points:"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ivrl7")

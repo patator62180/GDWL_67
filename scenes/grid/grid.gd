@@ -13,6 +13,7 @@ signal cell_click
 signal cell_hovered
 signal wall_click
 signal wall_placed
+signal hammer_click
 
 var grid_size
 
@@ -38,6 +39,13 @@ var octo = [
     Vector2.DOWN + Vector2.LEFT
 ]
 
+var square = [
+    Vector2.ZERO,
+    Vector2.RIGHT,
+    Vector2.DOWN,
+    Vector2.RIGHT + Vector2.DOWN
+]
+
 var selected_tile = null
 var previous_hovered_tile = null
 
@@ -60,8 +68,14 @@ func on_mouse_move(position: Vector2):
     
     if selected_card_type == "Movement":
         show_movement_arrow(position)
-
+    
+    if selected_card_type == "Hammer":
+        show_hammer_highlight(position)
+        
 func on_mouse_click(position: Vector2, is_left_click: bool):
+    if !PlayerController.instance.can_play():
+        return
+        
     if selected_card_type == "Movement" and is_left_click:
         var grid_pos = get_grid_pos(position)
         var cell_tile_data = tile_map.get_cell_source_id(0, grid_pos)
@@ -75,10 +89,16 @@ func on_mouse_click(position: Vector2, is_left_click: bool):
         else:
             current_wall_index = 1 if current_wall_index == 0 else 0
             draw_wall_highlight() 
+    
+    if selected_card_type == "Hammer":
+        try_use_hammer(position)
 
 func on_mouse_exited():
     selection_wall_tile_map.clear()
     selected_wall_tile = null
+    
+    if selected_card_type == "Hammer":
+        selection_tile_map.clear()
 
 func _process(delta):
     if selected_card_type != "Wall" and selected_wall_tile != null:
@@ -87,7 +107,6 @@ func _process(delta):
     
     if selected_card_type != "Movement" and selected_tile != null:
         clear_possible_selections()
-
         
 func get_grid_pos(position: Vector2):
     return Vector2(floor(position.x / grid_size), floor(position.y / grid_size))
@@ -157,6 +176,10 @@ func show_wall_highlight(position: Vector2):
 
 func draw_wall_highlight():
     selection_wall_tile_map.clear()
+    
+    if selected_wall_tile == null:
+        return
+        
     selection_wall_tile_map.set_cell(0, selected_wall_tile, current_wall_index, Vector2.ZERO)
 
 func show_movement_arrow(position: Vector2):
@@ -191,3 +214,39 @@ func reset_movement_arrows():
     if previous_hovered_tile != null:
         selection_tile_map.set_cell(0, previous_hovered_tile, 0, Vector2.ZERO) 
         previous_hovered_tile = null
+
+func try_use_hammer(position: Vector2):
+    var offset_grid_tile = get_grid_pos(position - Vector2.ONE * grid_size / 2)
+
+    hammer_click.emit(offset_grid_tile)
+    selection_tile_map.clear()
+
+func show_hammer_highlight(position: Vector2):
+    var offset_grid_tile = get_grid_pos(position - Vector2.ONE * grid_size / 2)
+    
+    selection_tile_map.clear()
+    for direction in square:
+        var pos = Vector2(offset_grid_tile + direction)
+        if is_possible_tile(pos):
+            selection_tile_map.set_cell(0, pos, 0, Vector2(0,0))
+
+func get_hammer_hits(grid_position: Vector2):
+    var wall_up = wall_tile_map.get_cell_source_id(0, grid_position + Vector2.UP)
+    if wall_up != 0:
+        wall_up = max(-1, wall_up - 2)
+    
+    var wall_down = wall_tile_map.get_cell_source_id(0, grid_position + Vector2.DOWN)
+    if wall_down != 0:
+        wall_down = max(-1, wall_down - 2)
+        
+    var wall_left = wall_tile_map.get_cell_source_id(0, grid_position + Vector2.LEFT)
+    if wall_left != 1:
+        wall_left = max(-1, wall_left - 1)
+    
+    var wall_right = wall_tile_map.get_cell_source_id(0, grid_position + Vector2.RIGHT)
+    if wall_right != 1:
+        wall_right = max(-1, wall_right - 1)
+        
+    var hammer_hits = [-1, wall_up, wall_down, wall_right, wall_left]
+    
+    return hammer_hits as Array[int]
