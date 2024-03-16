@@ -26,7 +26,6 @@ func give_start_game_permission():
 func propagate_start_game():
 	lobby.close()
 	hud.player_cards[player_index].set_start_game_button_enabled(false)
-	player_managers.array[0].modulateFaceColor = hud.horizontal_slider.value
 	hud.hand.draw_multiple(2)
 
 @rpc('authority')

@@ -10,6 +10,8 @@ signal nickname_edited
 @export var connected_player_scene: PackedScene
 @export var connected_players_list: Control
 @export var nickname_edit: TextEdit
+@export var color_slider: HSlider
+@export var color_picker_player_preview: Player
 
 var nickname: String = "":
 	set(value):
@@ -17,13 +19,17 @@ var nickname: String = "":
 			nickname_edit.text = value
 
 func _ready():
-	if Mediator.instance.is_server(false):
+	if Mediator.instance and Mediator.instance.is_server(false):
 		close()
 	else:
 		nickname_edit.text_changed.connect(on_text_changed)
+		color_slider.value_changed.connect(on_color_slider_changed)
 
 func close():
 	queue_free()
+
+func on_color_slider_changed(value: float):
+	color_picker_player_preview.color = value / 1000
 
 func on_text_changed():
 	if len(nickname_edit.text) >= 1:
