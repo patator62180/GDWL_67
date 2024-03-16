@@ -25,32 +25,24 @@ var is_game_over: bool
 var is_choice_step: bool
 var player_index_playing: int = -1
 
-var saved_host_pos
-var saved_player_pos
-var saved_host
-
 var respawn_timer = 0.3
 var respawn_timer_max = respawn_timer
 
 var shockwave = Shockwave
 
+var turn_state = TurnState.NONE
+
 func _ready():
     if Mediator.instance.is_server():
         Mediator.instance.listen_peer_player_connection(on_peer_player_joined)
-        
-        for player_character in player_managers.array:
-            player_character.played.connect(on_player_played)
-            
-    grid.wall_click.connect(on_wall_click)
+
     host_spawner.spawn_function = spawn_host_client
     
     if Mediator.instance.is_player():
         shockwave = shockwave_scene.instantiate()
         camera.add_child(shockwave)
         hud.set_player_controller(player_controller)
-    
-        
-       
+
 func _process(delta):
     if respawn_timer < respawn_timer_max:
         respawn_timer = respawn_timer + delta
@@ -58,66 +50,39 @@ func _process(delta):
         if respawn_timer >= respawn_timer_max:
             respawn_host()
     
-    get_node("Camera2D").position = get_local_mouse_position()/camera_drag
+    camera.position = get_local_mouse_position()/camera_drag
     
+@rpc('any_peer')
+func draw_for_turn():
+    if Mediator.instance.is_server():
+        end_turn()
 
-func on_player_played():
-    #check if a player is next to a host
-    for player in player_managers.array[player_index_playing].player_characters:
-        var host = check_octo_around_player(player)
+@rpc('any_peer')
+func end_player_turn():
+    if Mediator.instance.is_server():
+        end_turn()
+    
+@rpc('any_peer')
+func end_player_turn_move(selected_player_index: int, grid_pos: Vector2):
+    if Mediator.instance.is_server():
+        var selected_player = player_managers.array[player_index_playing].player_characters[selected_player_index]
+        selected_player.move_to(grid_pos)
         
-        if host != null:
-            saved_host_pos = grid.get_grid_pos(host.position)
-            saved_player_pos = grid.get_grid_pos(player.position)
-            saved_host = host
-            
-            player.parasited.connect(on_parasiting_done)
-            
-            player.shoot_your_shot(host.position)
-            Mediator.instance.call_on_players(player.shoot_your_shot, host.position)
-            
-            #on attend 1 seconde avant de tout kill
-            await get_tree().create_timer(1).timeout
-            
-        else:
-            on_turn_done()
-
-func on_parasiting_done():
-    Mediator.instance.call_on_players(play_shockwave_anim, saved_host_pos)
+        end_turn(true)
     
-    await get_tree().create_timer(1).timeout
-    
-    player_managers.array[player_index_playing].spawn_player(grid, saved_host_pos)
-    player_managers.array[player_index_playing].kill_player(grid, saved_player_pos)
-    
-    hosts.erase(saved_host)
-    saved_host.queue_free()
-    
-    if player_index_playing == 0:
-        emit_signal("p1_scored")
-    else:
-        emit_signal("p2_scored")
-    
-    respawn_timer = 0
+@rpc('any_peer')
+func end_player_turn_place_wall(grid_pos: Vector2, tile_index: int):
+    if Mediator.instance.is_server():
+        grid.add_wall(grid_pos, tile_index)
+        Mediator.instance.call_on_players(propagate_add_wall, grid_pos, tile_index)
+        #on_player_played()
+        end_turn()
     
 func respawn_host():
     spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
-    await get_tree().create_timer(0.5).timeout
-    on_turn_done()
-
-func on_turn_done():
-    player_index_playing = player_index_playing + 1 if player_index_playing < len(players) - 1 else 0
-    
-    for host in hosts:
-        host.move_host(grid, player_managers)
-    
-    if hosts.is_empty():
-        on_host_played()
-        
-    check_if_player_won()
     
 func on_host_played():
-    set_turn(player_index_playing)
+    pass
 
 func check_if_player_won():
     for host in hosts:
@@ -137,18 +102,67 @@ func spawn_host_client(position):
         hosts.append(host) 
     
         return host
+    
+func end_turn(try_parasiting: bool = false):
+    if turn_state == TurnState.PLAYER_TURN:
+        turn_state = TurnState.AI_TURN
+    
+    elif turn_state == TurnState.AI_TURN:
+        turn_state = TurnState.PLAYER_TURN
+        
+        player_index_playing = player_index_playing + 1
+        if player_index_playing >= len(players):
+            player_index_playing = 0
+    
+    start_turn(try_parasiting)
 
-func set_turn(player_index: int):
-    Mediator.instance.call_on_players(player_controller.propagate_turn, player_index)
+func start_turn(try_parasiting: bool = false):
+    Mediator.instance.call_on_players(player_controller.propagate_turn, player_index_playing, turn_state)
     
-    for index in range(MAX_PLAYERS_COUNT):
-        hud.player_cards[index].set_playing(player_index == index)
-    
-    player_index_playing = player_index
+    match turn_state:
+        TurnState.PLAYER_TURN:
+            pass
+        TurnState.AI_TURN:
+            await get_tree().create_timer(0.5).timeout
+            
+            if try_parasiting:
+                await try_parasiting()
+            
+            for host in hosts:
+                host.move_host(grid, player_managers)
+            
+            await get_tree().create_timer(0.5).timeout
+            
+            end_turn()
+            pass
+            
+func try_parasiting():
+    var players = player_managers.array[player_index_playing].player_characters
+    for i in range(0, players.size()):
+        var player = players[i]
+        var host = check_octo_around_player(player)
+        
+        if host != null:
+            var host_pos = grid.get_grid_pos(host.position)
+            var player_pos = grid.get_grid_pos(player.position)
+            Mediator.instance.call_on_players(player.shoot_your_shot, host.position)
+
+            await get_tree().create_timer(1).timeout
+            
+            player_managers.array[player_index_playing].spawn_player(grid, host_pos)
+            player_managers.array[player_index_playing].kill_player(grid, player_pos)
+            
+            hosts.erase(host)
+            host.queue_free()
+            
+            respawn_host()
+            
+            await get_tree().create_timer(0.5).timeout
 
 @rpc('any_peer')
 func start_game():
     if Mediator.instance.is_server():
+        turn_state = TurnState.PLAYER_TURN
         Mediator.instance.call_on_players(player_controller.propagate_start_game)
         is_game_started = true
 
@@ -160,7 +174,11 @@ func start_game():
                 player_managers.array[player_index].spawn_initial_player(grid)
 
         spawn_host(Vector2(0, -1))
-        set_turn(0)
+
+        turn_state = TurnState.PLAYER_TURN
+        player_index_playing = 0
+        
+        start_turn()
         Immersive.client.starts_playing()
         
 
@@ -184,18 +202,6 @@ func move_player(player_index: int, action: String):
     if Mediator.instance.is_server():
         player_managers.array[player_index].process_action(action)
 
-
-func on_wall_click(grid_pos: Vector2, tile_index: int):
-    if Mediator.instance.is_player():
-        Mediator.instance.call_on_server(add_wall, grid_pos, tile_index)
-        hud.hand.consume_selected_card()
-
-@rpc('any_peer')
-func add_wall(grid_pos: Vector2, tile_index: int):
-    if Mediator.instance.is_server():
-        grid.add_wall(grid_pos, tile_index)
-        Mediator.instance.call_on_players(propagate_add_wall, grid_pos, tile_index)
-        on_player_played()
 
 @rpc('authority')
 func propagate_add_wall(grid_pos: Vector2, tile_index: int):
