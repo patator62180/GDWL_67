@@ -7,9 +7,9 @@ uniform vec2 offset = vec2(0.0, 0.0);
 uniform float grid_size = 16.0;
 
 void fragment() {
-	vec2 uv = (offset / size) + UV;
-	vec2 r = mod(size * uv, vec2(grid_size));
-	vec2 lines = smoothstep(1.0 - line_width, 1, r / vec2(grid_size));
-	float alpha = dot(lines, vec2(1.0, 1.0));
-	COLOR.a = alpha;
+    vec2 uv = (offset / size) + UV;
+    vec2 r = mod(size * uv, vec2(grid_size));
+    vec2 lines = smoothstep(1.0 - line_width, 1, r / vec2(grid_size));
+    float alpha = dot(lines, vec2(1.0, 1.0));
+    COLOR.a = alpha;
 }

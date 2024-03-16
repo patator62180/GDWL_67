@@ -7,18 +7,18 @@ class_name PlayerManagers
 signal player_spawned(player : Player)
 
 func _ready():
-	for player_manager in array:
-		player_manager.player_spawned.connect(on_player_spawned)
-		
+    for player_manager in array:
+        player_manager.player_spawned.connect(on_player_spawned)
+        
 func check_for_player(grid: Grid, grid_pos:Vector2):
-	for player_manager in array:
-		for player in player_manager.player_characters:
-			var player_grid_pos = grid.get_grid_pos(player.position)
-				
-			if (player_grid_pos == grid_pos):
-				return player
-	
-	return null
-	
+    for player_manager in array:
+        for player in player_manager.player_characters:
+            var player_grid_pos = grid.get_grid_pos(player.position)
+                
+            if (player_grid_pos == grid_pos):
+                return player
+    
+    return null
+    
 func on_player_spawned(player : Player):
-	player_spawned.emit(player)
+    player_spawned.emit(player)
