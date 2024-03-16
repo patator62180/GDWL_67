@@ -14,7 +14,7 @@ func _ready():
     game.grid.cell_hovered.connect(play_sound_hovered_tile)
     game.grid.wall_placed.connect(wall_place.play)
     game.game_finished.connect(on_game_finished)
-    game.camera.shockwave.played.conned(shockwave_sound.play)
+    game.camera.shockwave.played.connect(shockwave_sound.play)
 
 func play_sound_hovered_tile():
     hover_tile.play()

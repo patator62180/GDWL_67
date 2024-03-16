@@ -3,10 +3,9 @@
 [ext_resource type="Script" path="res://scenes/camera/camera_2d.gd" id="1_3l2qm"]
 [ext_resource type="PackedScene" uid="uid://5cbujpr3l37j" path="res://scenes/camera/shockwave.tscn" id="2_5g353"]
 
-[node name="Camera2D" type="Camera2D"]
+[node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("shockwave")]
 zoom = Vector2(0.8, 0.8)
 script = ExtResource("1_3l2qm")
+shockwave = NodePath("Shockwave")
 
-[node name="Shockwave" parent="." node_paths=PackedStringArray("shockwave_player", "shockwave_shader") instance=ExtResource("2_5g353")]
-shockwave_player = NodePath("")
-shockwave_shader = NodePath("")
+[node name="Shockwave" parent="." instance=ExtResource("2_5g353")]
