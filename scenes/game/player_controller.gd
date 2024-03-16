@@ -46,14 +46,18 @@ func assign_player(player_index: int):
     hud.player_cards[player_index].assign()
 
 @rpc('authority')
-func update_connected_player(player_index: int, nickname: String):
-    lobby.update_connected_player(player_index, nickname)
-    
-    if player_index == self.player_index:
-        lobby.nickname = nickname
+func update_connected_player(player_index: int, nickname: String, color: float):
+	lobby.update_connected_player(player_index, nickname, color)
+	
+	if player_index == self.player_index:
+		lobby.nickname = nickname
+		lobby.color = color
 
 func on_nickname_edited(nickname: String):
     Mediator.instance.call_on_server(game.update_nickname, player_index, nickname)
+
+func on_color_changed(color: float):
+	Mediator.instance.call_on_server(game.update_color, player_index, color)
 
 func is_player_active_turn():
     return player_index_playing == player_index and game_turn_state == TurnState.PLAYER_TURN
@@ -98,11 +102,12 @@ func on_card_draw():
     Mediator.instance.call_on_server(game.draw_for_turn)
 
 func _ready():
-    instance = self
-    grid.cell_click.connect(on_cell_click)
-    hud.hand.card_selected.connect(on_card_selected)
-    hud.hand.draw_card_for_turn.connect(on_card_draw)
-    grid.wall_click.connect(on_wall_click)
-    lobby.nickname_edited.connect(on_nickname_edited)
+	instance = self
+	grid.cell_click.connect(on_cell_click)
+	hud.hand.card_selected.connect(on_card_selected)
+	hud.hand.draw_card_for_turn.connect(on_card_draw)
+	grid.wall_click.connect(on_wall_click)
+	lobby.nickname_edited.connect(on_nickname_edited)
+	lobby.color_changed.connect(on_color_changed)
 
 
