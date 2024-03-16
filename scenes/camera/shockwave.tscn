@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://5cbujpr3l37j"]
 
-[ext_resource type="Shader" path="res://scenes/simulation/shockwave.gdshader" id="1_5abkv"]
-[ext_resource type="Script" path="res://scenes/simulation/shockwave.gd" id="1_cq7jj"]
+[ext_resource type="Shader" path="res://scenes/camera/shockwave.gdshader" id="1_5abkv"]
+[ext_resource type="Script" path="res://scenes/camera/shockwave.gd" id="1_cq7jj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w0bqs"]
 shader = ExtResource("1_5abkv")
