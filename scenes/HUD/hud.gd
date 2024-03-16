@@ -11,7 +11,6 @@ class_name HUD
 @export var win_label : Label
 @export var lose_label : Label
 @export var horizontal_slider: HSlider
-@export var score_card : ScoreControl
 @export var mute_button : BaseButton
 
 signal mute_music
@@ -21,7 +20,6 @@ func _ready():
     lose_label.visible = false
     your_turn_label.visible = false
     other_player_turn_label.visible = false
-    game.player_scored.connect(score_card.on_player_scored)
     game.game_finished.connect(set_winning_label)
     mute_button.toggled.connect(_on_mute_sound_toggled)
 
