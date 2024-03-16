@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scenes/menus/choices_screen.gd" id="2_b0ar7"]
 [ext_resource type="PackedScene" uid="uid://dswfe7yyh4daq" path="res://scenes/game/game.tscn" id="2_h078q"]
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="2_xeypf"]
-[ext_resource type="Theme" uid="uid://c6jdci7k3yyg3" path="res://scenes/background/theme_principal.tres" id="3_sn0x5"]
+[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="3_sn0x5"]
 [ext_resource type="Texture2D" uid="uid://6i0h0aucnuvk" path="res://sprites/title_shadow.png" id="8_6h814"]
 
 [node name="Menus" type="Node2D" node_paths=PackedStringArray("choices_screen")]
