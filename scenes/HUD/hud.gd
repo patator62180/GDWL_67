@@ -33,10 +33,9 @@ func _process(delta):
     #set_player_color()
 
 
-func set_winning_label():
-    var isWinning = PlayerController.instance.can_play()
-    win_label.visible = isWinning
-    lose_label.visible = !isWinning
+func set_winning_label(player_won : bool):
+    win_label.visible = player_won
+    lose_label.visible = !player_won
 
 func _on_mute_sound_toggled(toggled_on):
     if toggled_on:

@@ -8,7 +8,9 @@ class_name Grid
 @export var selection_wall_tile_map: TileMap
 
 signal cell_click
+signal cell_hovered
 signal wall_click
+signal wall_placed
 
 var grid_size
 
@@ -99,9 +101,9 @@ func is_possible_movement(grid_pos: Vector2, direction: Vector2):
             return top_left_wall != 1 and top_left_wall != 2 and bottom_left_wall != 1 and bottom_left_wall != 2
     
     
-func add_wall(grid_pos: Vector2, tile_index: int):
-    get_node("Audio/WallPlaced").play()
+func add_wall(grid_pos: Vector2, tile_index: int):    
     wall_tile_map.set_cell(0, grid_pos, tile_index, Vector2.ZERO)
+    wall_placed.emit()
     
     
 func try_move_player():
@@ -170,14 +172,9 @@ func manage_highlight_arows():
                     atlas_id = Vector2(3,0)
                     
             selection_tile_map.set_cell(0, grid_pos, 1, atlas_id)
-            #play_sound_hovered_tile()
             if !(previous_hovered_tile == grid_pos):
-                print("nouvelle tile")
-                play_sound_hovered_tile()                        
+                cell_hovered.emit()                    
             previous_hovered_tile = grid_pos 
 
-func play_sound_hovered_tile():
-    get_node("Audio/HoverTile").play()
-    var rng = RandomNumberGenerator.new()
-    get_node("Audio/HoverTile").pitch_scale = rng.randf_range(0.70,1.30)
+
     

@@ -1,7 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=14 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
-[ext_resource type="PackedScene" uid="uid://5cbujpr3l37j" path="res://scenes/camera/shockwave.tscn" id="3_ouo1f"]
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
 [ext_resource type="Script" path="res://scenes/game/hazard_mananger.gd" id="3_vmlt8"]
 [ext_resource type="PackedScene" uid="uid://biqj0t60x1dv0" path="res://scenes/HUD/hud.tscn" id="4_df5lj"]
@@ -22,7 +21,6 @@ player_managers = NodePath("PlayerManagers")
 host_manager = NodePath("HostManager")
 grid = NodePath("Grid")
 hud = NodePath("HUD")
-shockwave_scene = ExtResource("3_ouo1f")
 player_controller = NodePath("PlayerController")
 camera = NodePath("Camera2D")
 audio_player = NodePath("audio_player")
@@ -54,7 +52,8 @@ script = ExtResource("9_o4or6")
 
 [node name="HostManager" parent="." instance=ExtResource("14_jipfn")]
 
-[node name="audio_player" parent="." instance=ExtResource("11_3jgb6")]
+[node name="audio_player" parent="." node_paths=PackedStringArray("game") instance=ExtResource("11_3jgb6")]
+game = NodePath("..")
 
 [node name="Lobby" parent="." instance=ExtResource("15_0s1u7")]
 
