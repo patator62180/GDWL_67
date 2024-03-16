@@ -48,10 +48,12 @@ func _ready():
     InputManager.instance.game_mouse_move.connect(on_mouse_move)
     InputManager.instance.game_mouse_click.connect(on_mouse_click)
     InputManager.instance.game_mouse_exited.connect(on_mouse_exited)
-    
 
 func on_mouse_move(position: Vector2):
     debug.position = position
+    
+    if !PlayerController.instance.can_play():
+        return
     
     if selected_card_type == "Wall":
         show_wall_highlight(position)
@@ -78,7 +80,6 @@ func on_mouse_exited():
     selection_wall_tile_map.clear()
     selected_wall_tile = null
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     if selected_card_type != "Wall" and selected_wall_tile != null:
         selection_wall_tile_map.clear()
@@ -86,18 +87,6 @@ func _process(delta):
     
     if selected_card_type != "Movement" and selected_tile != null:
         clear_possible_selections()
-    #if Input.is_action_just_pressed("mouse_select"):
-        #if try_create_wall():
-            #return
-        #try_move_player()
-    #
-    #check_wall_input_pressed()
-    #check_wall_input_released()
-        #
-    #manage_highlight_arows()
-    
-    #if selection_tile_map.get_cell_source_id(0, get_grid_pos(get_local_mouse_position())) == 1:
-        #play_sound_hovered_tile()
 
         
 func get_grid_pos(position: Vector2):
@@ -143,16 +132,6 @@ func is_possible_movement(grid_pos: Vector2, direction: Vector2):
 func add_wall(grid_pos: Vector2, tile_index: int):    
     wall_tile_map.set_cell(0, grid_pos, tile_index, Vector2.ZERO)
     wall_placed.emit()
-    
-#func try_move_player():
-    #var mouse_pos = get_local_mouse_position()
-    #var grid_pos = get_grid_pos(mouse_pos)
-        #
-    #is_possible_movement(grid_pos, Vector2.ZERO)
-                #
-    #var cell_tile_data = tile_map.get_cell_source_id(0, grid_pos)
-    #if cell_tile_data != -1:
-        #cell_click.emit(grid_pos)      
     
 func try_create_wall():
     if selected_wall_tile != null:
