@@ -12,8 +12,6 @@ var selected_card
 var card_scene
 var total_weight = 0
 
-var player_controller: PlayerController
-
 @export var cards_parent: Control
 @export var max_width: int
 @export var max_card_angle: float
@@ -107,7 +105,7 @@ func consume_selected_card():
 
 func _on_deck_gui_input(event):
     if event is InputEventMouseButton and event.get_button_index() == MOUSE_BUTTON_LEFT and event.is_pressed():
-        if player_controller.can_play():
+        if PlayerController.instance.can_play():
             draw_multiple(2)
             draw_card_for_turn.emit()
             

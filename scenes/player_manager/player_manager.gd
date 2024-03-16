@@ -49,3 +49,9 @@ func get_character_at_position(grid_position: Vector2, grid: Grid):
     for player in player_characters:
         if grid_position == grid.get_grid_pos(player.position):
             return player
+
+func get_character_index_at_position(grid_position: Vector2, grid: Grid):
+    for i in range(0, player_characters.size()):
+        if grid_position == grid.get_grid_pos(player_characters[i].position):
+            return i
+    return 0
