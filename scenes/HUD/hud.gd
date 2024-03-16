@@ -6,13 +6,17 @@ class_name HUD
 @export var PlayerManagers: PlayerManagers
 @export var hand: Hand
 
+var player_controller: PlayerController
+
 signal mute_music
 
 func _ready():
     $YouWinLabel.visible = false
     $YouLostLabel.visible = false
-    
-    #print(get_parent().player_index)  
+
+func set_player_controller(player_controller: PlayerController):
+    self.player_controller = player_controller
+    hand.player_controller = player_controller
 
 func _process(delta):
     var slider1 = get_node("ColorChoicePlayer1/HSlider").value

@@ -12,13 +12,14 @@ var selected_card
 var card_scene
 var total_weight = 0
 
-@export var selected_color = Color(0.4, 1, 0.2, 0.85)
-@export var cards_parent: Control
+var player_controller: PlayerController
 
+@export var cards_parent: Control
 @export var max_width: int
 @export var max_card_angle: float
 
 signal card_selected(cardType : String)
+signal draw_card_for_turn
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,8 +32,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-    #if Input.is_action_just_pressed("ui_accept"):
-        #draw()
     if Input.is_action_just_pressed("escape"):
         unselect_selected_card()
     pass
@@ -77,13 +76,13 @@ func select_card(card_id):
             card_selected.emit(card.get_type())
             selected_card_index = i
             selected_card = card
-            selected_card.get_node("Background").material.set_shader_parameter("color", selected_color)
             break
             
 func unselect_selected_card():
     if selected_card_index == -1:
         return
-    selected_card.get_node("Background").material.set_shader_parameter("color", Color(0.4, 1, 0.2, 0))
+
+    selected_card.deselect_card()
     selected_card_index = -1
     selected_card = null    
     card_selected.emit("")  
@@ -95,10 +94,10 @@ func reposition_cards():
     
     var actual_width = min(card_width, authorized_card_width)
     
+    #actual magic (do not interfere)
     for i in range(0, cards.size()):
         cards[i].position = Vector2(i * actual_width - (cards.size() - 1) * actual_width / 2 - card_width / 2, 0)
         cards[i].rotation_degrees = ((i+0.5) as float / cards.size()) * max_card_angle - max_card_angle / 2
-        print(cards[i].rotation_degrees)
 
 func consume_selected_card():
     cards.remove_at(selected_card_index)
@@ -108,7 +107,10 @@ func consume_selected_card():
 
 func _on_deck_gui_input(event):
     if event is InputEventMouseButton and event.get_button_index() == MOUSE_BUTTON_LEFT and event.is_pressed():
-        draw()
+        if player_controller.is_player_active_turn():
+            draw_multiple(2)
+            draw_card_for_turn.emit()
+            
 
 func play_card_appear_anims(card: Card):
     card.show_card_appear()

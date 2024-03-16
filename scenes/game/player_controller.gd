@@ -56,6 +56,10 @@ func finish_game():
 func assign_player(player_index: int):
     self.player_index = player_index
     hud.player_cards[player_index].assign()
+    
+@rpc('any_peer')
+func draw_for_turn():
+    game.on_turn_done()
 
 func is_player_active_turn():
     return player_index_playing == player_index
@@ -102,9 +106,13 @@ func on_card_selected(cardType : String):
     card_selection_sound.play()
     grid.selected_card_type = cardType
 
+func on_card_draw():
+    Mediator.instance.call_on_server(draw_for_turn)
+
 func _ready():
     grid.cell_click.connect(on_cell_click)
-    hud.hand.card_selected.connect(on_card_selected);
+    hud.hand.card_selected.connect(on_card_selected)
+    hud.hand.draw_card_for_turn.connect(on_card_draw)
     
 func _process(delta):
     turn_indicator()
