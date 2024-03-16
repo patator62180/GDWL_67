@@ -31,7 +31,7 @@ corner_radius_bottom_left = 20
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p7vvi"]
 shader = ExtResource("4_wnq48")
-shader_parameter/Shift_Hue = 0.225
+shader_parameter/Shift_Hue = 0.8
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0fcvg"]
 shader = ExtResource("4_wnq48")
