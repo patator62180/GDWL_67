@@ -75,7 +75,6 @@ func end_player_turn_place_wall(grid_pos: Vector2, tile_index: int):
     if Mediator.instance.is_server():
         grid.add_wall(grid_pos, tile_index)
         Mediator.instance.call_on_players(propagate_add_wall, grid_pos, tile_index)
-        #on_player_played()
         end_turn()
     
 func respawn_host():
@@ -148,6 +147,11 @@ func try_parasiting():
             Mediator.instance.call_on_players(player.shoot_your_shot, host.position)
 
             await get_tree().create_timer(1).timeout
+            
+            if player_index_playing == 0:
+                emit_signal("p1_scored")
+            else:
+                emit_signal("p2_scored")
             
             player_managers.array[player_index_playing].spawn_player(grid, host_pos)
             player_managers.array[player_index_playing].kill_player(grid, player_pos)
