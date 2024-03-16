@@ -7,6 +7,8 @@ class_name HUD
 @export var hand: Hand
 @export var your_turn_label : Control
 @export var other_player_turn_label : Control
+@export var horizontal_slider: HSlider
+@export var score_card : ScoreControl
 
 signal mute_music
 
@@ -15,6 +17,9 @@ func _ready():
     $YouLostLabel.visible = false
     your_turn_label.visible = false
     other_player_turn_label.visible = false
+    var game = get_parent() as Game
+    game.p1_scored.connect(score_card._on_game_p_1_scored)
+    game.p1_scored.connect(score_card._on_game_p_1_scored)
 
 func _process(delta):
     set_turn_label()

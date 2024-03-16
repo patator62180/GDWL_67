@@ -48,12 +48,14 @@ properties/1/path = NodePath("ScoreCard/Score J2:text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards", "hand", "your_turn_label", "other_player_turn_label")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards", "hand", "your_turn_label", "other_player_turn_label", "horizontal_slider", "score_card")]
 script = ExtResource("1_wj8wa")
 player_cards = [NodePath("PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 hand = NodePath("Hand")
 your_turn_label = NodePath("TurnLabel")
 other_player_turn_label = NodePath("OtherPlayerTurnLabel")
+horizontal_slider = NodePath("ColorChoicePlayer1/HSlider")
+score_card = NodePath("ScoreCard")
 
 [node name="PlayerCards" type="Control" parent="."]
 layout_mode = 3
@@ -162,8 +164,7 @@ vertical_alignment = 1
 
 [node name="Hand" parent="." instance=ExtResource("5_euuyo")]
 
-[node name="ScoreCard" type="Control" parent="."]
-unique_name_in_owner = true
+[node name="ScoreCard" type="Control" parent="." node_paths=PackedStringArray("score_label_j1", "score_label_j2")]
 layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
@@ -173,6 +174,8 @@ offset_right = 40.0
 grow_vertical = 0
 scale = Vector2(0.64, 0.64)
 script = ExtResource("3_og24l")
+score_label_j1 = NodePath("Score J1")
+score_label_j2 = NodePath("Score J2")
 
 [node name="Panel" type="Panel" parent="ScoreCard"]
 layout_mode = 1
@@ -187,7 +190,6 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lbym6")
 
 [node name="Score J1" type="Label" parent="ScoreCard"]
-unique_name_in_owner = true
 material = SubResource("ShaderMaterial_p7vvi")
 layout_mode = 1
 anchors_preset = 4
@@ -200,11 +202,10 @@ offset_bottom = -46.5625
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
 theme_override_font_sizes/font_size = 60
-text = "Player 1:"
+text = "Player 1: 0 points"
 metadata/_edit_use_anchors_ = true
 
 [node name="Score J2" type="Label" parent="ScoreCard"]
-unique_name_in_owner = true
 material = SubResource("ShaderMaterial_0fcvg")
 layout_mode = 1
 anchors_preset = 4
@@ -217,7 +218,7 @@ offset_bottom = 17.6875
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.709804, 0.305882, 1)
 theme_override_font_sizes/font_size = 60
-text = "Player 2:"
+text = "Player 2: 0 points"
 
 [node name="ColorChoicePlayer1" type="Control" parent="."]
 visible = false

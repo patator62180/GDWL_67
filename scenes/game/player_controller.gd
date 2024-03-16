@@ -10,7 +10,6 @@ class_name PlayerController
 @export var defeat_sound: AudioStreamPlayer
 @export var victory_sound: AudioStreamPlayer
 @export var card_selection_sound: AudioStreamPlayer
-@export var horizontal_slider: HSlider
 
 var player_index: int
 var player_index_playing: int = -1
@@ -27,7 +26,7 @@ func give_start_game_permission():
 @rpc('authority')
 func propagate_start_game():
     hud.player_cards[player_index].set_start_game_button_enabled(false)
-    player_managers.array[0].modulateFaceColor = horizontal_slider.value
+    player_managers.array[0].modulateFaceColor = hud.horizontal_slider.value
     hud.hand.draw_multiple(2)
 
 @rpc('authority')
