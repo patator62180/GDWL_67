@@ -14,7 +14,6 @@ const MAX_PLAYERS_COUNT = 4
 @export var shockwave_scene: PackedScene
 @export var player_controller: PlayerController
 @export var camera: Camera2D
-@export var camera_drag = 25
 @export var audio_player : AudioPlayer
 
 signal p1_scored
@@ -40,10 +39,6 @@ func _ready():
         Mediator.instance.listen_peer_player_connection(on_peer_player_joined)
 
     host_spawner.spawn_function = spawn_host_client
-    
-    if Mediator.instance.is_player():
-        shockwave = shockwave_scene.instantiate()
-        camera.add_child(shockwave)
 
 func _process(delta):
     if respawn_timer < respawn_timer_max:
@@ -51,8 +46,6 @@ func _process(delta):
         
         if respawn_timer >= respawn_timer_max:
             respawn_host()
-    
-    camera.position = get_local_mouse_position()/camera_drag
     
 @rpc('any_peer')
 func draw_for_turn():
@@ -263,7 +256,7 @@ func play_shockwave_anim(saved_host_pos: Vector2):
     screen_ratio.x = screen_ratio.x / screen_size.x
     screen_ratio.y = screen_ratio.y / screen_size.y
     
-    shockwave.play_shockwave_anim(screen_ratio)
+    camera.play_shockwave_anim(screen_ratio)
     audio_player.shockwave_sound.play()
     
 func finish_game():

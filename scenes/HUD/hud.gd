@@ -7,6 +7,8 @@ class_name HUD
 @export var hand: Hand
 @export var your_turn_label : Control
 @export var other_player_turn_label : Control
+@export var win_label : Label
+@export var lose_label : Label
 @export var horizontal_slider: HSlider
 @export var score_card : ScoreControl
 @export var mute_button : BaseButton
@@ -14,8 +16,8 @@ class_name HUD
 signal mute_music
 
 func _ready():
-    $YouWinLabel.visible = false
-    $YouLostLabel.visible = false
+    win_label.visible = false
+    lose_label.visible = false
     your_turn_label.visible = false
     other_player_turn_label.visible = false
     var game = get_parent() as Game
@@ -27,14 +29,14 @@ func _ready():
 
 func _process(delta):
     set_turn_label()
-    var slider1 = get_node("ColorChoicePlayer1/HSlider").value
-    if not OS.has_feature('dedicated_server'):
-        get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)
+    #uncomment when implemented
+    #set_player_color()
+
 
 func set_winning_label():
     var isWinning = PlayerController.instance.can_play()
-    $YouWinLabel.visible = isWinning
-    $YouLostLabel.visible = !isWinning
+    win_label.visible = isWinning
+    lose_label.visible = !isWinning
 
 func _on_mute_sound_toggled(toggled_on):
     if toggled_on:
@@ -44,3 +46,8 @@ func _on_mute_sound_toggled(toggled_on):
 func set_turn_label():
     your_turn_label.visible = PlayerController.instance.can_play()
     other_player_turn_label.visible = not PlayerController.instance.can_play()
+
+func set_player_color():
+    var slider1 = get_node("ColorChoicePlayer1/HSlider").value
+    if not OS.has_feature('dedicated_server'):
+        get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)
