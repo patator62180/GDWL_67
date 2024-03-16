@@ -7,14 +7,12 @@ const MAX_PLAYERS_COUNT = 4
 @export var player_managers: PlayerManagers
 @export var host_manager: HostManager
 @export var grid: Grid
-@export var hud : HUD
 @export var player_controller: PlayerController
 @export var camera: Camera2D
 
 signal p1_scored
 signal p2_scored
 signal game_finished(bool)
-signal game_started
 
 class PeerPlayer:
     var peer_id: int
@@ -25,7 +23,6 @@ class PeerPlayer:
         self.nickname = 'Player%d' % peer_id
 
 var peer_players: Array[PeerPlayer] = []
-var is_game_started: bool
 var is_game_over: bool = false
 var is_choice_step: bool
 var player_index_playing: int = -1
@@ -135,9 +132,9 @@ func try_parasiting():
             await get_tree().create_timer(1).timeout
             
             if player_index_playing == 0:
-                emit_signal("p1_scored")
+                p1_scored.emit()
             else:
-                emit_signal("p2_scored")
+                p2_scored.emit()
             
             player_managers.array[player_index_playing].spawn_player(grid, host_pos)
             player_managers.array[player_index_playing].kill_player(grid, player_pos)
@@ -154,14 +151,9 @@ func start_game():
     if Mediator.instance.is_server():
         turn_state = TurnState.PLAYER_TURN
         Mediator.instance.call_on_players(player_controller.propagate_start_game)
-        is_game_started = true
-        game_started.emit()
 
         for player_index in range(MAX_PLAYERS_COUNT):
-            if player_index > len(peer_players) - 1:
-                hud.player_cards[player_index].visible = false
-                get_node("HUD/PlayerCards").visible = false
-            else:
+            if player_index < len(peer_players) - 1:
                 player_managers.array[player_index].spawn_initial_player(grid)
 
         spawn_host(Vector2(0, -1))
@@ -187,7 +179,6 @@ func on_peer_player_joined(id: int):
     
     peer_players.append(peer_player)
     Mediator.instance.call_on_player(id, player_controller.assign_player, player_index)
-    hud.player_cards[player_index].set_connected()
     
     for peer_player_index in range(len(peer_players)):
         Mediator.instance.call_on_players(player_controller.update_connected_player, peer_player_index, peer_players[peer_player_index].nickname)

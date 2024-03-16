@@ -2,6 +2,7 @@ extends CanvasLayer
 
 class_name HUD
 
+@export var game: Game
 @export var player_cards: Array[PlayerCard]
 @export var PlayerManagers: PlayerManagers
 @export var hand: Hand
@@ -20,7 +21,6 @@ func _ready():
     lose_label.visible = false
     your_turn_label.visible = false
     other_player_turn_label.visible = false
-    var game = get_parent() as Game
     game.p1_scored.connect(score_card._on_game_p_1_scored)
     game.p2_scored.connect(score_card._on_game_p_2_scored)
     game.game_finished.connect(set_winning_label)
@@ -50,6 +50,3 @@ func set_player_color():
     var slider1 = get_node("ColorChoicePlayer1/HSlider").value
     if not OS.has_feature('dedicated_server'):
         get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)
-        
-func on_game_started():
-    pass

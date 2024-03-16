@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://biumy12wvsfs5"]
 
 [ext_resource type="Script" path="res://scenes/player_card/player_card.gd" id="1_n1egu"]
-[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="2_dmo1j"]
+[ext_resource type="Theme" path="res://scenes/background/theme_principal.tres" id="2_dmo1j"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ivrl7"]
 properties/0/path = NodePath("VBoxContainer/Status:text")

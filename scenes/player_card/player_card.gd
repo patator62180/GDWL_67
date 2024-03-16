@@ -14,6 +14,7 @@ func _ready():
     player_index_label.text = 'Player %d' % (player_index + 1)
     set_start_game_button_enabled(false)
     start_game_button.pressed.connect(func (): start_game_pressed.emit())
+    set_connected()
 
 func set_start_game_button_enabled(enabled: bool):
     start_game_button.disabled = not enabled
