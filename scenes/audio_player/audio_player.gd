@@ -10,6 +10,7 @@ class_name AudioPlayer
 @export var shockwave_sound: AudioStreamPlayer
 @export var hover_tile: AudioStreamPlayer
 @export var wall_place: AudioStreamPlayer
+@export var throw_parasite: AudioStreamPlayer
 
 var rng = RandomNumberGenerator.new()
 
@@ -19,6 +20,7 @@ func _ready():
     game.game_finished.connect(on_game_finished)
     game.camera.shockwave.played.connect(shockwave_sound.play)
     hud.hand.card_selected.connect(on_card_selected)
+    game.player_managers.player_spawned.connect(on_player_spawned)
 
 func play_sound_hovered_tile():
     hover_tile.pitch_scale = rng.randf_range(0.70,1.30)
@@ -33,3 +35,6 @@ func on_game_finished(player_won : bool):
 func on_card_selected(cardType : String):
     card_selection_sound.pitch_scale = rng.randf_range(0.70,1.30)
     card_selection_sound.play()
+    
+func on_player_spawned(player : Player):
+    player.parasite_throwed.connect(throw_parasite.play)

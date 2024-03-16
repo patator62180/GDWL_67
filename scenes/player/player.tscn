@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bef6pckymx8bi"]
+[gd_scene load_steps=24 format=3 uid="uid://bef6pckymx8bi"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_lo7lj"]
 [ext_resource type="Texture2D" uid="uid://cf2qw5tyjmoje" path="res://sprites/infected_face.png" id="2_7u7pn"]
@@ -15,7 +15,6 @@
 [ext_resource type="Texture2D" uid="uid://cl2b0cc6w63nq" path="res://sprites/Sprite_Sheet_Bave-8.png" id="10_mrcj5"]
 [ext_resource type="Texture2D" uid="uid://2wj1mg8tgiup" path="res://sprites/Sprite_Sheet_Bave-9.png" id="11_06n5i"]
 [ext_resource type="Texture2D" uid="uid://lmnm830du704" path="res://sprites/infected_eyes.png" id="13_16dte"]
-[ext_resource type="AudioStream" uid="uid://bxyr4x7l0d37s" path="res://sfx/parasite_thrown.mp3" id="16_rdd1c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oet1n"]
 size = Vector2(100, 100)
@@ -259,10 +258,5 @@ libraries = {
 "": SubResource("AnimationLibrary_5crbo")
 }
 autoplay = "idle"
-
-[node name="Audio" type="Node" parent="."]
-
-[node name="ThrowParasite" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("16_rdd1c")
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

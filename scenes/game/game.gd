@@ -30,8 +30,6 @@ var player_index_playing: int = -1
 var respawn_timer = 0.3
 var respawn_timer_max = respawn_timer
 
-var shockwave = Shockwave
-
 var turn_state = TurnState.NONE
 
 func _ready():

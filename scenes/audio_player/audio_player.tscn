@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://1yk62pn2f4xr"]
+[gd_scene load_steps=9 format=3 uid="uid://1yk62pn2f4xr"]
 
 [ext_resource type="Script" path="res://scenes/audio_player/audio_player.gd" id="1_5jfk7"]
 [ext_resource type="AudioStream" uid="uid://fmbwgsnigl5y" path="res://sfx/victory.mp3" id="2_j6c70"]
@@ -7,8 +7,9 @@
 [ext_resource type="AudioStream" uid="uid://mdgr2oybyu2j" path="res://sfx/shockwave.mp3" id="5_wvbsh"]
 [ext_resource type="AudioStream" uid="uid://tji23qvojdb7" path="res://sfx/pop.mp3" id="6_ajve3"]
 [ext_resource type="AudioStream" uid="uid://cu3s0qtl3ihm" path="res://sfx/wall_placed.mp3" id="7_xgf2h"]
+[ext_resource type="AudioStream" uid="uid://bxyr4x7l0d37s" path="res://sfx/parasite_thrown.mp3" id="8_dmuya"]
 
-[node name="audio_player" type="Node" node_paths=PackedStringArray("defeat_sound", "victory_sound", "card_selection_sound", "shockwave_sound", "hover_tile", "wall_place")]
+[node name="audio_player" type="Node" node_paths=PackedStringArray("defeat_sound", "victory_sound", "card_selection_sound", "shockwave_sound", "hover_tile", "wall_place", "throw_parasite")]
 script = ExtResource("1_5jfk7")
 defeat_sound = NodePath("Defeat")
 victory_sound = NodePath("Victory")
@@ -16,6 +17,7 @@ card_selection_sound = NodePath("CardSelection")
 shockwave_sound = NodePath("Shockwave")
 hover_tile = NodePath("HoverTile")
 wall_place = NodePath("WallPlaced")
+throw_parasite = NodePath("ThrowParasite")
 
 [node name="Victory" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_j6c70")
@@ -38,3 +40,6 @@ stream = ExtResource("7_xgf2h")
 volume_db = 3.514
 pitch_scale = 0.49
 max_polyphony = 2
+
+[node name="ThrowParasite" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_dmuya")

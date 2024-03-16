@@ -17,7 +17,7 @@ var player_characters: Array[Player]:
 
         return _player_characters
 
-signal played
+signal player_spawned(player : Player)
 
 func _ready():
     player_spawner.spawn_function = spawn_player_client        
@@ -31,7 +31,7 @@ func spawn_player(grid: Grid, grid_pos: Vector2):
 func spawn_player_client(position):
     var player_character = player_scene.instantiate() 
     player_character.position = position
-    player_character.played.connect(func(): played.emit())
+    player_spawned.emit(player_character)
     
     return player_character
     

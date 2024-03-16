@@ -4,6 +4,7 @@ class_name Player
 
 signal played
 #signal parasited
+signal parasite_throwed
 
 var tile_size = 100
 
@@ -81,7 +82,7 @@ func process_action(action: String):
        
 @rpc("authority")     
 func shoot_your_shot(position: Vector2):
-    $Audio/ThrowParasite.play()
+    parasite_throwed.emit()
     var parasite = parasite_scene.instantiate() as Parasite
     #parasite.parasited.connect(on_parasited)
     get_parent().add_child(parasite)
