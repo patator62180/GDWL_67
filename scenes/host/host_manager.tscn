@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://wqmj852ihkvi"]
+
+[ext_resource type="Script" path="res://scenes/host/host_manager.gd" id="1_k5w05"]
+[ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="2_ro8kj"]
+
+[node name="HostManager" type="Node2D" node_paths=PackedStringArray("host_spawner", "host_root")]
+script = ExtResource("1_k5w05")
+host_spawner = NodePath("HostSpawner")
+host_scene = ExtResource("2_ro8kj")
+host_root = NodePath("Hosts")
+
+[node name="Hosts" type="Node2D" parent="."]
+
+[node name="HostSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/host/host.tscn")
+spawn_path = NodePath("../Hosts")

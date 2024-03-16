@@ -5,11 +5,9 @@ class_name Game
 const MAX_PLAYERS_COUNT = 4
 
 @export var lobby: Lobby
-@export var host_scene: PackedScene
-@export var host_root: Node2D
 @export var player_managers: PlayerManagers
+@export var host_manager: HostManager
 @export var grid: Grid
-@export var host_spawner: MultiplayerSpawner
 @export var hud : HUD
 @export var shockwave_scene: PackedScene
 @export var player_controller: PlayerController
@@ -21,7 +19,6 @@ signal p2_scored
 signal game_finished
 
 var players = []
-var hosts: Array[Host] = []
 var is_game_started: bool
 var is_game_over: bool = false
 var is_choice_step: bool
@@ -37,8 +34,6 @@ var turn_state = TurnState.NONE
 func _ready():
     if Mediator.instance.is_server():
         Mediator.instance.listen_peer_player_connection(on_peer_player_joined)
-
-    host_spawner.spawn_function = spawn_host_client
 
 func _process(delta):
     if respawn_timer < respawn_timer_max:
@@ -74,28 +69,13 @@ func end_player_turn_place_wall(grid_pos: Vector2, tile_index: int):
     
 func respawn_host():
     spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
-    
-func on_host_played():
-    pass
 
 func check_if_player_won():
-    for host in hosts:
+    for host in host_manager.hosts:
         var current_player_manager = player_managers.array[player_index_playing]
         for player in current_player_manager.player_characters:
             if(host.position == player.position):
                 Mediator.instance.call_on_players(player_controller.finish_game)
-
-func spawn_host_client(position):
-    if is_game_over:
-        pass
-    else: 
-        var host = host_scene.instantiate()
-        host.position = position
-        host.played.connect(on_host_played)
-    
-        hosts.append(host) 
-    
-        return host
     
 func end_turn(try_parasiting: bool = false):
     if turn_state == TurnState.PLAYER_TURN:
@@ -126,7 +106,7 @@ func start_turn(try_parasiting: bool = false):
                 await try_parasiting()
             
             #move and wait hosts
-            for host in hosts:
+            for host in host_manager.hosts:
                 host.move_host(grid, player_managers)
             
             await get_tree().create_timer(0.5).timeout
@@ -156,7 +136,7 @@ func try_parasiting():
             player_managers.array[player_index_playing].spawn_player(grid, host_pos)
             player_managers.array[player_index_playing].kill_player(grid, player_pos)
             
-            hosts.erase(host)
+            host_manager.hosts.erase(host)
             host.queue_free()
             
             respawn_host()
@@ -186,8 +166,10 @@ func start_game():
         Immersive.client.starts_playing()
         
 
-func spawn_host(grid_pos: Vector2):
-    host_spawner.spawn(grid.get_screen_pos(grid_pos))
+func spawn_host(grid_pos: Vector2):    
+    if !is_game_over:
+        host_manager.host_spawner.spawn(grid.get_screen_pos(grid_pos))
+        
     
 func request_start_game():
     Mediator.instance.call_on_server(start_game)
@@ -218,9 +200,9 @@ func check_tile(grid_pos:Vector2, check_players: bool):
             if player_is_present != null:
                 return player_is_present
     
-    for host in hosts:
+    for host in host_manager.hosts:
         if host == null:
-            hosts.erase(host)
+            host_manager.hosts.erase(host)
             continue
         var host_grid_pos = grid.get_grid_pos(host.position)
         if (host_grid_pos == grid_pos):
