@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=13 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://5cbujpr3l37j" path="res://scenes/simulation/shockwave.tscn" id="3_ouo1f"]
@@ -7,16 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://biqj0t60x1dv0" path="res://scenes/HUD/hud.tscn" id="4_df5lj"]
 [ext_resource type="Script" path="res://scenes/game/player_controller.gd" id="5_c6l1t"]
 [ext_resource type="PackedScene" uid="uid://de6fuev88g57f" path="res://scenes/grid/grid.tscn" id="6_ybaom"]
-[ext_resource type="AudioStream" uid="uid://fmbwgsnigl5y" path="res://sfx/victory.mp3" id="8_2tbbm"]
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 [ext_resource type="Script" path="res://scenes/background/background.gd" id="9_o4or6"]
-[ext_resource type="AudioStream" uid="uid://c0yeg5i535w70" path="res://sfx/defeat.mp3" id="9_po4kl"]
 [ext_resource type="PackedScene" uid="uid://cuou6t7fy6v45" path="res://scenes/player_manager/player_managers.tscn" id="10_ukfxk"]
-[ext_resource type="AudioStream" uid="uid://b3htu031n8oek" path="res://sfx/card_select.mp3" id="11_xco32"]
-[ext_resource type="AudioStream" uid="uid://mdgr2oybyu2j" path="res://sfx/shockwave.mp3" id="12_xl8hs"]
+[ext_resource type="PackedScene" uid="uid://1yk62pn2f4xr" path="res://scenes/audio_player/audio_player.tscn" id="11_3jgb6"]
 [ext_resource type="PackedScene" uid="uid://d3q7s8lnam8nw" path="res://scenes/lobby/lobby.tscn" id="15_0s1u7"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("lobby", "host_root", "player_managers", "grid", "host_spawner", "hud", "player_controller", "camera", "defeat_sound", "victory_sound")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("lobby", "host_root", "player_managers", "grid", "host_spawner", "hud", "player_controller", "camera", "audio_player")]
 script = ExtResource("1_jy7t4")
 lobby = NodePath("Lobby")
 host_scene = ExtResource("8_va0h3")
@@ -28,17 +25,15 @@ hud = NodePath("HUD")
 shockwave_scene = ExtResource("3_ouo1f")
 player_controller = NodePath("PlayerController")
 camera = NodePath("Camera2D")
-defeat_sound = NodePath("Audio/Defeat")
-victory_sound = NodePath("Audio/Victory")
+audio_player = NodePath("audio_player")
 
-[node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("hud", "game", "player_managers", "grid", "card_selection_sound")]
+[node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("hud", "game", "player_managers", "grid")]
 script = ExtResource("5_c6l1t")
 hud = NodePath("../HUD")
 game = NodePath("..")
 player_managers = NodePath("../PlayerManagers")
 grid = NodePath("../Grid")
 host_scene = ExtResource("8_va0h3")
-card_selection_sound = NodePath("../Audio/CardSelection")
 
 [node name="HUD" parent="." node_paths=PackedStringArray("PlayerManagers") instance=ExtResource("4_df5lj")]
 PlayerManagers = NodePath("../PlayerManagers")
@@ -64,19 +59,7 @@ script = ExtResource("9_o4or6")
 
 [node name="Hosts" type="Node2D" parent="."]
 
-[node name="Audio" type="Node" parent="."]
-
-[node name="Victory" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("8_2tbbm")
-
-[node name="Defeat" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("9_po4kl")
-
-[node name="CardSelection" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("11_xco32")
-
-[node name="Shockwave" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("12_xl8hs")
+[node name="audio_player" parent="." instance=ExtResource("11_3jgb6")]
 
 [node name="Lobby" parent="." instance=ExtResource("15_0s1u7")]
 

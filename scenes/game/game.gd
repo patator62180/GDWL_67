@@ -15,8 +15,7 @@ const MAX_PLAYERS_COUNT = 4
 @export var player_controller: PlayerController
 @export var camera: Camera2D
 @export var camera_drag = 25
-@export var defeat_sound: AudioStreamPlayer
-@export var victory_sound: AudioStreamPlayer
+@export var audio_player : AudioPlayer
 
 signal p1_scored
 signal p2_scored
@@ -265,15 +264,15 @@ func play_shockwave_anim(saved_host_pos: Vector2):
     screen_ratio.y = screen_ratio.y / screen_size.y
     
     shockwave.play_shockwave_anim(screen_ratio)
-    get_node("Audio/Shockwave").play()
+    audio_player.shockwave_sound.play()
     
 func finish_game():
     game_finished.emit()
     get_tree().get_root().get_node("BackgroundMusic/BGMusic").stream_paused = true
     if player_controller.can_play():
-        victory_sound.play()
+        audio_player.victory_sound.play()
     else: 
-        defeat_sound.play()
+        audio_player.defeat_sound.play()
 
     # on cache tout
     is_game_over = true
