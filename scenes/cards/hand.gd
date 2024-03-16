@@ -107,7 +107,7 @@ func consume_selected_card():
 
 func _on_deck_gui_input(event):
     if event is InputEventMouseButton and event.get_button_index() == MOUSE_BUTTON_LEFT and event.is_pressed():
-        if player_controller.is_player_active_turn():
+        if player_controller.can_play():
             draw_multiple(2)
             draw_card_for_turn.emit()
             
