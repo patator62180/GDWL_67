@@ -20,7 +20,8 @@ func set_player_controller(player_controller: PlayerController):
 
 func _process(delta):
     var slider1 = get_node("ColorChoicePlayer1/HSlider").value
-    get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)
+    if not OS.has_feature('dedicated_server'):
+        get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)
 
 func set_winning_label(isWinning : bool):
     $YouWinLabel.visible = isWinning

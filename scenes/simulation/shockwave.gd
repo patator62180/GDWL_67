@@ -15,5 +15,6 @@ func _process(delta):
     pass
 
 func play_shockwave_anim(screen_ratio: Vector2):
-    shockwave_shader.material.set_shader_parameter("global_position", screen_ratio)
+    if not OS.has_feature('dedicated_server'):
+        shockwave_shader.material.set_shader_parameter("global_position", screen_ratio)
     shockwave_player.play("shockwave")

@@ -73,7 +73,8 @@ func turn_indicator():
         your_turn.visible = true
         other_player_turn.visible = false
     else:
-        background.material.set_shader_parameter("tint_color", Color(1,0.3,0.3,1))
+        if not OS.has_feature('dedicated_server'):
+            background.material.set_shader_parameter("tint_color", Color(1,0.3,0.3,1))
         your_turn.visible = false
         other_player_turn.visible = true
 
