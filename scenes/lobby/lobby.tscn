@@ -1,0 +1,215 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3q7s8lnam8nw"]
+
+[ext_resource type="Script" path="res://scenes/lobby/lobby.gd" id="1_061j6"]
+[ext_resource type="PackedScene" uid="uid://b8f8j4dualeev" path="res://scenes/menus/connected_player.tscn" id="1_igg4m"]
+
+[node name="Lobby" type="CanvasLayer" node_paths=PackedStringArray("start_button", "screen_title")]
+script = ExtResource("1_061j6")
+start_button = NodePath("Container/StartButton")
+screen_title = NodePath("Container/Title")
+
+[node name="Container" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="Container"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.172549, 0.243137, 0.313726, 1)
+
+[node name="Title" type="Label" parent="Container"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -151.5
+offset_top = 50.0
+offset_right = 151.5
+offset_bottom = 69.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 50
+text = "ROOM: ____"
+
+[node name="ConnectedPlayers" type="Control" parent="Container"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = 100.0
+offset_right = -50.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="Container/ConnectedPlayers"]
+layout_mode = 2
+offset_right = 300.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 20
+text = "Connected Players"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container/ConnectedPlayers"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = 70.0
+grow_horizontal = 2
+
+[node name="ConnectedPlayer0" parent="Container/ConnectedPlayers/VBoxContainer" instance=ExtResource("1_igg4m")]
+layout_mode = 2
+
+[node name="ConnectedPlayer1" parent="Container/ConnectedPlayers/VBoxContainer" instance=ExtResource("1_igg4m")]
+layout_mode = 2
+
+[node name="Setup" type="Control" parent="Container"]
+custom_minimum_size = Vector2(450, 300)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 50.0
+offset_top = 100.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="Container/Setup"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 40
+text = "Setup"
+
+[node name="Nickname" type="Control" parent="Container/Setup"]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 1
+anchors_preset = 0
+offset_left = 15.0
+offset_top = 70.0
+offset_right = 40.0
+
+[node name="Title" type="Label" parent="Container/Setup/Nickname"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -17.5
+offset_right = 129.0
+offset_bottom = 17.5
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "Nickname:"
+
+[node name="TextEdit" type="TextEdit" parent="Container/Setup/Nickname"]
+custom_minimum_size = Vector2(225, 40)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Michel"
+
+[node name="Color" type="Control" parent="Container/Setup"]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 1
+anchors_preset = 0
+offset_left = 15.0
+offset_top = 120.0
+offset_right = 40.0
+
+[node name="Title" type="Label" parent="Container/Setup/Color"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -17.5
+offset_right = 129.0
+offset_bottom = 17.5
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "Color:"
+
+[node name="ColorPicker" type="HBoxContainer" parent="Container/Setup/Color"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+color = Color(0, 0.811765, 0.831373, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+color = Color(1, 0.392157, 1, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+color = Color(1, 1, 0.12549, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+color = Color(0.105882, 0.784314, 0.333333, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+color = Color(0.968627, 0.564706, 0.32549, 1)
+
+[node name="ColorRect6" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+color = Color(0.619608, 0.635294, 0.92549, 1)
+
+[node name="ColorRect7" type="ColorRect" parent="Container/Setup/Color/ColorPicker"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+color = Color(0.780392, 0.611765, 0.0392157, 1)
+
+[node name="StartButton" type="Button" parent="Container"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -50.0
+offset_right = 48.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+text = "Start Game"

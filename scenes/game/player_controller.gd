@@ -23,11 +23,12 @@ var selected_player: Player
 
 @rpc('authority')
 func give_start_game_permission():
-    hud.player_cards[player_index].set_start_game_button_enabled(true)
-    hud.player_cards[player_index].start_game_pressed.connect(game.request_start_game)
+    game.lobby.set_can_start_game()
+    game.lobby.started_game.connect(game.request_start_game)
 
 @rpc('authority')
 func propagate_start_game():
+    game.lobby.close()
     hud.player_cards[player_index].set_start_game_button_enabled(false)
     player_managers.array[0].modulateFaceColor = horizontal_slider.value
     hud.hand.draw_multiple(2)

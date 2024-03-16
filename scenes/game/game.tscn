@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=16 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://5cbujpr3l37j" path="res://scenes/simulation/shockwave.tscn" id="3_ouo1f"]
@@ -14,9 +14,11 @@
 [ext_resource type="PackedScene" uid="uid://cuou6t7fy6v45" path="res://scenes/player_manager/player_managers.tscn" id="10_ukfxk"]
 [ext_resource type="AudioStream" uid="uid://b3htu031n8oek" path="res://sfx/card_select.mp3" id="11_xco32"]
 [ext_resource type="AudioStream" uid="uid://mdgr2oybyu2j" path="res://sfx/shockwave.mp3" id="12_xl8hs"]
+[ext_resource type="PackedScene" uid="uid://d3q7s8lnam8nw" path="res://scenes/lobby/lobby.tscn" id="15_puegm"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("host_root", "player_managers", "grid", "host_spawner", "hud", "player_controller", "camera")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("lobby", "host_root", "player_managers", "grid", "host_spawner", "hud", "player_controller", "camera")]
 script = ExtResource("1_jy7t4")
+lobby = NodePath("Lobby")
 host_scene = ExtResource("8_va0h3")
 host_root = NodePath("Hosts")
 player_managers = NodePath("PlayerManagers")
@@ -92,6 +94,8 @@ stream = ExtResource("11_xco32")
 
 [node name="Shockwave" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("12_xl8hs")
+
+[node name="Lobby" parent="." instance=ExtResource("15_puegm")]
 
 [connection signal="p1_scored" from="." to="HUD/ScoreCard" method="_on_game_p_1_scored"]
 [connection signal="p2_scored" from="." to="HUD/ScoreCard" method="_on_game_p_2_scored"]

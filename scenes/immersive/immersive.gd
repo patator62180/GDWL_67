@@ -213,7 +213,7 @@ func restart_client():
 func start(is_server: bool, is_local: bool, is_faking_requests: bool):
     client.start(is_server, is_local, is_faking_requests)
     boot_menu.visible = false
-    infos_box.visible = true
+    #infos_box.visible = true
     instance_label.text = 'Server' if is_server else 'Player'
     var start_scene = server_start_scene if is_server else client_start_scene
     

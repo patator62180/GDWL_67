@@ -4,6 +4,7 @@ class_name Game
 
 const MAX_PLAYERS_COUNT = 4
 
+@export var lobby: Lobby
 @export var host_scene: PackedScene
 @export var host_root: Node2D
 @export var player_managers: PlayerManagers
@@ -48,9 +49,7 @@ func _ready():
         shockwave = shockwave_scene.instantiate()
         camera.add_child(shockwave)
         hud.set_player_controller(player_controller)
-    
-        
-       
+
 func _process(delta):
     if respawn_timer < respawn_timer_max:
         respawn_timer = respawn_timer + delta
