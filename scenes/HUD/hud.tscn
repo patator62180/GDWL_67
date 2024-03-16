@@ -1,13 +1,14 @@
-[gd_scene load_steps=16 format=3 uid="uid://biqj0t60x1dv0"]
+[gd_scene load_steps=17 format=3 uid="uid://biqj0t60x1dv0"]
 
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_0lgt1"]
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
 [ext_resource type="Script" path="res://scenes/HUD/ScoreControl.gd" id="3_og24l"]
+[ext_resource type="Script" path="res://scenes/HUD/input_manager.gd" id="3_tidyo"]
 [ext_resource type="Shader" path="res://scenes/game/scoreHueJ1.gdshader" id="4_wnq48"]
 [ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/cards/hand.tscn" id="5_euuyo"]
 [ext_resource type="Texture2D" uid="uid://bla2q5wqubnu8" path="res://sprites/sound_mute.png" id="6_5163j"]
 [ext_resource type="Texture2D" uid="uid://bsqi6cgf3k5c7" path="res://sprites/sound_unmute.png" id="7_yym30"]
-[ext_resource type="Theme" path="res://scenes/background/theme_principal.tres" id="8_0kiu8"]
+[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="8_0kiu8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
 font_size = 50
@@ -165,6 +166,15 @@ label_settings = SubResource("LabelSettings_2m1vi")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="InputManager" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_tidyo")
+
 [node name="Hand" parent="." instance=ExtResource("5_euuyo")]
 
 [node name="ScoreCard" type="Control" parent="." node_paths=PackedStringArray("score_label_j1", "score_label_j2")]
@@ -270,23 +280,46 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -67.0
-offset_top = 100.0
+offset_top = 19.0
 offset_right = 67.0
-offset_bottom = 150.0
+offset_bottom = 69.0
 grow_horizontal = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
 theme = ExtResource("8_0kiu8")
 theme_override_font_sizes/font_size = 36
 text = "Your turn!"
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
 
 [node name="OtherPlayerTurnLabel" type="TextEdit" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -150.5
-offset_top = 100.0
+offset_top = 19.0
 offset_right = 150.5
-offset_bottom = 150.0
+offset_bottom = 69.0
 grow_horizontal = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
 theme = ExtResource("8_0kiu8")
 theme_override_font_sizes/font_size = 36
 text = "Waiting for opponent..."
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+
+[connection signal="gui_input" from="InputManager" to="InputManager" method="_on_gui_input"]
+[connection signal="mouse_exited" from="InputManager" to="InputManager" method="_on_mouse_exited"]
