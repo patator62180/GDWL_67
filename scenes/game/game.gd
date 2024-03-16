@@ -151,7 +151,7 @@ func start_game():
         Mediator.instance.call_on_players(player_controller.propagate_start_game)
 
         for player_index in range(MAX_PLAYERS_COUNT):
-            if player_index < len(peer_players) - 1:
+            if player_index <= len(peer_players) - 1:
                 player_managers.array[player_index].spawn_initial_player(grid)
 
         spawn_host(Vector2(0, -1))
