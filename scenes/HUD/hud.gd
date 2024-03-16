@@ -17,9 +17,10 @@ func _ready():
     other_player_turn_label.visible = false
 
 func _process(delta):
-    var slider1 = get_node("ColorChoicePlayer1/HSlider").value
-    get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)
     set_turn_label()
+    var slider1 = get_node("ColorChoicePlayer1/HSlider").value
+    if not OS.has_feature('dedicated_server'):
+        get_node("ColorChoicePlayer1/ColorRect").material.set_shader_parameter("Shift_Hue", slider1)
 
 func set_winning_label(isWinning : bool):
     $YouWinLabel.visible = isWinning

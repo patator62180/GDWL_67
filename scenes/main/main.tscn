@@ -8,14 +8,14 @@
 
 [node name="Main" type="Node2D"]
 
+[node name="Mediator" type="Node2D" parent="."]
+script = ExtResource("4_kih3o")
+
 [node name="Immersive" parent="." instance=ExtResource("1_7burc")]
 client_start_scene = ExtResource("2_5c3tl")
 server_start_scene = ExtResource("2_l3lpd")
 remote_server_uri = "wss://immersive.dawee.org"
 remote_immersive_api = "https://immersive.dawee.org"
-
-[node name="Mediator" type="Node2D" parent="."]
-script = ExtResource("4_kih3o")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
