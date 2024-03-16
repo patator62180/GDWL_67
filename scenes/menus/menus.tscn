@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://27xb7kekk1ck"]
+[gd_scene load_steps=7 format=3 uid="uid://27xb7kekk1ck"]
 
 [ext_resource type="Script" path="res://scenes/menus/menus.gd" id="1_w7o1w"]
 [ext_resource type="Script" path="res://scenes/menus/choices_screen.gd" id="2_b0ar7"]
 [ext_resource type="PackedScene" uid="uid://dswfe7yyh4daq" path="res://scenes/game/game.tscn" id="2_h078q"]
+[ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="2_xeypf"]
 [ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="3_sn0x5"]
+[ext_resource type="Texture2D" uid="uid://6i0h0aucnuvk" path="res://sprites/title_shadow.png" id="8_6h814"]
 
 [node name="Menus" type="Node2D" node_paths=PackedStringArray("choices_screen")]
 script = ExtResource("1_w7o1w")
@@ -19,55 +21,110 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Background2" parent="CanvasLayer/Viewport" instance=ExtResource("2_xeypf")]
+
 [node name="ChoicesScreen" type="Control" parent="CanvasLayer/Viewport" node_paths=PackedStringArray("create_button", "join_button", "play_local_button", "join_room_code", "node_to_replace")]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -73.0
+offset_right = 20.0
+offset_bottom = -33.0
+grow_horizontal = 2
+grow_vertical = 0
 script = ExtResource("2_b0ar7")
-create_button = NodePath("VBoxContainer/CreateButton")
-join_button = NodePath("VBoxContainer/JoinButton")
-play_local_button = NodePath("VBoxContainer/LocalRoomButton")
-join_room_code = NodePath("VBoxContainer/JoinRoomCode")
+create_button = NodePath("HBoxContainer/CreateButton")
+join_button = NodePath("HBoxContainer/JoinButton")
+play_local_button = NodePath("HBoxContainer/LocalRoomButton")
+join_room_code = NodePath("HBoxContainer/JoinRoomCode")
 game_scene = ExtResource("2_h078q")
 node_to_replace = NodePath("../../..")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Viewport/ChoicesScreen"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Viewport/ChoicesScreen"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 479.5
-offset_top = 178.0
-offset_right = 632.5
-offset_bottom = 430.0
+offset_left = -352.0
+offset_top = -94.0
+offset_right = 352.0
+offset_bottom = -34.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
-[node name="LocalRoomButton" type="Button" parent="CanvasLayer/Viewport/ChoicesScreen/VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
+[node name="LocalRoomButton" type="Button" parent="CanvasLayer/Viewport/ChoicesScreen/HBoxContainer"]
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_horizontal = 6
 theme = ExtResource("3_sn0x5")
 theme_override_font_sizes/font_size = 30
 text = "PLAY LOCAL"
 
-[node name="CreateButton" type="Button" parent="CanvasLayer/Viewport/ChoicesScreen/VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
+[node name="CreateButton" type="Button" parent="CanvasLayer/Viewport/ChoicesScreen/HBoxContainer"]
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_horizontal = 6
 theme = ExtResource("3_sn0x5")
 theme_override_font_sizes/font_size = 30
 text = "CREATE ROOM"
 
-[node name="JoinRoomCode" type="TextEdit" parent="CanvasLayer/Viewport/ChoicesScreen/VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
+[node name="JoinRoomCode" type="TextEdit" parent="CanvasLayer/Viewport/ChoicesScreen/HBoxContainer"]
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_horizontal = 6
 theme = ExtResource("3_sn0x5")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 
-[node name="JoinButton" type="Button" parent="CanvasLayer/Viewport/ChoicesScreen/VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
+[node name="JoinButton" type="Button" parent="CanvasLayer/Viewport/ChoicesScreen/HBoxContainer"]
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_horizontal = 6
 theme = ExtResource("3_sn0x5")
 theme_override_font_sizes/font_size = 30
 text = "JOIN ROOM"
+
+[node name="EnterRoomCode" type="Label" parent="CanvasLayer/Viewport/ChoicesScreen"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = -11.0
+offset_right = 194.0
+offset_bottom = 20.0
+theme = ExtResource("3_sn0x5")
+theme_override_colors/font_color = Color(0.301961, 0.301961, 0.301961, 1)
+text = "Enter room code"
+
+[node name="GameTitleShadow" type="Sprite2D" parent="CanvasLayer/Viewport"]
+modulate = Color(1, 1, 1, 0.588235)
+position = Vector2(591, 222)
+scale = Vector2(0.7863, 0.7863)
+texture = ExtResource("8_6h814")
+
+[node name="GameTitle" type="Label" parent="CanvasLayer/Viewport"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -346.509
+offset_top = -224.0
+offset_right = 353.491
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(335.509, 129.5)
+theme = ExtResource("3_sn0x5")
+theme_override_colors/font_outline_color = Color(0.152941, 0.262745, 0.352941, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 251
+text = "Parasite"
+horizontal_alignment = 1
+vertical_alignment = 1
