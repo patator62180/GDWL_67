@@ -26,20 +26,20 @@ func _ready():
     mute_button.toggled.connect(_on_mute_sound_toggled)
 
 func _process(delta):
-	set_turn_label()
-	#uncomment when implemented
-	#set_player_color()
+    set_turn_label()
+    #uncomment when implemented
+    #set_player_color()
 
 
 func set_winning_label(player_won : bool):
-	win_label.visible = player_won
-	lose_label.visible = !player_won
+    win_label.visible = player_won
+    lose_label.visible = !player_won
 
 func _on_mute_sound_toggled(toggled_on):
-	if toggled_on:
-		get_parent().get_node("/root/BackgroundMusic/BGMusic").volume_db = -1000
-	else: get_parent().get_node("/root/BackgroundMusic/BGMusic").volume_db = -3.5
+    if toggled_on:
+        get_parent().get_node("/root/BackgroundMusic/BGMusic").volume_db = -1000
+    else: get_parent().get_node("/root/BackgroundMusic/BGMusic").volume_db = -3.5
 
 func set_turn_label():
-	your_turn_label.visible = PlayerController.instance.can_play()
-	other_player_turn_label.visible = not PlayerController.instance.can_play()
+    your_turn_label.visible = PlayerController.instance.can_play()
+    other_player_turn_label.visible = not PlayerController.instance.can_play()
