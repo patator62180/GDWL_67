@@ -65,6 +65,8 @@ func draw():
     reposition_cards()
     
     play_card_appear_anims(card)
+    
+    unselect_selected_card()
 
 func select_card(card_id):
     unselect_selected_card()

@@ -67,6 +67,9 @@ func _on_mouse_exited():
         lower_card()
         
 func select_card():
+    if !is_my_turn():
+        return
+    
     card_clicked.emit(card_id)
     if not OS.has_feature('dedicated_server'):
         background_texture_rect.material.set_shader_parameter("color", selected_color)
@@ -99,3 +102,6 @@ func flip_card():
     
     if is_selected:
         _on_mouse_entered()
+
+func is_my_turn():
+    return PlayerController.instance.can_play()
