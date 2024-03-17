@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://2yc6yjaghq6e"]
+
+[ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_fql1l"]
+[ext_resource type="Shader" path="res://scenes/game/scoreHueJ1.gdshader" id="2_83kan"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jl3a7"]
+resource_local_to_scene = true
+shader = ExtResource("2_83kan")
+shader_parameter/Shift_Hue = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u253a"]
+resource_local_to_scene = true
+shader = ExtResource("2_83kan")
+shader_parameter/Shift_Hue = null
+
+[node name="PlayerCard" instance=ExtResource("1_fql1l")]
+
+[node name="VBoxContainer" parent="." index="0"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -67.0
+offset_right = 0.0
+offset_bottom = 61.0
+grow_horizontal = 0
+
+[node name="Nickname" parent="VBoxContainer" index="0"]
+material = SubResource("ShaderMaterial_jl3a7")
+
+[node name="Score" parent="VBoxContainer" index="1"]
+material = SubResource("ShaderMaterial_u253a")
