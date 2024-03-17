@@ -9,7 +9,7 @@ const MAX_PLAYERS_COUNT = 4
 @export var grid: Grid
 @export var player_controller: PlayerController
 @export var camera: Camera2D
-@export var win_score: int = 5
+@export var win_score: int = 3
 
 signal player_scored(player_index : int, score : int)
 signal game_finished(bool)
@@ -19,10 +19,10 @@ class PeerPlayer:
     var nickname: String
     var color: float
     
-    func _init(peer_id: int):
+    func _init(player_index: int, peer_id: int):
         self.peer_id = peer_id
         self.nickname = 'Player %d' % peer_id
-        self.color = randf()
+        self.color = 1 if player_index == 0 else 0.5
 
 var peer_players: Array[PeerPlayer] = []
 var is_game_over: bool = false
@@ -91,6 +91,11 @@ func update_color(player_index: int, color: float):
         peer_players[player_index].color = color
         player_managers.array[player_index].color = color
         Mediator.instance.call_on_players(player_controller.update_connected_player, player_index, peer_players[player_index].nickname, color)
+
+@rpc("any_peer")
+func set_win_score(new_win_score : int):
+    win_score = new_win_score
+    
 
 func respawn_host():
     spawn_host(grid.get_suitable_spawn())
@@ -201,7 +206,7 @@ func request_start_game():
 
 func on_peer_player_joined(id: int):
     var player_index = len(peer_players)
-    var peer_player = PeerPlayer.new(id)
+    var peer_player = PeerPlayer.new(player_index, id)
     
     peer_players.append(peer_player)
     Mediator.instance.call_on_player(id, player_controller.assign_player, player_index)

@@ -40,7 +40,9 @@ func propagate_turn(player_index: int, game_turn_state):
 
 @rpc('authority')
 func assign_player(player_index: int):
-    self.player_index = player_index
+    self.player_index = player_index    
+    if player_index != 0:
+            lobby.win_score_container.visible = false
 
 @rpc('authority')
 func update_connected_player(player_index: int, nickname: String, color: float):
@@ -67,6 +69,9 @@ func on_nickname_edited(nickname: String):
 
 func on_color_changed(color: float):
     Mediator.instance.call_on_server(game.update_color, player_index, color)
+
+func on_win_score_changed(new_win_score: int):
+    Mediator.instance.call_on_server(game.set_win_score, new_win_score)
 
 func is_player_active_turn():
     return player_index_playing == player_index
@@ -124,6 +129,7 @@ func _ready():
     grid.hammer_click.connect(on_hammer_click)
     lobby.nickname_edited.connect(on_nickname_edited)
     lobby.color_changed.connect(on_color_changed)
+    lobby.win_score_changed.connect(on_win_score_changed)
     game.player_scored.connect(on_player_scored)
 
 
