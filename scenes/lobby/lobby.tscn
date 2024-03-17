@@ -22,7 +22,7 @@ connected_players_list = NodePath("Container/ConnectedPlayers/VBoxContainer")
 nickname_edit = NodePath("Container/Setup/Nickname/TextEdit")
 color_slider = NodePath("Container/Setup/Color/ColorPicker/Slider")
 color_picker_player_preview = NodePath("Container/Setup/Color/ColorPicker/Player")
-win_score_edit = NodePath("Container/Setup/Win Score/TextEdit")
+win_score_edit = NodePath("Container/Setup/Win Score/SpinBox")
 win_score_container = NodePath("Container/Setup/Win Score")
 
 [node name="Container" type="Control" parent="."]
@@ -223,21 +223,16 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 25
 text = "Win Score:"
 
-[node name="TextEdit" type="TextEdit" parent="Container/Setup/Win Score"]
-custom_minimum_size = Vector2(225, 40)
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -231.0
-offset_top = -24.0
-offset_right = 1.0
-offset_bottom = 20.0
-grow_horizontal = 0
-grow_vertical = 2
-text = "3"
+[node name="SpinBox" type="SpinBox" parent="Container/Setup/Win Score"]
+layout_mode = 0
+offset_left = 174.0
+offset_top = 5.0
+offset_right = 330.0
+offset_bottom = 64.0
+min_value = 1.0
+max_value = 20.0
+value = 3.0
+alignment = 1
 
 [node name="StartButton" type="Button" parent="Container"]
 custom_minimum_size = Vector2(0, 50)
