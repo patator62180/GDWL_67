@@ -61,8 +61,9 @@ func can_move_to(grid_pos: Vector2, grid: Grid, player_managers: PlayerManagers)
     return player_grid_pos.distance_to(grid_pos) <= 1 \
         and is_possible_movement \
         and is_possible_tile \
-        and player_managers.check_for_player(grid, grid_pos) == null \
-        and !PlayerController.instance.check_for_hosts(grid_pos)
+        and PlayerController.instance.is_tile_empty(grid_pos)
+        #and player_managers.check_for_player(grid, grid_pos) == null \
+        #and !PlayerController.instance.check_for_hosts(grid_pos)
        
 @rpc("authority")     
 func shoot_your_shot(position: Vector2):
@@ -81,4 +82,5 @@ func shoot_your_shot(position: Vector2):
 func kill_player():
     animation_player.play('death')
 
-    
+func get_target_grid_pos():
+    return Grid.instance.get_grid_pos(target_pos)   

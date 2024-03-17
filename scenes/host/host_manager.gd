@@ -24,14 +24,5 @@ func spawn_host_client(position):
 func on_host_played():
     pass
 
-func check_for_hosts(grid: Grid, grid_pos:Vector2):
-    for host in get_hosts():
-        var host_grid_pos = grid.get_grid_pos(host.position)
-
-        if (host_grid_pos == grid_pos):
-            return true
-    
-    return false
-    
 func get_hosts():
     return host_root.get_children()

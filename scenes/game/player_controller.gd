@@ -121,8 +121,11 @@ func on_card_draw():
 func on_player_scored(player_index: int, score: int):
     Mediator.instance.call_on_players(update_score, player_index, score)
     
-func check_for_hosts(grid_pos: Vector2):
-    return game.host_manager.check_for_hosts(grid, grid_pos)
+#func check_for_hosts(grid_pos: Vector2):
+    #return game.host_manager.check_for_hosts(grid, grid_pos)
+    
+func is_tile_empty(grid_pos: Vector2):
+    return game.check_tile(grid_pos, true, true) == null
 
 func _ready():
     instance = self
