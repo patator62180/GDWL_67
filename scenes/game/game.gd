@@ -131,7 +131,7 @@ func start_turn(try_parasiting: bool = false):
                     return
             
             #move and wait hosts
-            for host in host_manager.hosts:
+            for host in host_manager.get_hosts():
                 host.move_host(grid, player_managers)
             
             await get_tree().create_timer(0.5).timeout
@@ -156,8 +156,7 @@ func try_parasiting():
             player_managers.array[player_index_playing].spawn_player(grid, host_pos)
             player_managers.array[player_index_playing].kill_player(grid, player_pos)
             Mediator.instance.call_on_players(play_shockwave_anim, host_pos)
-            
-            host_manager.hosts.erase(host)
+                        
             host.queue_free()
             
             if score_point():
@@ -240,10 +239,10 @@ func check_tile(grid_pos:Vector2, check_players: bool):
             if player_is_present != null:
                 return player_is_present
     
-    for host in host_manager.hosts:
-        if host == null:
-            host_manager.hosts.erase(host)
-            continue
+    for host in host_manager.get_hosts():
+        #if host == null:
+            #host_manager.hosts.erase(host)
+            #continue
         var host_grid_pos = grid.get_grid_pos(host.position)
         if (host_grid_pos == grid_pos):
             return host
