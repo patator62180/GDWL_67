@@ -9,7 +9,7 @@ const MAX_PLAYERS_COUNT = 4
 @export var grid: Grid
 @export var player_controller: PlayerController
 @export var camera: Camera2D
-@export var win_score: int = 5
+@export var win_score: int = 3
 
 signal player_scored(player_index : int, score : int)
 signal game_finished(bool)
@@ -91,6 +91,11 @@ func update_color(player_index: int, color: float):
         peer_players[player_index].color = color
         player_managers.array[player_index].color = color
         Mediator.instance.call_on_players(player_controller.update_connected_player, player_index, peer_players[player_index].nickname, color)
+
+@rpc("any_peer")
+func set_win_score(new_win_score : int):
+    win_score = new_win_score
+    
 
 func respawn_host():
     spawn_host(grid.get_suitable_spawn())

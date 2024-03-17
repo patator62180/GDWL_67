@@ -5,6 +5,7 @@ class_name Lobby
 signal started_game
 signal nickname_edited
 signal color_changed
+signal win_score_changed
 
 @export var start_button: Button
 @export var screen_title: Label
@@ -13,6 +14,8 @@ signal color_changed
 @export var nickname_edit: TextEdit
 @export var color_slider: HSlider
 @export var color_picker_player_preview: Player
+@export var win_score_edit : TextEdit
+@export var win_score_container : Control
 
 var nickname: String = "":
     set(value):
@@ -29,6 +32,7 @@ func _ready():
     else:
         nickname_edit.text_changed.connect(on_text_changed)
         color_slider.value_changed.connect(on_color_slider_changed)
+        win_score_edit.text_changed.connect(on_win_score_changed)
 
 func close():
     queue_free()
@@ -42,6 +46,11 @@ func on_color_slider_changed(value: float):
 func on_text_changed():
     if len(nickname_edit.text) >= 1:
         nickname_edited.emit(nickname_edit.text)
+
+func on_win_score_changed():
+    var new_win_score = int(win_score_edit.text)
+    if(new_win_score != 0):
+        win_score_changed.emit(new_win_score)
 
 func update_connected_player(index: int, nickname: String, color: float):
     var list_items = connected_players_list.get_children()

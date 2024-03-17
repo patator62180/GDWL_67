@@ -9,6 +9,7 @@ class_name PlayerManager
 @export var player_spawner: MultiplayerSpawner
 @export var color: float = 0
 
+
 var player_characters: Array[Player]:
     get:
         var _player_characters: Array[Player] = []
@@ -40,8 +41,11 @@ func kill_player(grid: Grid, grid_pos: Vector2):
     var player = get_character_at_position(grid_pos, grid)
     
     if player != null:
-        player.queue_free()
-    
+        Mediator.instance.call_on_players(player.die)
+        await get_tree().create_timer(2).timeout
+        if is_instance_valid(player):
+            player.queue_free()
+        
 func process_action(action: String):
     for player in player_characters:
         player.process_action(action)

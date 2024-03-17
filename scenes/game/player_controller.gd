@@ -40,7 +40,9 @@ func propagate_turn(player_index: int, game_turn_state):
 
 @rpc('authority')
 func assign_player(player_index: int):
-    self.player_index = player_index
+    self.player_index = player_index    
+    if player_index != 0:
+            lobby.win_score_container.visible = false
 
 @rpc('authority')
 func update_connected_player(player_index: int, nickname: String, color: float):
@@ -68,6 +70,9 @@ func on_nickname_edited(nickname: String):
 func on_color_changed(color: float):
     Mediator.instance.call_on_server(game.update_color, player_index, color)
 
+func on_win_score_changed(new_win_score: int):
+    Mediator.instance.call_on_server(game.set_win_score, new_win_score)
+
 func is_player_active_turn():
     return player_index_playing == player_index
 
@@ -80,22 +85,12 @@ func on_cell_click(grid_pos: Vector2):
             return
             
         var player_manager = player_managers.array[player_index_playing]
-        var found_player = player_manager.get_character_at_position(grid_pos, grid)
         var found_player_index = player_manager.get_character_index_at_position(grid_pos, grid)
         
-        if found_player != null:
-            selected_player = found_player
-            grid.show_possible_selection(grid_pos, player_managers)
-            return
-        elif selected_player != null:
-            if selected_player.can_move_to(grid_pos, grid, player_managers):
-                Mediator.instance.call_on_server(game.end_player_turn_move, found_player_index, grid.get_screen_pos(grid_pos))
-                hud.hand.consume_selected_card()
+        if selected_player.can_move_to(grid_pos, grid, player_managers):
+            Mediator.instance.call_on_server(game.end_player_turn_move, found_player_index, grid.get_screen_pos(grid_pos))
+            hud.hand.consume_selected_card()
                 
-            selected_player = null
-            grid.clear_possible_selections()
-            return
-        else:
             selected_player = null
             grid.clear_possible_selections()
 
@@ -111,12 +106,19 @@ func on_hammer_click(grid_pos: Vector2):
         
 func on_card_selected(cardType : String):
     grid.selected_card_type = cardType
+    
+    if cardType == "Movement":
+        selected_player = player_managers.array[player_index].player_characters[0]
+        grid.show_possible_selection(grid.get_grid_pos(selected_player.position), player_managers)
 
 func on_card_draw():
     Mediator.instance.call_on_server(game.draw_for_turn)
 
 func on_player_scored(player_index: int, score: int):
     Mediator.instance.call_on_players(update_score, player_index, score)
+    
+func check_for_hosts(grid_pos: Vector2):
+    return game.host_manager.check_for_hosts(grid, grid_pos)
 
 func _ready():
     instance = self
@@ -127,6 +129,7 @@ func _ready():
     grid.hammer_click.connect(on_hammer_click)
     lobby.nickname_edited.connect(on_nickname_edited)
     lobby.color_changed.connect(on_color_changed)
+    lobby.win_score_changed.connect(on_win_score_changed)
     game.player_scored.connect(on_player_scored)
 
 

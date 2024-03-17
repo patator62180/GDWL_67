@@ -9,6 +9,7 @@ signal parasite_throwed
 var tile_size = 100
 
 @export var is_moving = false
+@export var animation_player : AnimationPlayer
 
 var grid_pos = Vector2.ZERO
 var start_pos = Vector2.ZERO
@@ -25,7 +26,6 @@ var color: float = 0:
     set(value):
         if not OS.has_feature('dedicated_server'):
             $NodeSprite/Face.material.set_shader_parameter("Shift_Hue", value)
-            $NodeSprite/FaceMort.material.set_shader_parameter("Shift_Hue", value)
 
 func _ready():
     pass
@@ -75,7 +75,8 @@ func can_move_to(grid_pos: Vector2, grid: Grid, player_managers: PlayerManagers)
     return player_grid_pos.distance_to(grid_pos) <= 1 \
         and is_possible_movement \
         and is_possible_tile \
-        and player_managers.check_for_player(grid, grid_pos) == null
+        and player_managers.check_for_player(grid, grid_pos) == null \
+        and !PlayerController.instance.check_for_hosts(grid_pos)
 
 func process_action(action: String):
     match action:
@@ -100,5 +101,14 @@ func shoot_your_shot(position: Vector2):
     position = position + offset
     parasite.fly_to(position)
 
+
+func on_animation_finished(anim_name: StringName):
+    if anim_name == 'death':
+        visible = false
+
+@rpc("authority")
+func die():
+    animation_player.animation_finished.connect(on_animation_finished)
+    animation_player.play('death')
 
     
