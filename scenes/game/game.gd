@@ -104,13 +104,6 @@ func update_color(player_index: int, color: float):
 
 func respawn_host():
     spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
-
-func check_if_player_won():
-    for host in host_manager.hosts:
-        var current_player_manager = player_managers.array[player_index_playing]
-        for player in current_player_manager.player_characters:
-            if(host.position == player.position):
-                Mediator.instance.call_on_players(player_controller.finish_game)
     
 func end_turn(try_parasiting: bool = false):
     if turn_state == TurnState.PLAYER_TURN:
@@ -138,7 +131,9 @@ func start_turn(try_parasiting: bool = false):
             
             #wait for parasiting
             if try_parasiting:
-                await try_parasiting()
+                var game_over = await try_parasiting()
+                if game_over:
+                    return
             
             #move and wait hosts
             for host in host_manager.hosts:
@@ -161,13 +156,7 @@ func try_parasiting():
             var player_pos = grid.get_grid_pos(player.position)
             Mediator.instance.call_on_players(player.shoot_your_shot, host.position)
 
-
             await get_tree().create_timer(1).timeout
-            
-            player_scores[player_index_playing] += 1
-            player_scored.emit(player_index_playing, player_scores[player_index_playing])
-            if(player_scores[player_index_playing] == win_score):
-                on_score_reached()
             
             player_managers.array[player_index_playing].spawn_player(grid, host_pos)
             player_managers.array[player_index_playing].kill_player(grid, player_pos)
@@ -176,9 +165,19 @@ func try_parasiting():
             host_manager.hosts.erase(host)
             host.queue_free()
             
+            if score_point():
+                return end_game()
+                
             respawn_host()
             
             await get_tree().create_timer(0.5).timeout
+            
+
+func score_point():
+    player_scores[player_index_playing] += 1
+    player_scored.emit(player_index_playing, player_scores[player_index_playing])
+    
+    return player_scores[player_index_playing] == win_score
 
 @rpc('any_peer')
 func start_game():
@@ -262,10 +261,13 @@ func check_octo_around_player(player: Player):
             return null
             
     return null
-
-func on_score_reached():
-    Mediator.instance.call_on_players(player_controller.finish_game)
+    
+func end_game():
+    turn_state = TurnState.PLAYER_TURN
+    Mediator.instance.call_on_players(player_controller.propagate_end_game)
     Immersive.client.end_game()
+    
+    return true
 
 @rpc('authority') 
 func play_shockwave_anim(saved_host_pos: Vector2):
@@ -282,10 +284,13 @@ func play_shockwave_anim(saved_host_pos: Vector2):
     
 func finish_game():
     var player_winning_index = 0
+    
     for i in range(player_scores.size()):
         if player_scores[i] == MAX_PLAYERS_COUNT:
             player_winning_index = i
+            
     game_finished.emit(player_winning_index == player_controller.player_index)
+    
     get_tree().get_root().get_node("BackgroundMusic/BGMusic").stream_paused = true
 
     # on cache tout

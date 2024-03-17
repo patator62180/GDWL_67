@@ -36,10 +36,7 @@ func propagate_turn(player_index: int, game_turn_state):
     
     if can_play():
         hud.hand.draw()
-
-@rpc('authority')
-func finish_game():
-    game.finish_game()
+        hud.set_turn_label()
 
 @rpc('authority')
 func assign_player(player_index: int):
@@ -59,6 +56,11 @@ func update_connected_player(player_index: int, nickname: String, color: float):
 @rpc('authority')
 func update_score(player_index: int, score: int):
     hud.player_cards[player_index].score = score
+    
+@rpc('authority')
+func propagate_end_game():
+    game_turn_state = TurnState.GAME_OVER
+    game.finish_game()
 
 func on_nickname_edited(nickname: String):
     Mediator.instance.call_on_server(game.update_nickname, player_index, nickname)

@@ -3,5 +3,6 @@ enum
 {
     NONE,
     PLAYER_TURN,
-    AI_TURN
+    AI_TURN,
+    GAME_OVER
 }
