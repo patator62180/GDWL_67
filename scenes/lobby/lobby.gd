@@ -27,7 +27,7 @@ var color: float = 0:
         color_picker_player_preview.color = value
 
 func _ready():
-    if Mediator.instance and Mediator.instance.is_server(false):
+    if Mediator.instance and Mediator.instance.is_server():
         close()
     else:
         nickname_edit.text_changed.connect(on_text_changed)

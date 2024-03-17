@@ -1,18 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://de6fuev88g57f"]
+[gd_scene load_steps=5 format=3 uid="uid://de6fuev88g57f"]
 
 [ext_resource type="Script" path="res://scenes/grid/grid.gd" id="1_qbift"]
 [ext_resource type="TileSet" uid="uid://dpgv8vcohuucb" path="res://tile_sets/level1.tres" id="2_pqvwu"]
 [ext_resource type="TileSet" uid="uid://baqdshuahgp71" path="res://tile_sets/selection.tres" id="3_i4i5g"]
 [ext_resource type="TileSet" uid="uid://wxknivquryt0" path="res://tile_sets/walls.tres" id="4_7guad"]
-[ext_resource type="Texture2D" uid="uid://bjlre1l8ka865" path="res://sprites/circle.png" id="5_jk85d"]
 
-[node name="Grid" type="Node2D" node_paths=PackedStringArray("tile_map", "selection_tile_map", "wall_tile_map", "selection_wall_tile_map", "debug")]
+[node name="Grid" type="Node2D" node_paths=PackedStringArray("tile_map", "selection_tile_map", "wall_tile_map", "selection_wall_tile_map")]
 script = ExtResource("1_qbift")
 tile_map = NodePath("TileMap")
 selection_tile_map = NodePath("TileSelection")
 wall_tile_map = NodePath("TileMapWall")
 selection_wall_tile_map = NodePath("TileMapWallSelection")
-debug = NodePath("Sprite2D")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_pqvwu")
@@ -32,6 +30,3 @@ format = 2
 position = Vector2(50, 50)
 tile_set = ExtResource("4_7guad")
 format = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("5_jk85d")

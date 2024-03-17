@@ -19,18 +19,15 @@ class PeerPlayer:
     var nickname: String
     var color: float
     
-    func _init(peer_id: int):
+    func _init(player_index: int, peer_id: int):
         self.peer_id = peer_id
-        self.nickname = 'Player%d' % peer_id
-        self.color = randf()
+        self.nickname = 'Player %d' % peer_id
+        self.color = 1 if player_index == 0 else 0.5
 
 var peer_players: Array[PeerPlayer] = []
 var is_game_over: bool = false
 var is_choice_step: bool
 var player_index_playing: int = -1
-
-var respawn_timer = 0.3
-var respawn_timer_max = respawn_timer
 
 var turn_state = TurnState.NONE
 
@@ -39,13 +36,6 @@ var player_scores: Array[int] = [0,0,0,0]
 func _ready():
     if Mediator.instance.is_server():
         Mediator.instance.listen_peer_player_connection(on_peer_player_joined)
-
-func _process(delta):
-    if respawn_timer < respawn_timer_max:
-        respawn_timer = respawn_timer + delta
-        
-        if respawn_timer >= respawn_timer_max:
-            respawn_host()
     
 @rpc('any_peer')
 func draw_for_turn():
@@ -108,7 +98,7 @@ func set_win_score(new_win_score : int):
     
 
 func respawn_host():
-    spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
+    spawn_host(grid.get_suitable_spawn())
     
 func end_turn(try_parasiting: bool = false):
     if turn_state == TurnState.PLAYER_TURN:
@@ -177,6 +167,8 @@ func try_parasiting():
             
             await get_tree().create_timer(0.5).timeout
             
+            await try_parasiting()
+            
 
 func score_point():
     player_scores[player_index_playing] += 1
@@ -194,7 +186,9 @@ func start_game():
             if player_index <= len(peer_players) - 1:
                 player_managers.array[player_index].spawn_initial_player(grid)
 
-        spawn_host(Vector2(0, -1))
+        for i in range(0, 3):
+            respawn_host()
+        #spawn_host(Vector2(0, -1))
 
         turn_state = TurnState.PLAYER_TURN
         player_index_playing = 0
@@ -212,7 +206,7 @@ func request_start_game():
 
 func on_peer_player_joined(id: int):
     var player_index = len(peer_players)
-    var peer_player = PeerPlayer.new(id)
+    var peer_player = PeerPlayer.new(player_index, id)
     
     peer_players.append(peer_player)
     Mediator.instance.call_on_player(id, player_controller.assign_player, player_index)
@@ -222,12 +216,14 @@ func on_peer_player_joined(id: int):
         Mediator.instance.call_on_players(player_controller.update_connected_player, peer_player_index, peer_players[peer_player_index].nickname, peer_players[peer_player_index].color)
     
     if player_index == 1:
-        Mediator.instance.call_on_player(peer_players[0].peer_id, player_controller.give_start_game_permission)
+        if Mediator.instance.is_couch:
+            start_game()
+        else:
+            Mediator.instance.call_on_player(peer_players[0].peer_id, player_controller.give_start_game_permission)
 
 func move_player(player_index: int, action: String):
     if Mediator.instance.is_server():
         player_managers.array[player_index].process_action(action)
-
 
 @rpc('authority')
 func propagate_add_wall(grid_pos: Vector2, tile_index: int):

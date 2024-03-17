@@ -7,8 +7,6 @@ class_name Grid
 @export var wall_tile_map: TileMap
 @export var selection_wall_tile_map: TileMap
 
-@export var debug: Sprite2D
-
 signal cell_click
 signal cell_hovered
 signal wall_click
@@ -57,9 +55,7 @@ func _ready():
     InputManager.instance.game_mouse_click.connect(on_mouse_click)
     InputManager.instance.game_mouse_exited.connect(on_mouse_exited)
 
-func on_mouse_move(position: Vector2):
-    debug.position = position
-    
+func on_mouse_move(position: Vector2):   
     if !PlayerController.instance.can_play():
         return
     
@@ -250,3 +246,13 @@ func get_hammer_hits(grid_position: Vector2):
     var hammer_hits = [-1, wall_up, wall_down, wall_right, wall_left]
     
     return hammer_hits as Array[int]
+
+func get_suitable_spawn():
+    var used_tiles = tile_map.get_used_cells(0)
+    var player_managers = PlayerController.instance.player_managers as PlayerManagers
+    
+    var tile = used_tiles.pick_random()
+    while player_managers.get_character_at_position(tile, self):
+        tile = used_tiles.pick_random()
+        
+    return tile
