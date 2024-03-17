@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://biqj0t60x1dv0"]
+[gd_scene load_steps=11 format=3 uid="uid://biqj0t60x1dv0"]
 
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_0lgt1"]
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
+[ext_resource type="PackedScene" uid="uid://2yc6yjaghq6e" path="res://scenes/player_card/player_card_right.tscn" id="3_7g4mp"]
 [ext_resource type="Script" path="res://scenes/HUD/input_manager.gd" id="3_tidyo"]
 [ext_resource type="PackedScene" uid="uid://dsmt3xnq7i1eu" path="res://scenes/cards/hand.tscn" id="5_euuyo"]
 [ext_resource type="Texture2D" uid="uid://bla2q5wqubnu8" path="res://sprites/sound_mute.png" id="6_5163j"]
@@ -60,7 +61,7 @@ offset_right = -150.0
 offset_bottom = 75.0
 grow_horizontal = 0
 
-[node name="PlayerCard1" parent="PlayerCards/PlayerCard1Anchor" instance=ExtResource("1_0lgt1")]
+[node name="PlayerCard1" parent="PlayerCards/PlayerCard1Anchor" instance=ExtResource("3_7g4mp")]
 layout_mode = 1
 
 [node name="PlayerCard2Anchor" type="Control" parent="PlayerCards"]
