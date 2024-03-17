@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://c7f7jqkl5jis6"]
+
+[ext_resource type="Script" path="res://scenes/HUD/mute_and_help.gd" id="1_3nq6v"]
+[ext_resource type="Texture2D" uid="uid://barxn1d0cj0f0" path="res://sprites/help_normal.png" id="1_nfyei"]
+[ext_resource type="Texture2D" uid="uid://b1orgs2hp4nuk" path="res://sprites/help_pressed.png" id="2_k6il8"]
+[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="3_hvu0s"]
+[ext_resource type="Texture2D" uid="uid://bla2q5wqubnu8" path="res://sprites/sound_mute.png" id="4_la11i"]
+[ext_resource type="Texture2D" uid="uid://bsqi6cgf3k5c7" path="res://sprites/sound_unmute.png" id="5_swion"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1ewv"]
+bg_color = Color(0.239216, 0.239216, 0.239216, 0.784314)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="MuteAndHelp" type="Node"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("mute_button", "help_button", "help_panel")]
+script = ExtResource("1_3nq6v")
+mute_button = NodePath("MuteSound")
+help_button = NodePath("Help")
+help_panel = NodePath("HelpPanel")
+
+[node name="MuteSound" type="TextureButton" parent="CanvasLayer"]
+offset_left = 15.0
+offset_top = 594.0
+offset_right = 59.0
+offset_bottom = 638.0
+toggle_mode = true
+texture_normal = ExtResource("4_la11i")
+texture_pressed = ExtResource("5_swion")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Help" type="TextureButton" parent="CanvasLayer"]
+offset_left = 59.0
+offset_top = 596.0
+offset_right = 99.0
+offset_bottom = 636.0
+toggle_mode = true
+texture_normal = ExtResource("1_nfyei")
+texture_pressed = ExtResource("2_k6il8")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="HelpPanel" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -278.5
+offset_top = -159.5
+offset_right = 278.5
+offset_bottom = 159.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_r1ewv")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/HelpPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -269.5
+offset_top = -143.0
+offset_right = 269.5
+offset_bottom = 143.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_hvu0s")
+text = "Your goal is to infect as many hosts as possible.
+
+To do so, you need to move in one of the 8 tiles surrounding it.
+
+Each infected host will score you 1 point.
+
+Use your cards strategically to block your opponent, and be the best parasite!"
