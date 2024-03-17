@@ -9,7 +9,7 @@ const MAX_PLAYERS_COUNT = 4
 @export var grid: Grid
 @export var player_controller: PlayerController
 @export var camera: Camera2D
-@export var win_score: int = 1
+@export var win_score: int = 5
 
 signal player_scored(player_index : int, score : int)
 signal game_finished(bool)
@@ -29,9 +29,6 @@ var is_game_over: bool = false
 var is_choice_step: bool
 var player_index_playing: int = -1
 
-var respawn_timer = 0.3
-var respawn_timer_max = respawn_timer
-
 var turn_state = TurnState.NONE
 
 var player_scores: Array[int] = [0,0,0,0]
@@ -39,13 +36,6 @@ var player_scores: Array[int] = [0,0,0,0]
 func _ready():
     if Mediator.instance.is_server():
         Mediator.instance.listen_peer_player_connection(on_peer_player_joined)
-
-func _process(delta):
-    if respawn_timer < respawn_timer_max:
-        respawn_timer = respawn_timer + delta
-        
-        if respawn_timer >= respawn_timer_max:
-            respawn_host()
     
 @rpc('any_peer')
 func draw_for_turn():
@@ -103,7 +93,7 @@ func update_color(player_index: int, color: float):
         Mediator.instance.call_on_players(player_controller.update_connected_player, player_index, peer_players[player_index].nickname, color)
 
 func respawn_host():
-    spawn_host(Vector2(randi_range(-3,3), randi_range(-2,2)))
+    spawn_host(grid.get_suitable_spawn())
     
 func end_turn(try_parasiting: bool = false):
     if turn_state == TurnState.PLAYER_TURN:
@@ -189,7 +179,9 @@ func start_game():
             if player_index <= len(peer_players) - 1:
                 player_managers.array[player_index].spawn_initial_player(grid)
 
-        spawn_host(Vector2(0, -1))
+        for i in range(0, 3):
+            respawn_host()
+        #spawn_host(Vector2(0, -1))
 
         turn_state = TurnState.PLAYER_TURN
         player_index_playing = 0

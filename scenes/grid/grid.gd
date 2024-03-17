@@ -246,3 +246,13 @@ func get_hammer_hits(grid_position: Vector2):
     var hammer_hits = [-1, wall_up, wall_down, wall_right, wall_left]
     
     return hammer_hits as Array[int]
+
+func get_suitable_spawn():
+    var used_tiles = tile_map.get_used_cells(0)
+    var player_managers = PlayerController.instance.player_managers as PlayerManagers
+    
+    var tile = used_tiles.pick_random()
+    while player_managers.get_character_at_position(tile, self):
+        tile = used_tiles.pick_random()
+        
+    return tile
