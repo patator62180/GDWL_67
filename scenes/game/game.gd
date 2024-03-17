@@ -162,6 +162,8 @@ func try_parasiting():
             
             await get_tree().create_timer(0.5).timeout
             
+            await try_parasiting()
+            
 
 func score_point():
     player_scores[player_index_playing] += 1
