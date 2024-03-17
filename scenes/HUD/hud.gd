@@ -20,18 +20,16 @@ func _ready():
     lose_label.visible = false
     your_turn_label.visible = false
     other_player_turn_label.visible = false
-    game.game_finished.connect(set_winning_label)
+    game.game_finished.connect(on_game_over)
     mute_button.toggled.connect(_on_mute_sound_toggled)
 
-func _process(delta):
-    set_turn_label()
-    #uncomment when implemented
-    #set_player_color()
-
-
-func set_winning_label(player_won : bool):
+func on_game_over(player_won : bool):
     win_label.visible = player_won
     lose_label.visible = !player_won
+    
+    hand.visible = false
+    your_turn_label.visible = false
+    other_player_turn_label.visible = false
 
 func _on_mute_sound_toggled(toggled_on):
     if toggled_on:
