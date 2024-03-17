@@ -69,10 +69,10 @@ func on_color_changed(color: float):
     Mediator.instance.call_on_server(game.update_color, player_index, color)
 
 func is_player_active_turn():
-    return player_index_playing == player_index and game_turn_state == TurnState.PLAYER_TURN
+    return player_index_playing == player_index
 
 func can_play():
-    return Mediator.instance.is_couch or is_player_active_turn()
+    return game_turn_state == TurnState.PLAYER_TURN and (Mediator.instance.is_couch or is_player_active_turn())
 
 func on_cell_click(grid_pos: Vector2):
     if Mediator.instance.is_player() and can_play():

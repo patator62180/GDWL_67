@@ -14,8 +14,8 @@ func _ready():
 func is_player():
     return is_couch or (multiplayer and not multiplayer.is_server())
 
-func is_server(include_couch=true):
-    return (include_couch and is_couch) or (not is_couch and multiplayer and multiplayer.is_server())
+func is_server():
+    return is_couch or (multiplayer and multiplayer.is_server())
 
 func call_on_server(callable, arg1 = null, arg2 = null, arg3 = null):
     if is_couch:
@@ -81,7 +81,7 @@ func call_on_player(peer_id, callable, arg1 = null, arg2 = null, arg3 = null):
 
 func listen_peer_player_connection(callable):
     if is_couch:
-        callable.call(0)
         callable.call(1)
+        callable.call(2)
     else:
         Immersive.client.peer_player_joined.connect(callable)
