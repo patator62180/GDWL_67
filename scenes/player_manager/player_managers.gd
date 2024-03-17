@@ -22,3 +22,12 @@ func check_for_player(grid: Grid, grid_pos:Vector2):
     
 func on_player_spawned(player : Player):
     player_spawned.emit(player)
+
+func get_character_at_position(grid_position: Vector2, grid: Grid):
+    for player_controller in array:
+        var found = player_controller.get_character_at_position(grid_position, grid)
+        
+        if found != null:
+            return true
+    
+    return false
