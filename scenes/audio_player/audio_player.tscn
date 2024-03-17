@@ -21,25 +21,32 @@ throw_parasite = NodePath("ThrowParasite")
 
 [node name="Victory" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_j6c70")
+bus = &"FX"
 
 [node name="Defeat" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_oy8eq")
+bus = &"FX"
 
 [node name="CardSelection" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_5hmtx")
+bus = &"FX"
 
 [node name="Shockwave" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_wvbsh")
+bus = &"FX"
 
 [node name="HoverTile" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_ajve3")
 pitch_scale = 1.29
+bus = &"FX"
 
 [node name="WallPlaced" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_xgf2h")
 volume_db = 3.514
 pitch_scale = 0.49
 max_polyphony = 2
+bus = &"FX"
 
 [node name="ThrowParasite" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_dmuya")
+bus = &"FX"

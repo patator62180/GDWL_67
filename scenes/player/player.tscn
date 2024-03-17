@@ -349,3 +349,4 @@ autoplay = "idle"
 
 [node name="ThrowParasite" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("16_rdd1c")
+bus = &"FX"

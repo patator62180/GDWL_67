@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dswfe7yyh4daq"]
+[gd_scene load_steps=14 format=3 uid="uid://dswfe7yyh4daq"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_jy7t4"]
 [ext_resource type="PackedScene" uid="uid://b81kmauxqg4ws" path="res://scenes/background/background.tscn" id="3_qtcvc"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ddsgdn7jinj07" path="res://scenes/host/host.tscn" id="8_va0h3"]
 [ext_resource type="PackedScene" uid="uid://cuou6t7fy6v45" path="res://scenes/player_manager/player_managers.tscn" id="10_ukfxk"]
 [ext_resource type="PackedScene" uid="uid://1yk62pn2f4xr" path="res://scenes/audio_player/audio_player.tscn" id="11_3jgb6"]
+[ext_resource type="PackedScene" uid="uid://c7f7jqkl5jis6" path="res://scenes/HUD/mute_and_help.tscn" id="13_hdsig"]
 [ext_resource type="PackedScene" uid="uid://wqmj852ihkvi" path="res://scenes/host/host_manager.tscn" id="14_jipfn"]
 [ext_resource type="PackedScene" uid="uid://d3q7s8lnam8nw" path="res://scenes/lobby/lobby.tscn" id="15_0s1u7"]
 
@@ -35,6 +36,8 @@ game = NodePath("..")
 PlayerManagers = NodePath("../PlayerManagers")
 
 [node name="Camera2D" parent="." instance=ExtResource("6_upsda")]
+offset = Vector2(-10, 40)
+zoom = Vector2(0.7, 0.7)
 
 [node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("grid")]
 script = ExtResource("3_vmlt8")
@@ -54,5 +57,7 @@ game = NodePath("..")
 hud = NodePath("../HUD")
 
 [node name="Lobby" parent="." instance=ExtResource("15_0s1u7")]
+
+[node name="MuteAndHelp" parent="." instance=ExtResource("13_hdsig")]
 
 [editable path="Background"]

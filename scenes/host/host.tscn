@@ -262,3 +262,4 @@ autoplay = "idle"
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AnimationTree"]
 stream = ExtResource("5_426f7")
 pitch_scale = 0.25
+bus = &"FX"

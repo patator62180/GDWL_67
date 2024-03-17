@@ -11,12 +11,8 @@ class_name HUD
 @export var win_label : Label
 @export var lose_label : Label
 @export var horizontal_slider: HSlider
-@export var mute_button : BaseButton
-@export var help_button : TextureButton
-@export var help_panel : Panel
 @export var confetti_launcher : ConfettiLauncher
 
-signal mute_music
 
 func _ready():
     win_label.visible = false
@@ -24,8 +20,6 @@ func _ready():
     your_turn_label.visible = false
     other_player_turn_label.visible = false
     game.game_finished.connect(on_game_over)
-    mute_button.toggled.connect(_on_mute_sound_toggled)
-    help_button.toggled.connect(on_help_toggled)
     game.game_finished.connect(confetti_launcher.on_game_finished)
 
 func on_game_over(player_won : bool):
@@ -36,15 +30,6 @@ func on_game_over(player_won : bool):
     your_turn_label.visible = false
     other_player_turn_label.visible = false
 
-func _on_mute_sound_toggled(toggled_on):
-    if toggled_on:
-        get_parent().get_node("/root/BackgroundMusic/BGMusic").volume_db = -1000
-    else: get_parent().get_node("/root/BackgroundMusic/BGMusic").volume_db = -3.5
-    
-func on_help_toggled(toggled_on):
-    if toggled_on:
-        help_panel.visible = true
-    else: help_panel.visible = false
     
 func set_turn_label():
     your_turn_label.visible = PlayerController.instance.can_play()
