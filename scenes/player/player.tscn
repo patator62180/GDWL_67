@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bef6pckymx8bi"]
+[gd_scene load_steps=35 format=3 uid="uid://bef6pckymx8bi"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_lo7lj"]
 [ext_resource type="Texture2D" uid="uid://cf2qw5tyjmoje" path="res://sprites/infected_face.png" id="2_7u7pn"]
@@ -6,12 +6,19 @@
 [ext_resource type="PackedScene" uid="uid://b0oj6fete70q4" path="res://scenes/player/parasite.tscn" id="2_t1yrk"]
 [ext_resource type="Texture2D" uid="uid://ouswkym2pv57" path="res://sprites/infected_rougeur.png" id="3_dawvx"]
 [ext_resource type="Texture2D" uid="uid://b6c5w2egcg5ru" path="res://sprites/Sprite_Sheet_Bave-1.png" id="3_sfdgm"]
+[ext_resource type="Texture2D" uid="uid://ck01ov6tbvr23" path="res://sprites/Mort_player/mort01.png" id="3_ytl6o"]
 [ext_resource type="Texture2D" uid="uid://dttxqbgv07pc3" path="res://sprites/Sprite_Sheet_Bave-2.png" id="4_8fx1q"]
+[ext_resource type="Texture2D" uid="uid://bo8lh7n447ye0" path="res://sprites/Mort_player/mort02.png" id="4_wxb1p"]
 [ext_resource type="Texture2D" uid="uid://nrr2prgvlrj7" path="res://sprites/Sprite_Sheet_Bave-3.png" id="5_p14re"]
+[ext_resource type="Texture2D" uid="uid://d207t1ugu071p" path="res://sprites/Mort_player/mort03.png" id="5_w6y7s"]
+[ext_resource type="Texture2D" uid="uid://b3q817vpoj8e" path="res://sprites/Mort_player/mort04.png" id="6_ctka8"]
 [ext_resource type="Texture2D" uid="uid://bxm5x3b2wlq0w" path="res://sprites/Sprite_Sheet_Bave-4.png" id="6_etwvb"]
+[ext_resource type="Texture2D" uid="uid://b86oh571bvpr1" path="res://sprites/Mort_player/mort05.png" id="7_a1ob8"]
 [ext_resource type="Texture2D" uid="uid://sdpiykm7okha" path="res://sprites/Sprite_Sheet_Bave-5.png" id="7_adw0d"]
+[ext_resource type="Texture2D" uid="uid://b8fp4ysikppma" path="res://sprites/Mort_player/mort06.png" id="8_2b3vm"]
 [ext_resource type="Texture2D" uid="uid://cfawht2big58s" path="res://sprites/Sprite_Sheet_Bave-6.png" id="8_sc6cp"]
 [ext_resource type="Texture2D" uid="uid://djlh6j20mekfj" path="res://sprites/Sprite_Sheet_Bave-7.png" id="9_fia86"]
+[ext_resource type="Texture2D" uid="uid://bg7egy0y8vtxc" path="res://sprites/Mort_player/mort07.png" id="9_t8cid"]
 [ext_resource type="Texture2D" uid="uid://cl2b0cc6w63nq" path="res://sprites/Sprite_Sheet_Bave-8.png" id="10_mrcj5"]
 [ext_resource type="Texture2D" uid="uid://2wj1mg8tgiup" path="res://sprites/Sprite_Sheet_Bave-9.png" id="11_06n5i"]
 [ext_resource type="Texture2D" uid="uid://lmnm830du704" path="res://sprites/infected_eyes.png" id="13_16dte"]
@@ -19,6 +26,39 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oet1n"]
 size = Vector2(100, 100)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dh1hb"]
+shader = ExtResource("2_a6fnp")
+shader_parameter/Shift_Hue = null
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dpvpw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ytl6o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_wxb1p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_w6y7s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ctka8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_a1ob8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_2b3vm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_t8cid")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wkkd2"]
 resource_local_to_scene = true
@@ -133,6 +173,69 @@ tracks/4/keys = {
 "update": 0,
 "values": [Vector2(1, 1)]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../FaceMort:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_mm2p6"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../FaceMort:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../FaceMort:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
 
 [sub_resource type="Animation" id="Animation_3gplj"]
 resource_name = "idle"
@@ -162,6 +265,30 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, -1), Vector2(0, -3), Vector2(0, -4), Vector2(0, -4), Vector2(0, -3.00003), Vector2(0, -1), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../FaceMort:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_3ekyv"]
@@ -208,6 +335,7 @@ tracks/2/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5crbo"]
 _data = {
 "RESET": SubResource("Animation_5y4dj"),
+"death": SubResource("Animation_mm2p6"),
 "idle": SubResource("Animation_3gplj"),
 "player_moving": SubResource("Animation_3ekyv")
 }
@@ -229,6 +357,12 @@ target_position = Vector2(0, 75)
 
 [node name="NodeSprite" type="Node2D" parent="."]
 position = Vector2(50, 50)
+
+[node name="FaceMort" type="AnimatedSprite2D" parent="NodeSprite"]
+visible = false
+material = SubResource("ShaderMaterial_dh1hb")
+sprite_frames = SubResource("SpriteFrames_dpvpw")
+autoplay = "default"
 
 [node name="Face" type="Sprite2D" parent="NodeSprite"]
 texture_filter = 1

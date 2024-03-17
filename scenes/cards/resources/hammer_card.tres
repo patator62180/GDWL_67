@@ -8,3 +8,4 @@ script = ExtResource("2_ciddk")
 icon = ExtResource("1_53u8c")
 type = "Hammer"
 weight = 10
+description = "Ceci est un marto"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://biumy12wvsfs5"]
+[gd_scene load_steps=6 format=3 uid="uid://biumy12wvsfs5"]
 
 [ext_resource type="Script" path="res://scenes/player_card/player_card.gd" id="1_n1egu"]
 [ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="2_dmo1j"]
@@ -13,14 +13,6 @@ shader_parameter/Shift_Hue = 0.5
 resource_local_to_scene = true
 shader = ExtResource("2_yk65v")
 shader_parameter/Shift_Hue = null
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ivrl7"]
-properties/0/path = NodePath("VBoxContainer/Status:text")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:visible")
-properties/1/spawn = true
-properties/1/replication_mode = 1
 
 [node name="PlayerCard" type="Control" node_paths=PackedStringArray("nickname_label", "score_label")]
 custom_minimum_size = Vector2(300, 150)
@@ -60,6 +52,3 @@ theme = ExtResource("2_dmo1j")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
 text = "Points:"
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_ivrl7")

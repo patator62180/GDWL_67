@@ -25,6 +25,7 @@ var color: float = 0:
     set(value):
         if not OS.has_feature('dedicated_server'):
             $NodeSprite/Face.material.set_shader_parameter("Shift_Hue", value)
+            $NodeSprite/FaceMort.material.set_shader_parameter("Shift_Hue", value)
 
 func _ready():
     pass
