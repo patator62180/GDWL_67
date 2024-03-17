@@ -105,11 +105,12 @@ func on_hammer_click(grid_pos: Vector2):
         hud.hand.consume_selected_card()
         
 func on_card_selected(cardType : String):
-    grid.selected_card_type = cardType
-    
-    if cardType == "Movement":
-        selected_player = player_managers.array[player_index].player_characters[0]
-        grid.show_possible_selection(grid.get_grid_pos(selected_player.position), player_managers)
+    if can_play():
+        grid.selected_card_type = cardType
+        
+        if cardType == "Movement":
+            selected_player = player_managers.array[player_index_playing].player_characters[0]
+            grid.show_possible_selection(grid.get_grid_pos(selected_player.position), player_managers)
 
 func on_card_draw():
     Mediator.instance.call_on_server(game.draw_for_turn)
