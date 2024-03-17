@@ -264,8 +264,15 @@ func check_octo_around_player(player: Player):
     return null
     
 func end_game():
-    turn_state = TurnState.PLAYER_TURN
-    Mediator.instance.call_on_players(player_controller.propagate_end_game)
+    turn_state = TurnState.PLAYER_TURN    
+    
+    var player_winning_index = 0
+    
+    for i in range(player_scores.size()):
+        if player_scores[i] == win_score:
+            player_winning_index = i
+    
+    Mediator.instance.call_on_players(player_controller.propagate_end_game, player_winning_index)
     Immersive.client.end_game()
     
     return true
@@ -283,12 +290,7 @@ func play_shockwave_anim(saved_host_pos: Vector2):
     
     camera.play_shockwave_anim(screen_ratio)
     
-func finish_game():
-    var player_winning_index = 0
-    
-    for i in range(player_scores.size()):
-        if player_scores[i] == MAX_PLAYERS_COUNT:
-            player_winning_index = i
+func finish_game(player_winning_index : int):
             
     game_finished.emit(player_winning_index == player_controller.player_index)
     
