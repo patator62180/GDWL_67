@@ -14,7 +14,7 @@ signal win_score_changed
 @export var nickname_edit: TextEdit
 @export var color_slider: HSlider
 @export var color_picker_player_preview: Player
-@export var win_score_edit : TextEdit
+@export var win_score_edit : SpinBox
 @export var win_score_container : Control
 
 var nickname: String = "":
@@ -32,7 +32,7 @@ func _ready():
     else:
         nickname_edit.text_changed.connect(on_text_changed)
         color_slider.value_changed.connect(on_color_slider_changed)
-        win_score_edit.text_changed.connect(on_win_score_changed)
+        win_score_edit.value_changed.connect(on_win_score_changed)
 
 func close():
     queue_free()
@@ -47,10 +47,8 @@ func on_text_changed():
     if len(nickname_edit.text) >= 1:
         nickname_edited.emit(nickname_edit.text)
 
-func on_win_score_changed():
-    var new_win_score = int(win_score_edit.text)
-    if(new_win_score != 0):
-        win_score_changed.emit(new_win_score)
+func on_win_score_changed(value : int):
+    win_score_changed.emit(value)
 
 func update_connected_player(index: int, nickname: String, color: float):
     var list_items = connected_players_list.get_children()

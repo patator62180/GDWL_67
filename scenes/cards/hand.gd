@@ -15,6 +15,7 @@ var total_weight = 0
 @export var cards_parent: Control
 @export var max_width: int
 @export var max_card_angle: float
+@export var deck: TextureRect
 
 signal card_selected(cardType : String)
 signal draw_card_for_turn
@@ -117,3 +118,11 @@ func play_card_appear_anims(card: Card):
     card.show_card_appear()
     await get_tree().create_timer(0.3).timeout
     card.flip_card()
+
+
+func _on_deck_mouse_entered():
+    deck.scale = Vector2.ONE * 1.1
+
+
+func _on_deck_mouse_exited():
+    deck.scale = Vector2.ONE

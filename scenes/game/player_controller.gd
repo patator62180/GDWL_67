@@ -60,9 +60,9 @@ func update_score(player_index: int, score: int):
     hud.player_cards[player_index].score = score
     
 @rpc('authority')
-func propagate_end_game():
+func propagate_end_game(player_winning_index : int):
     game_turn_state = TurnState.GAME_OVER
-    game.finish_game()
+    game.finish_game(player_winning_index)
 
 func on_nickname_edited(nickname: String):
     Mediator.instance.call_on_server(game.update_nickname, player_index, nickname)
@@ -105,6 +105,9 @@ func on_hammer_click(grid_pos: Vector2):
         hud.hand.consume_selected_card()
         
 func on_card_selected(cardType : String):
+    if cardType == "":
+        grid.selected_card_type = ""
+    
     if can_play():
         grid.selected_card_type = cardType
         
