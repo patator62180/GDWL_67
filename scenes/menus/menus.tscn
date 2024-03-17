@@ -126,27 +126,29 @@ theme = ExtResource("3_sn0x5")
 theme_override_font_sizes/font_size = 30
 text = "CREATE ROOM"
 
-[node name="JoinRoomCode" type="TextEdit" parent="CanvasLayer/Viewport/ChoicesScreen/HBoxContainer"]
-custom_minimum_size = Vector2(150, 60)
+[node name="JoinRoomCode" type="LineEdit" parent="CanvasLayer/Viewport/ChoicesScreen/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 6
 theme = ExtResource("3_sn0x5")
-theme_override_font_sizes/font_size = 45
+max_length = 4
 
 [node name="JoinButtonContainer" type="Control" parent="CanvasLayer/Viewport/ChoicesScreen/HBoxContainer"]
 custom_minimum_size = Vector2(150, 60)
 layout_direction = 1
 layout_mode = 2
+size_flags_horizontal = 6
 
 [node name="JoinButton" type="Button" parent="CanvasLayer/Viewport/ChoicesScreen/HBoxContainer/JoinButtonContainer"]
 custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
-offset_left = 15.0
-offset_right = 165.0
+offset_left = 1.0
+offset_right = 151.0
 offset_bottom = 60.0
 size_flags_horizontal = 6
 theme = ExtResource("3_sn0x5")
 theme_override_font_sizes/font_size = 30
+disabled = true
 text = "JOIN ROOM"
 
 [node name="EnterRoomCode" type="Label" parent="CanvasLayer/Viewport/ChoicesScreen"]

@@ -5,7 +5,7 @@ const GAME_NAME = 'parasite'
 @export var create_button: Button
 @export var join_button: Button
 @export var play_local_button: Button
-@export var join_room_code: TextEdit
+@export var join_room_code: LineEdit
 @export var game_scene: PackedScene
 @export var node_to_replace: Node
 @export var animation_player: AnimationPlayer
@@ -17,6 +17,7 @@ func _ready():
     create_button.pressed.connect(create_game_room)
     join_button.pressed.connect(join_game_room)
     play_local_button.pressed.connect(on_play_local)
+    join_room_code.text_changed.connect(on_join_room_code_changed)
 
 func on_play_local():
     var game = game_scene.instantiate()
@@ -49,3 +50,6 @@ func join_game_room():
         visible = false
     else:
         animation_player.play('shake')
+        
+func on_join_room_code_changed(_text):
+    join_button.disabled = len(join_room_code.text) != 4
