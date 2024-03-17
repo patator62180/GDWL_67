@@ -105,6 +105,9 @@ func on_hammer_click(grid_pos: Vector2):
         hud.hand.consume_selected_card()
         
 func on_card_selected(cardType : String):
+    if cardType == "":
+        grid.selected_card_type = ""
+    
     if can_play():
         grid.selected_card_type = cardType
         
