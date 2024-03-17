@@ -9,6 +9,7 @@ signal parasite_throwed
 var tile_size = 100
 
 @export var is_moving = false
+@export var animation_player : AnimationPlayer
 
 var grid_pos = Vector2.ZERO
 var start_pos = Vector2.ZERO
@@ -100,5 +101,14 @@ func shoot_your_shot(position: Vector2):
     position = position + offset
     parasite.fly_to(position)
 
+
+func on_animation_finished(anim_name: StringName):
+    if anim_name == 'death':
+        visible = false
+
+@rpc("authority")
+func die():
+    animation_player.animation_finished.connect(on_animation_finished)
+    animation_player.play('death')
 
     
