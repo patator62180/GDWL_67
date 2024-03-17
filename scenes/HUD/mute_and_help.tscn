@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://c7f7jqkl5jis6"]
+[gd_scene load_steps=10 format=3 uid="uid://c7f7jqkl5jis6"]
 
 [ext_resource type="Script" path="res://scenes/HUD/mute_and_help.gd" id="1_3nq6v"]
 [ext_resource type="Texture2D" uid="uid://barxn1d0cj0f0" path="res://sprites/help_normal.png" id="1_nfyei"]
 [ext_resource type="Texture2D" uid="uid://b1orgs2hp4nuk" path="res://sprites/help_pressed.png" id="2_k6il8"]
 [ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="3_hvu0s"]
+[ext_resource type="Texture2D" uid="uid://b7m6r88nhjvat" path="res://sprites/sound_mute_sfx.png" id="4_dt2lj"]
 [ext_resource type="Texture2D" uid="uid://bla2q5wqubnu8" path="res://sprites/sound_mute.png" id="4_la11i"]
+[ext_resource type="Texture2D" uid="uid://c3oa3ccxv5lys" path="res://sprites/sound_unmute_sfx.png" id="5_sw0dn"]
 [ext_resource type="Texture2D" uid="uid://bsqi6cgf3k5c7" path="res://sprites/sound_unmute.png" id="5_swion"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1ewv"]
@@ -16,13 +18,14 @@ corner_radius_bottom_left = 5
 
 [node name="MuteAndHelp" type="Node"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("mute_button", "help_button", "help_panel")]
+[node name="CanvasLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("mute_button_music", "mute_button_sfx", "help_button", "help_panel")]
 script = ExtResource("1_3nq6v")
-mute_button = NodePath("MuteSound")
+mute_button_music = NodePath("MuteMusic")
+mute_button_sfx = NodePath("MuteSFX")
 help_button = NodePath("Help")
 help_panel = NodePath("HelpPanel")
 
-[node name="MuteSound" type="TextureButton" parent="CanvasLayer"]
+[node name="MuteMusic" type="TextureButton" parent="CanvasLayer"]
 offset_left = 15.0
 offset_top = 594.0
 offset_right = 59.0
@@ -33,10 +36,21 @@ texture_pressed = ExtResource("5_swion")
 ignore_texture_size = true
 stretch_mode = 0
 
+[node name="MuteSFX" type="TextureButton" parent="CanvasLayer"]
+offset_left = 57.0
+offset_top = 594.0
+offset_right = 101.0
+offset_bottom = 638.0
+toggle_mode = true
+texture_normal = ExtResource("4_dt2lj")
+texture_pressed = ExtResource("5_sw0dn")
+ignore_texture_size = true
+stretch_mode = 0
+
 [node name="Help" type="TextureButton" parent="CanvasLayer"]
-offset_left = 59.0
+offset_left = 99.0
 offset_top = 596.0
-offset_right = 99.0
+offset_right = 139.0
 offset_bottom = 636.0
 toggle_mode = true
 texture_normal = ExtResource("1_nfyei")
