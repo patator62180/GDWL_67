@@ -19,6 +19,8 @@ var selected_card_type
 var selected_wall_tile = null
 var current_wall_index = 0
 
+static var instance: Grid
+
 var cardinal = [
     Vector2.UP,
     Vector2.DOWN,
@@ -49,6 +51,8 @@ var previous_hovered_tile = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    instance = self
+    
     grid_size = tile_map.tile_set.tile_size.x
     
     InputManager.instance.game_mouse_move.connect(on_mouse_move)
@@ -118,8 +122,9 @@ func show_possible_selection(grid_pos: Vector2, player_managers: PlayerManagers)
         var pos = Vector2(grid_pos + direction)
         if is_possible_tile(pos) \
             and is_possible_movement(grid_pos, direction) \
-            and player_managers.check_for_player(self, pos) == null \
-            and !PlayerController.instance.check_for_hosts(pos):
+            and PlayerController.instance.is_tile_empty(pos):
+            #and player_managers.check_for_player(self, pos) == null \
+            #and !PlayerController.instance.check_for_hosts(pos):
             selection_tile_map.set_cell(0, pos, 0, Vector2(0,0))
 
 func clear_possible_selections():
@@ -252,10 +257,9 @@ func get_hammer_hits(grid_position: Vector2):
 
 func get_suitable_spawn():
     var used_tiles = tile_map.get_used_cells(0)
-    var player_managers = PlayerController.instance.player_managers as PlayerManagers
     
     var tile = used_tiles.pick_random()
-    while player_managers.get_character_at_position(tile, self):
+    while !PlayerController.instance.is_tile_empty(tile):
         tile = used_tiles.pick_random()
         
     return tile

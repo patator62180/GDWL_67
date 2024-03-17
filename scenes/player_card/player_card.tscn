@@ -29,15 +29,27 @@ offset_bottom = 75.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n1egu")
-nickname_label = NodePath("VBoxContainer/Nickname")
-score_label = NodePath("VBoxContainer/Score")
+nickname_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/Nickname")
+score_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/Score")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 72.0
+offset_bottom = 66.0
 
-[node name="Nickname" type="Label" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Nickname" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 material = SubResource("ShaderMaterial_tdhdf")
 layout_mode = 2
 theme = ExtResource("2_dmo1j")
@@ -45,7 +57,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "Player"
 
-[node name="Score" type="Label" parent="VBoxContainer"]
+[node name="Score" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 material = SubResource("ShaderMaterial_utu1d")
 layout_mode = 2
 theme = ExtResource("2_dmo1j")

@@ -233,7 +233,7 @@ func propagate_add_wall(grid_pos: Vector2, tile_index: int):
 func propagate_break_wall(grid_pos: Vector2, hammer_hits: Array[int]):
     grid.break_walls(grid_pos, hammer_hits)
 
-func check_tile(grid_pos:Vector2, check_players: bool):
+func check_tile(grid_pos:Vector2, check_players: bool, check_host_destination: bool):
     if check_players:
         for i in range(0, peer_players.size()):
             var player_is_present = player_managers.check_for_player(grid, grid_pos)
@@ -241,20 +241,22 @@ func check_tile(grid_pos:Vector2, check_players: bool):
                 return player_is_present
     
     for host in host_manager.get_hosts():
-        #if host == null:
-            #host_manager.hosts.erase(host)
-            #continue
         var host_grid_pos = grid.get_grid_pos(host.position)
         if (host_grid_pos == grid_pos):
             return host
-
+        
+        if check_host_destination:
+            var host_target_grid_pos = host.get_target_grid_pos()
+            if (host_target_grid_pos == grid_pos):
+                return host
+            
     return null
 
 func check_octo_around_player(player: Player):
     var player_grid_pos = grid.get_grid_pos(player.position)
     
     for direction in grid.octo:
-        var found_entity = check_tile(player_grid_pos + direction, false)
+        var found_entity = check_tile(player_grid_pos + direction, false, false)
 
         if found_entity is Host:
             return found_entity as Host
@@ -279,7 +281,7 @@ func end_game():
 
 @rpc('authority') 
 func play_shockwave_anim(saved_host_pos: Vector2):
-    var screen_pos = check_tile(saved_host_pos, false).get_global_transform_with_canvas().get_origin()
+    var screen_pos = check_tile(saved_host_pos, false, false).get_global_transform_with_canvas().get_origin()
     screen_pos.x = screen_pos.x + 50
     screen_pos.y = screen_pos.y + 50
     
