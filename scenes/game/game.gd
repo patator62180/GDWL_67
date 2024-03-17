@@ -21,7 +21,7 @@ class PeerPlayer:
     
     func _init(peer_id: int):
         self.peer_id = peer_id
-        self.nickname = 'Player%d' % peer_id
+        self.nickname = 'Player %d' % peer_id
         self.color = randf()
 
 var peer_players: Array[PeerPlayer] = []
@@ -217,12 +217,14 @@ func on_peer_player_joined(id: int):
         Mediator.instance.call_on_players(player_controller.update_connected_player, peer_player_index, peer_players[peer_player_index].nickname, peer_players[peer_player_index].color)
     
     if player_index == 1:
-        Mediator.instance.call_on_player(peer_players[0].peer_id, player_controller.give_start_game_permission)
+        if Mediator.instance.is_couch:
+            start_game()
+        else:
+            Mediator.instance.call_on_player(peer_players[0].peer_id, player_controller.give_start_game_permission)
 
 func move_player(player_index: int, action: String):
     if Mediator.instance.is_server():
         player_managers.array[player_index].process_action(action)
-
 
 @rpc('authority')
 func propagate_add_wall(grid_pos: Vector2, tile_index: int):
