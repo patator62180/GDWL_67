@@ -7,8 +7,6 @@ class_name Grid
 @export var wall_tile_map: TileMap
 @export var selection_wall_tile_map: TileMap
 
-@export var debug: Sprite2D
-
 signal cell_click
 signal cell_hovered
 signal wall_click
@@ -57,9 +55,7 @@ func _ready():
     InputManager.instance.game_mouse_click.connect(on_mouse_click)
     InputManager.instance.game_mouse_exited.connect(on_mouse_exited)
 
-func on_mouse_move(position: Vector2):
-    debug.position = position
-    
+func on_mouse_move(position: Vector2):   
     if !PlayerController.instance.can_play():
         return
     
