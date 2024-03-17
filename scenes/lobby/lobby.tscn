@@ -237,6 +237,7 @@ offset_right = 1.0
 offset_bottom = 20.0
 grow_horizontal = 0
 grow_vertical = 2
+text = "3"
 
 [node name="StartButton" type="Button" parent="Container"]
 custom_minimum_size = Vector2(0, 50)
