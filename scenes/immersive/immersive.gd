@@ -30,6 +30,7 @@ class Client:
     signal joined
     signal hosted
     signal peer_player_joined
+    signal joining_failed
 
     var immersive_url: String
     var game_instances_host: String
@@ -70,12 +71,16 @@ class Client:
     func on_game_joined(id: int):
         joined.emit(game_room_code, id)
 
-    func on_game_room_info_received(_result, _response_code, _headers, response):
-        var peer = WebSocketMultiplayerPeer.new()
-        game_room_code = response['code']
-        multiplayer.peer_connected.connect(on_game_joined)
-        peer.create_client(game_instances_host + ':' + str(response['port']))
-        multiplayer.multiplayer_peer = peer
+    func on_game_room_info_received(_result, response_code, _headers, response):
+        if response_code != 200:
+            joining_failed.emit(response_code)
+        else:
+            var peer = WebSocketMultiplayerPeer.new()
+
+            game_room_code = response['code']
+            multiplayer.peer_connected.connect(on_game_joined)
+            peer.create_client(game_instances_host + ':' + str(response['port']))
+            multiplayer.multiplayer_peer = peer
 
     func starts_playing():
         if not is_faking_requests:
@@ -87,7 +92,7 @@ class Client:
 
     func book_game_room(game_name: String):
         if is_local and is_faking_requests:
-            on_game_room_info_received(null, null, null, {'code': LOCAL_CODE, 'port': LOCAL_PORT})
+            on_game_room_info_received(null, 200, null, {'code': LOCAL_CODE, 'port': LOCAL_PORT})
         else:
             request('/game-instances/', HTTPClient.METHOD_POST, {'name': game_name}, on_game_room_info_received)
 
@@ -126,7 +131,7 @@ class Client:
 
     func join_game_room(code: String):
         if is_local and is_faking_requests:
-            on_game_room_info_received(null, null, null, {'code': LOCAL_CODE, 'port': LOCAL_PORT})
+            on_game_room_info_received(null, 200, null, {'code': LOCAL_CODE, 'port': LOCAL_PORT})
         else:        
             request('/game-instances/%s/' % code, HTTPClient.METHOD_GET, null, on_game_room_info_received)
 
