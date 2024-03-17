@@ -132,7 +132,7 @@ _data = {
 "card_show_back": SubResource("Animation_kg8m0")
 }
 
-[node name="Card" type="Control" node_paths=PackedStringArray("outline", "icon", "animation_player", "background_texture_rect")]
+[node name="Card" type="Control" node_paths=PackedStringArray("outline", "icon", "description", "animation_player", "background_texture_rect")]
 texture_filter = 1
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 3
@@ -151,6 +151,7 @@ pivot_offset = Vector2(75, 250)
 script = ExtResource("1_7d03g")
 outline = NodePath("Background/Outline")
 icon = NodePath("Background/Icon")
+description = NodePath("Background/PanelContainer/Label")
 animation_player = NodePath("AnimationPlayer")
 background_texture_rect = NodePath("Background")
 
@@ -212,6 +213,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_xg4oj")
+
+[node name="PanelContainer" type="PanelContainer" parent="Background"]
+clip_contents = true
+layout_mode = 0
+offset_left = 10.0
+offset_top = 130.0
+offset_right = 141.0
+offset_bottom = 237.0
+
+[node name="Label" type="Label" parent="Background/PanelContainer"]
+custom_minimum_size = Vector2(10, 100)
+layout_mode = 2
+size_flags_vertical = 0
+autowrap_mode = 1
+clip_text = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

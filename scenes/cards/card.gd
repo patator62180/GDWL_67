@@ -6,6 +6,7 @@ signal card_clicked
 
 @export var outline : Control
 @export var icon : TextureRect
+@export var description : Label
 @export var animation_player : AnimationPlayer
 @export var background_texture_rect: TextureRect
 @export var selected_color = Color(0.4, 1, 0.2, 0.85)
@@ -25,6 +26,7 @@ var card_id = -1
 func init(_resource : Resource):
     resource = _resource
     icon.set_texture(resource.icon)
+    description.text = resource.description
 
 func _process(delta):
     #this makes the card go up and down over time
