@@ -217,9 +217,8 @@ nodes/OneShot/node = SubResource("AnimationNodeOneShot_2eil6")
 nodes/OneShot/position = Vector2(-40, 160)
 node_connections = [&"OneShot", 0, &"Animation", &"OneShot", 1, &"Animation 2", &"output", 0, &"OneShot"]
 
-[node name="Host" type="Node2D" node_paths=PackedStringArray("raycast")]
+[node name="Host" type="Node2D"]
 script = ExtResource("1_xj1si")
-raycast = NodePath("RayCast2D")
 
 [node name="NodeSprite" type="Node2D" parent="."]
 position = Vector2(50, 50)

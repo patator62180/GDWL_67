@@ -17,7 +17,6 @@ var target_pos = Vector2.ZERO
 var timer = 0.0
 var timer_max = 0.5
 
-@export var raycast: RayCast2D
 @export var parasite_scene: PackedScene
 
 
@@ -28,16 +27,6 @@ var color: float = 0:
 
 func _ready():
     pass
-
-func move(direction):
-    raycast.rotation = atan2(-direction.x, direction.y)
-    raycast.force_raycast_update()
-    
-    if !raycast.is_colliding():
-        position += direction * tile_size
-        return true
-    
-    return false
 
 @rpc("any_peer")
 func move_to(position: Vector2):
