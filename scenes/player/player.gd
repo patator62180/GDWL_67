@@ -75,7 +75,8 @@ func can_move_to(grid_pos: Vector2, grid: Grid, player_managers: PlayerManagers)
     return player_grid_pos.distance_to(grid_pos) <= 1 \
         and is_possible_movement \
         and is_possible_tile \
-        and player_managers.check_for_player(grid, grid_pos) == null
+        and player_managers.check_for_player(grid, grid_pos) == null \
+        and !PlayerController.instance.check_for_hosts(grid_pos)
 
 func process_action(action: String):
     match action:
