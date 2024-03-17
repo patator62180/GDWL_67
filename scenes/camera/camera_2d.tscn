@@ -1,11 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://dr81328k8drup"]
+[gd_scene load_steps=4 format=3 uid="uid://dr81328k8drup"]
 
 [ext_resource type="Script" path="res://scenes/camera/camera_2d.gd" id="1_3l2qm"]
 [ext_resource type="PackedScene" uid="uid://5cbujpr3l37j" path="res://scenes/camera/shockwave.tscn" id="2_5g353"]
+[ext_resource type="PackedScene" uid="uid://bu53sejq08set" path="res://scenes/confetti_launcher/confetti_launcher.tscn" id="3_ee3ys"]
 
-[node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("shockwave")]
+[node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("shockwave", "confetti_launcher")]
 zoom = Vector2(0.8, 0.8)
 script = ExtResource("1_3l2qm")
+camera_drag = null
 shockwave = NodePath("Shockwave")
+confetti_launcher = NodePath("ConfettiLauncher")
 
 [node name="Shockwave" parent="." instance=ExtResource("2_5g353")]
+
+[node name="ConfettiLauncher" parent="." instance=ExtResource("3_ee3ys")]
