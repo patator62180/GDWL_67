@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://w8glstws2q30"]
+[gd_scene load_steps=14 format=3 uid="uid://w8glstws2q30"]
 
 [ext_resource type="Script" path="res://scenes/cards/card.gd" id="1_7d03g"]
 [ext_resource type="Texture2D" uid="uid://qfq8gm06d23p" path="res://sprites/tuile_blue.png" id="2_300yh"]
 [ext_resource type="Shader" path="res://scenes/cards/outline.gdshader" id="3_p3nqa"]
 [ext_resource type="Texture2D" uid="uid://dtys1aqstpv3o" path="res://sprites/Carte.png" id="3_pnjbd"]
+[ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="5_6aixt"]
 [ext_resource type="Texture2D" uid="uid://547e7ytc7lrc" path="res://sprites/card_back.png" id="5_xg4oj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_77or1"]
@@ -14,6 +15,13 @@ shader_parameter/width = 4.965
 shader_parameter/pattern = 2
 shader_parameter/inside = true
 shader_parameter/add_margins = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_662w6"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="Animation" id="Animation_daeny"]
 length = 0.001
@@ -205,6 +213,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Background"]
+modulate = Color(1, 1, 1, 0.792157)
 clip_contents = true
 layout_mode = 0
 offset_left = 10.0
@@ -212,11 +221,17 @@ offset_top = 130.0
 offset_right = 141.0
 offset_bottom = 237.0
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_662w6")
 
 [node name="Label" type="Label" parent="Background/PanelContainer"]
+texture_filter = 2
 custom_minimum_size = Vector2(10, 100)
 layout_mode = 2
 size_flags_vertical = 0
+theme = ExtResource("5_6aixt")
+theme_override_colors/font_color = Color(0.0823529, 0.0823529, 0.0823529, 1)
+theme_override_font_sizes/font_size = 18
+text = "dasdssss sadasdasd   dasd  dsa  s "
 autowrap_mode = 1
 clip_text = true
 
