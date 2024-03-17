@@ -36,6 +36,8 @@ game = NodePath("..")
 PlayerManagers = NodePath("../PlayerManagers")
 
 [node name="Camera2D" parent="." instance=ExtResource("6_upsda")]
+offset = Vector2(-10, 40)
+zoom = Vector2(0.7, 0.7)
 
 [node name="HazardManager" type="Node2D" parent="." node_paths=PackedStringArray("grid")]
 script = ExtResource("3_vmlt8")

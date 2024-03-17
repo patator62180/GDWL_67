@@ -20,60 +20,70 @@ corner_radius_bottom_left = 5
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("mute_button_music", "mute_button_sfx", "help_button", "help_panel")]
 script = ExtResource("1_3nq6v")
-mute_button_music = NodePath("MuteMusic")
-mute_button_sfx = NodePath("MuteSFX")
-help_button = NodePath("Help")
-help_panel = NodePath("HelpPanel")
+mute_button_music = NodePath("Control/MuteMusic")
+mute_button_sfx = NodePath("Control/MuteSFX")
+help_button = NodePath("Control/Help")
+help_panel = NodePath("Control/HelpPanel")
 
-[node name="MuteMusic" type="TextureButton" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="MuteMusic" type="TextureButton" parent="CanvasLayer/Control"]
 offset_left = 15.0
-offset_top = 594.0
+offset_top = -31.0
 offset_right = 59.0
-offset_bottom = 638.0
+offset_bottom = 13.0
 toggle_mode = true
 texture_normal = ExtResource("4_la11i")
 texture_pressed = ExtResource("5_swion")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="MuteSFX" type="TextureButton" parent="CanvasLayer"]
+[node name="MuteSFX" type="TextureButton" parent="CanvasLayer/Control"]
 offset_left = 57.0
-offset_top = 594.0
+offset_top = -31.0
 offset_right = 101.0
-offset_bottom = 638.0
+offset_bottom = 13.0
 toggle_mode = true
 texture_normal = ExtResource("4_dt2lj")
 texture_pressed = ExtResource("5_sw0dn")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="Help" type="TextureButton" parent="CanvasLayer"]
+[node name="Help" type="TextureButton" parent="CanvasLayer/Control"]
 offset_left = 99.0
-offset_top = 596.0
+offset_top = -29.0
 offset_right = 139.0
-offset_bottom = 636.0
+offset_bottom = 11.0
 toggle_mode = true
 texture_normal = ExtResource("1_nfyei")
 texture_pressed = ExtResource("2_k6il8")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="HelpPanel" type="Panel" parent="CanvasLayer"]
+[node name="HelpPanel" type="Panel" parent="CanvasLayer/Control"]
 visible = false
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -278.5
-offset_top = -159.5
-offset_right = 278.5
-offset_bottom = 159.5
+offset_left = 277.5
+offset_top = 144.5
+offset_right = 834.5
+offset_bottom = 463.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_r1ewv")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/HelpPanel"]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control/HelpPanel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
