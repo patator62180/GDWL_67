@@ -37,5 +37,5 @@ func create_game_room():
 
     
 func join_game_room():
-    Immersive.client.join_game_room(join_room_code.text)
+    Immersive.client.join_game_room(join_room_code.text.to_upper())
     visible = false
