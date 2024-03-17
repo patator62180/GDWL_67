@@ -163,7 +163,7 @@ pivot_offset = Vector2(75, 250)
 script = ExtResource("1_7d03g")
 outline = NodePath("Background/Outline")
 icon = NodePath("Background/Icon")
-description = NodePath("Background/PanelContainer/Label")
+description = NodePath("Background/PanelContainer/RichTextLabel")
 animation_player = NodePath("AnimationPlayer")
 background_texture_rect = NodePath("Background")
 
@@ -227,16 +227,12 @@ offset_bottom = 237.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_662w6")
 
-[node name="Label" type="Label" parent="Background/PanelContainer"]
-texture_filter = 2
-custom_minimum_size = Vector2(10, 100)
+[node name="RichTextLabel" type="RichTextLabel" parent="Background/PanelContainer"]
 layout_mode = 2
-size_flags_vertical = 0
 theme = ExtResource("5_6aixt")
-theme_override_colors/font_color = Color(0.0823529, 0.0823529, 0.0823529, 1)
-theme_override_font_sizes/font_size = 18
-autowrap_mode = 3
-clip_text = true
+theme_override_colors/default_color = Color(0.0823529, 0.0823529, 0.0823529, 1)
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 
 [node name="CardBack" type="TextureRect" parent="Background"]
 visible = false
