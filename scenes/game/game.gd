@@ -19,10 +19,10 @@ class PeerPlayer:
     var nickname: String
     var color: float
     
-    func _init(peer_id: int):
+    func _init(player_index: int, peer_id: int):
         self.peer_id = peer_id
         self.nickname = 'Player %d' % peer_id
-        self.color = randf()
+        self.color = 1 if player_index == 0 else 0.5
 
 var peer_players: Array[PeerPlayer] = []
 var is_game_over: bool = false
@@ -162,6 +162,8 @@ func try_parasiting():
             
             await get_tree().create_timer(0.5).timeout
             
+            await try_parasiting()
+            
 
 func score_point():
     player_scores[player_index_playing] += 1
@@ -199,7 +201,7 @@ func request_start_game():
 
 func on_peer_player_joined(id: int):
     var player_index = len(peer_players)
-    var peer_player = PeerPlayer.new(id)
+    var peer_player = PeerPlayer.new(player_index, id)
     
     peer_players.append(peer_player)
     Mediator.instance.call_on_player(id, player_controller.assign_player, player_index)
