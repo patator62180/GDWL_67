@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://biqj0t60x1dv0"]
+[gd_scene load_steps=15 format=3 uid="uid://biqj0t60x1dv0"]
 
 [ext_resource type="PackedScene" uid="uid://biumy12wvsfs5" path="res://scenes/player_card/player_card.tscn" id="1_0lgt1"]
 [ext_resource type="Script" path="res://scenes/HUD/hud.gd" id="1_wj8wa"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b1orgs2hp4nuk" path="res://sprites/help_pressed.png" id="7_mm06l"]
 [ext_resource type="Texture2D" uid="uid://bsqi6cgf3k5c7" path="res://sprites/sound_unmute.png" id="7_yym30"]
 [ext_resource type="Theme" uid="uid://bnf832jc7xfl4" path="res://scenes/background/theme_principal.tres" id="8_0kiu8"]
+[ext_resource type="PackedScene" uid="uid://bu53sejq08set" path="res://scenes/confetti_launcher/confetti_launcher.tscn" id="11_w4pok"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hyrud"]
 font_size = 50
@@ -30,7 +31,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards", "hand", "your_turn_label", "other_player_turn_label", "win_label", "lose_label", "mute_button", "help_button", "help_panel")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("player_cards", "hand", "your_turn_label", "other_player_turn_label", "win_label", "lose_label", "mute_button", "help_button", "help_panel", "confetti_launcher")]
 script = ExtResource("1_wj8wa")
 player_cards = [NodePath("PlayerCards/PlayerCard0Anchor/PlayerCard0"), NodePath("PlayerCards/PlayerCard1Anchor/PlayerCard1"), NodePath("PlayerCards/PlayerCard2Anchor/PlayerCard2"), NodePath("PlayerCards/PlayerCard3Anchor/PlayerCard3")]
 hand = NodePath("Hand")
@@ -41,6 +42,7 @@ lose_label = NodePath("YouLostLabel")
 mute_button = NodePath("MuteSound")
 help_button = NodePath("Help")
 help_panel = NodePath("HelpPanel")
+confetti_launcher = NodePath("ConfettiLauncher")
 
 [node name="PlayerCards" type="Control" parent="."]
 layout_mode = 3
@@ -260,6 +262,8 @@ deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 virtual_keyboard_enabled = false
 middle_mouse_paste_enabled = false
+
+[node name="ConfettiLauncher" parent="." instance=ExtResource("11_w4pok")]
 
 [connection signal="gui_input" from="InputManager" to="InputManager" method="_on_gui_input"]
 [connection signal="mouse_exited" from="InputManager" to="InputManager" method="_on_mouse_exited"]

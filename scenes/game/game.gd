@@ -297,8 +297,6 @@ func finish_game(player_winning_index : int):
     game_finished.emit(player_winning_index == player_controller.player_index)
     
     get_tree().get_root().get_node("BackgroundMusic/BGMusic").stream_paused = true
-    if player_winning_index == player_controller.player_index:
-        camera.confetti_launcher.fire_confetti()
 
     # on cache tout
     is_game_over = true

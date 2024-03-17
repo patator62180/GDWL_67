@@ -6,7 +6,6 @@ static var instance: Camera
 
 @export var camera_drag : float = 25
 @export var shockwave : Shockwave
-@export var confetti_launcher : ConfettiLauncher
 
 func _init():
     instance = self

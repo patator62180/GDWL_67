@@ -14,6 +14,7 @@ class_name HUD
 @export var mute_button : BaseButton
 @export var help_button : TextureButton
 @export var help_panel : Panel
+@export var confetti_launcher : ConfettiLauncher
 
 signal mute_music
 
@@ -25,6 +26,7 @@ func _ready():
     game.game_finished.connect(on_game_over)
     mute_button.toggled.connect(_on_mute_sound_toggled)
     help_button.toggled.connect(on_help_toggled)
+    game.game_finished.connect(confetti_launcher.on_game_finished)
 
 func on_game_over(player_won : bool):
     win_label.visible = player_won
