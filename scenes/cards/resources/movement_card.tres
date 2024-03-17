@@ -7,5 +7,5 @@
 script = ExtResource("2_x4hco")
 icon = ExtResource("1_10hp7")
 type = "Movement"
-weight = 10
+weight = 5
 description = "Move to one of your adjacent tiles (if possible)"

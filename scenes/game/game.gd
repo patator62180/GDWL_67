@@ -126,8 +126,7 @@ func start_turn(try_parasiting: bool = false):
             
             #wait for parasiting
             if try_parasiting:
-                var game_over = await try_parasiting()
-                if game_over:
+                if await try_parasiting():
                     return
             
             #move and wait hosts
@@ -155,6 +154,7 @@ func try_parasiting():
             
             player_managers.array[player_index_playing].spawn_player(grid, host_pos)
             player_managers.array[player_index_playing].kill_player(grid, player_pos)
+            
             Mediator.instance.call_on_players(play_shockwave_anim, host_pos)
                         
             host.queue_free()
@@ -165,8 +165,9 @@ func try_parasiting():
             respawn_host()
             
             await get_tree().create_timer(0.5).timeout
-            
-            await try_parasiting()
+
+            #if await try_parasiting():
+                #return true
             
 
 func score_point():
@@ -297,3 +298,4 @@ func finish_game():
     is_game_over = true
     player_managers.visible = false
     grid.visible = false
+    host_manager.visible = false

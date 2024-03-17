@@ -7,5 +7,5 @@
 script = ExtResource("2_6exif")
 icon = ExtResource("1_y8w6t")
 type = "Wall"
-weight = 10
+weight = 1
 description = "Place a wall to block movement"

@@ -41,7 +41,7 @@ func kill_player(grid: Grid, grid_pos: Vector2):
     var player = get_character_at_position(grid_pos, grid)
     
     if player != null:
-        Mediator.instance.call_on_players(player.die)
+        Mediator.instance.call_on_players(player.kill_player)
         await get_tree().create_timer(2).timeout
         if is_instance_valid(player):
             player.queue_free()

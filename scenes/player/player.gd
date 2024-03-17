@@ -3,7 +3,6 @@ extends Node2D
 class_name Player
 
 signal played
-#signal parasited
 signal parasite_throwed
 
 var tile_size = 100
@@ -29,8 +28,6 @@ var color: float = 0:
 
 func _ready():
     pass
-    #if !(self is Host) and not OS.has_feature('dedicated_server') and modulate_color_holder:
-        #$NodeSprite/Face.material.set_shader_parameter("Shift_Hue", modulate_color_holder.modulateFaceColor)
 
 func move(direction):
     raycast.rotation = atan2(-direction.x, direction.y)
@@ -61,9 +58,9 @@ func _process(delta):
             
             played.emit()
         
-    elif is_moving and %AnimationPlayer.get_current_animation() != "player_moving":
-        %AnimationPlayer.play("player_moving")
-        %AnimationPlayer.queue("idle")
+    elif is_moving and animation_player.get_current_animation() != "player_moving":
+        animation_player.play("player_moving")
+        animation_player.queue("idle")
         
 func can_move_to(grid_pos: Vector2, grid: Grid, player_managers: PlayerManagers):
     var player_grid_pos = grid.get_grid_pos(self.position)
@@ -77,17 +74,6 @@ func can_move_to(grid_pos: Vector2, grid: Grid, player_managers: PlayerManagers)
         and is_possible_tile \
         and player_managers.check_for_player(grid, grid_pos) == null \
         and !PlayerController.instance.check_for_hosts(grid_pos)
-
-func process_action(action: String):
-    match action:
-        "left":
-            move(Vector2.LEFT)
-        "right":
-            move(Vector2.RIGHT)
-        "up":
-            move(Vector2.UP)
-        "down":
-            move(Vector2.DOWN)
        
 @rpc("authority")     
 func shoot_your_shot(position: Vector2):
@@ -102,13 +88,8 @@ func shoot_your_shot(position: Vector2):
     parasite.fly_to(position)
 
 
-func on_animation_finished(anim_name: StringName):
-    if anim_name == 'death':
-        visible = false
-
 @rpc("authority")
-func die():
-    animation_player.animation_finished.connect(on_animation_finished)
+func kill_player():
     animation_player.play('death')
 
     

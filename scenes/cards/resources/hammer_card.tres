@@ -7,5 +7,5 @@
 script = ExtResource("2_ciddk")
 icon = ExtResource("1_53u8c")
 type = "Hammer"
-weight = 10
+weight = 1
 description = "Destroy one or multiple walls"
